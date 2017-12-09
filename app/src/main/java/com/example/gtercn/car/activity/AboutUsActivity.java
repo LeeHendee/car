@@ -45,6 +45,8 @@ public class AboutUsActivity extends BaseActivity {
 
     private CarApplication mApplication;
 
+//    @BindView()
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
