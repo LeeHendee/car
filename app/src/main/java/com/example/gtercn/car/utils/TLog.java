@@ -14,7 +14,7 @@ public class TLog {
      * release false
      * debug true;
      */
-    public static boolean isDebug = false;
+    public static boolean isDebug = true;
 
     /**
      * common debug
