@@ -31,6 +31,8 @@ public class AppTimeStamp {
      */
     private long mIntervalTime;
 
+    private String testParam;
+
     private AppTimeStamp(){
         fetchServerTime();
     }
