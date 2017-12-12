@@ -8,7 +8,7 @@ import android.util.Log;
  */
 public class TLog {
 
-    public static final String TAG = "TLogTravel";
+    public static final String TAG = "TLog";
 
     /**
      * release false
