@@ -75,7 +75,7 @@ public class AppService extends Service implements ICityCodeChangeListener, IApp
         loadRescueAndServiceData();
 
         mExecutor.schedule(new AutoLoginTask(mApplication), 100, TimeUnit.MILLISECONDS);
-        mExecutor.schedule(new AppUpdateTask(mApplication), 200, TimeUnit.MILLISECONDS);
+//        mExecutor.schedule(new AppUpdateTask(mApplication), 200, TimeUnit.MILLISECONDS);
     }
 
     private void loadRescueAndServiceData() {
