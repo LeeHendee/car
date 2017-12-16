@@ -55,6 +55,7 @@ public class CarApplication extends Application {
         Config.DEBUG = true;
         SDKInitializer.initialize(getApplicationContext());
 
+
         // TODO: 2017/1/10 需要替换成自己申请的 appId和secret
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wx62824c95622f2f8d", "351092bd91f7bd01363aa374ed39a473");
