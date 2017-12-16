@@ -52,16 +52,14 @@ public class CarApplication extends Application {
         mResources = getResources();
         ContextService.getInstance().setContext(mContext);
         THttpOpenHelper.newInstance();
+        Config.DEBUG = true;
         SDKInitializer.initialize(getApplicationContext());
-
-        Config.DEBUG = false;
 
         // TODO: 2017/1/10 需要替换成自己申请的 appId和secret
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wx62824c95622f2f8d", "351092bd91f7bd01363aa374ed39a473");
         PlatformConfig.setSinaWeibo("1923305823", "09c6cb61141e9b423e68398fa5d4937d", "www.shunjiatianxia.com");
 //        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
-
     }
 
     public void setUpdateBean(UpdateBean bean){
