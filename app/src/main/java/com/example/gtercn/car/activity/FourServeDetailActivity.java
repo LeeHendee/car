@@ -153,7 +153,6 @@ public class FourServeDetailActivity extends BaseActivity implements View.OnClic
         if (initDirs()) {
             initNavi();
         }
-
     }
 
     @Override

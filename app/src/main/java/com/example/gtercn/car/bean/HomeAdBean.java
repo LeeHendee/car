@@ -14,6 +14,16 @@ public class HomeAdBean implements Serializable{
 
     private String html_url;
 
+    private int resMall;
+
+    public int getRes() {
+        return resMall;
+    }
+
+    public void setRes(int res) {
+        resMall = res;
+    }
+
     public String getHtml_url() {
         return html_url;
     }

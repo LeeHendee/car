@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="#00000000">
+
+    <ImageView
+        android:id="@+id/iv_home_cart"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/jsbundles_jdreactaftersales_images_webview_nav_cart"
+        android:scaleType="center" />
+
+    <ImageView
+        android:id="@+id/iv_title_right"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/jsbundles_jdreactaftersales_components_style_images_more"
+        android:layout_alignParentRight="true"
+        android:scaleType="center" />
+
+    <ImageView
+        android:id="@+id/iv_home_search"
+        android:layout_width="280dp"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/home_search_bar" />
+
+    <TextView
+        android:id="@+id/tv_search_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="品牌盛典"
+        android:textColor="@color/text_note_color"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="70dp"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:src="@drawable/icon_search_home"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp" />
+
+</RelativeLayout>

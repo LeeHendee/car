@@ -161,9 +161,22 @@
 
     <!--personal center-->
     <color name="user_score">#FCF700</color>
-
     <color name="black_2">#222222</color>
     <color name="black_3">#333333</color>
     <color name="black_6">#666666</color>
+
+    <!--Mall-->
+    <color name="text_common_color">#333333</color>
+
+    <color name="text_second_color">#666666</color>
+
+    <color name="text_note_color">#999999</color>
+
+    <color name="text_third_color">#cccccc</color>
+
+    <color name="line_common_color">#dcdcdc</color>
+
+    <color name="gray_bg_color">#f2f2f2</color>
+
 </resources>
 
