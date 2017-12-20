@@ -15,7 +15,7 @@ import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.fragment.FindFragment;
 import com.example.gtercn.car.fragment.HomeFragment;
-import com.example.gtercn.car.fragment.StoreFragment;
+import com.example.gtercn.car.mall.view.StoreFragment;
 import com.example.gtercn.car.service.AppService;
 import com.example.gtercn.car.utils.Constants;
 

@@ -11,13 +11,26 @@
 
     <include layout="@layout/home_page_toolbar" />
 
-    <GridView
-        android:id="@+id/gv_classify"
+    <LinearLayout
+        android:id="@+id/ll_classify"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:orientation="horizontal"
         android:layout_below="@+id/vp_banner"
+        android:background="@color/white"
         android:layout_marginTop="10dp"
-        android:background="@color/white" />
+        android:gravity="center_vertical">
+
+        <GridView
+            android:id="@+id/gv_classify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numColumns="5"
+            android:layout_gravity="center_vertical"
+            android:verticalSpacing="5dp" />
+    </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/ll_qiang"
         android:layout_width="match_parent"
@@ -25,7 +38,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:layout_below="@id/gv_classify"
+        android:layout_below="@id/ll_classify"
         android:background="@color/white"
         android:layout_marginTop="10dp">
 
