@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gtercn.car.R;
-import com.example.gtercn.car.mall.ClassifyEntity;
+import com.example.gtercn.car.mall.entity.ClassifyEntity;
 
 import java.util.List;
 

@@ -51,6 +51,8 @@ public class ApiManager {
     private static final String HTTPS = "https://api.shunjiatianxia.com/car_home/app/v1";
     private static final String HTTP = "http://api.shunjiatianxia.com/car_home/app/v1";
 
+    private static final String BaseUrl = "http://114.215.71.170/car_inn/v1/";
+
     public static final String URL_RESCUE = HTTP + "/open/service/rescuelist";
 
     public static final String URL_APPOINTMENT = "";
@@ -126,15 +128,14 @@ public class ApiManager {
     /**
      * 达人圈浏览数增加
      */
-    public static final String URL_ARTICLE_GLANCENUM = HTTP +"/expert/open/article/glancenum";
+    public static final String URL_ARTICLE_GLANCENUM = HTTP + "/expert/open/article/glancenum";
 
     /**
      * 达人圈详情页查询
      */
-    public static final String URL_ARTICLE_DETAIL_QUERY = HTTP +"/expert/open/article/query";
+    public static final String URL_ARTICLE_DETAIL_QUERY = HTTP + "/expert/open/article/query";
     /**
      * 问题墙列表
-     *
      */
     public static final String URL_QUESTION_WALL_LIST = HTTP + "/expert/open/question/list";
 
@@ -209,11 +210,11 @@ public class ApiManager {
     /**
      * 自驾游报名
      */
-    public  static  final String URL_SELF_ENROL = HTTP + "/selfdriving/enrol";
+    public static final String URL_SELF_ENROL = HTTP + "/selfdriving/enrol";
     /**
      * 自驾游取消报名
      */
-    public static final String URL_SELF_REMOVE_ENROL = HTTP +"/selfdriving/remove/enrol";
+    public static final String URL_SELF_REMOVE_ENROL = HTTP + "/selfdriving/remove/enrol";
     /**
      * 自驾游活动取消
      */
@@ -221,11 +222,11 @@ public class ApiManager {
     /**
      * 自驾游详情
      */
-    public static final String URL_SELF_DETAIL = HTTP+"/selfdriving/open/searchone";
+    public static final String URL_SELF_DETAIL = HTTP + "/selfdriving/open/searchone";
     /**
      * 自驾游名单
      */
-    public static final String URL_SELF_ROLL = HTTP +"/selfdriving/searchname";
+    public static final String URL_SELF_ROLL = HTTP + "/selfdriving/searchname";
     /**
      * 我的活动列表
      */
@@ -234,7 +235,7 @@ public class ApiManager {
     /**
      * 四服务列表
      */
-    public static final String URL_FOUR_SERVE = HTTP +"/open/service/servicetype/list";
+    public static final String URL_FOUR_SERVE = HTTP + "/open/service/servicetype/list";
     /**
      * 四服务详情
      */
@@ -246,7 +247,7 @@ public class ApiManager {
     /**
      * 促销详情
      */
-    public static final String URL_PROMOTION_DETAIL = HTTP+"/open/promotion/query";
+    public static final String URL_PROMOTION_DETAIL = HTTP + "/open/promotion/query";
     /**
      * 促销搜索
      */
@@ -258,11 +259,11 @@ public class ApiManager {
     /**
      * 咨询详情
      */
-    public static final String URL_MESSAGE_DETAIL = HTTP+"/open/information/query";
+    public static final String URL_MESSAGE_DETAIL = HTTP + "/open/information/query";
     /**
      * 救援详情
      */
-    public static final String URL_RESCURE_DETAIL = HTTP +"/open/service/rescuetype/detail";
+    public static final String URL_RESCURE_DETAIL = HTTP + "/open/service/rescuetype/detail";
     /**
      * Home搜索
      */
@@ -316,6 +317,14 @@ public class ApiManager {
      * false：从本地加载仿真数据
      */
     public static final Boolean isHttp = true;
+
+//    ---------------------------------- 以下是电商部分API_URL -------------------------------
+
+    /**
+     * 电商首页banner
+     */
+    public static final String URL_HOME_BANNER = BaseUrl + "open/advertisement/list";
+
 
 
     /**
@@ -406,7 +415,7 @@ public class ApiManager {
     /**
      * 自驾游报名
      */
-    public static void SelfEnrol(String url ,JSONObject jsonObject , ResponseJSONObjectListener handler, int type, String tag ){
+    public static void SelfEnrol(String url, JSONObject jsonObject, ResponseJSONObjectListener handler, int type, String tag) {
         if (isHttp) {
 
             ApiHttp.SelfEnrol(url, jsonObject, handler, type, tag);
@@ -414,10 +423,11 @@ public class ApiManager {
             //  ApiLocal.Message(handler, type, tag);
         }
     }
+
     /**
      * 自驾游取消报名
      */
-    public static void SelfRemoveEnrol(String url ,JSONObject jsonObject , ResponseJSONObjectListener handler, int type, String tag ){
+    public static void SelfRemoveEnrol(String url, JSONObject jsonObject, ResponseJSONObjectListener handler, int type, String tag) {
         if (isHttp) {
 
             ApiHttp.SelfRemoveEnrol(url, jsonObject, handler, type, tag);
@@ -426,17 +436,16 @@ public class ApiManager {
         }
     }
 
-
     /**
      * 促销列表
      *
      * @param map
      * @return
      */
-    public static void Promotion(String url,JSONObject map, ResponseJSONObjectListener handler, int type,
+    public static void Promotion(String url, JSONObject map, ResponseJSONObjectListener handler, int type,
                                  String tag) {
         if (isHttp) {
-            ApiHttp.Promotion( url,map, handler, type, tag);
+            ApiHttp.Promotion(url, map, handler, type, tag);
         } else {
             //  ApiLocal.Promotion(handler, type, tag);
         }
@@ -448,10 +457,10 @@ public class ApiManager {
      * @param map
      * @return
      */
-    public static void PromotionSearch(Map map, Map filemap,ResponseStringListener handler, int type,
+    public static void PromotionSearch(Map map, Map filemap, ResponseStringListener handler, int type,
                                        String tag) {
         if (isHttp) {
-            ApiHttp.PromotionSearch(map, filemap,handler, type, tag);
+            ApiHttp.PromotionSearch(map, filemap, handler, type, tag);
         } else {
             //  ApiLocal.Promotion(handler, type, tag);
         }
@@ -471,16 +480,17 @@ public class ApiManager {
             //  ApiLocal.Message(handler, type, tag);
         }
     }
+
     /**
      * 咨询搜索列表
      *
      * @param map
      * @return
      */
-    public static void MessageSearch(Map map, Map filemap,ResponseStringListener handler, int type,
+    public static void MessageSearch(Map map, Map filemap, ResponseStringListener handler, int type,
                                      String tag) {
         if (isHttp) {
-            ApiHttp.MessageSearch(map, filemap,handler, type, tag);
+            ApiHttp.MessageSearch(map, filemap, handler, type, tag);
         } else {
             //  ApiLocal.Message(handler, type, tag);
         }
@@ -493,7 +503,7 @@ public class ApiManager {
         if (isHttp) {
             ApiHttp.HomeAd(map, handler, type, tag);
         } else {
-           // ApiLocal.HomeAd(handler, type, tag);
+            // ApiLocal.HomeAd(handler, type, tag);
         }
     }
 
@@ -528,5 +538,15 @@ public class ApiManager {
         } else {
             //   ApiLocal.Logout(handler,type,tag);
         }
+    }
+
+    //------------------------------------------------- 以下是电商部分--------------------------------------------------------
+
+    /**
+     * 首页轮播图
+     */
+    public static void getBanner(ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_HOME_BANNER + "?city_code=0411";
+        ApiHttp.getBanner(url, handler, type, tag);
     }
 }

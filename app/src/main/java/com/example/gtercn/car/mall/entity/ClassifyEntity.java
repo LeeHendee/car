@@ -1,4 +1,4 @@
-package com.example.gtercn.car.mall;
+package com.example.gtercn.car.mall.entity;
 
 /**
  * Author ：LeeHang

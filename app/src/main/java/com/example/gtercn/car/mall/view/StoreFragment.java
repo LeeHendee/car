@@ -2,8 +2,6 @@ package com.example.gtercn.car.mall.view;
 
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -17,17 +15,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
-import com.example.gtercn.car.adapter.MallBannerAdapter;
+import com.example.gtercn.car.api.ApiManager;
+import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
+import com.example.gtercn.car.mall.adapter.MallBannerAdapter;
 import com.example.gtercn.car.base.BaseFragment;
 import com.example.gtercn.car.bean.HomeAdBean;
-import com.example.gtercn.car.mall.ClassifyEntity;
+import com.example.gtercn.car.mall.entity.ClassifyEntity;
 import com.example.gtercn.car.mall.adapter.ClassifyAdapter;
+import com.example.gtercn.car.net.THttpOpenHelper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class StoreFragment extends BaseFragment {
@@ -111,6 +114,33 @@ public class StoreFragment extends BaseFragment {
         mBannerVp = (ViewPager) mView.findViewById(R.id.vp_banner);
         mClassifyGv = (GridView) mView.findViewById(R.id.gv_classify);
         initClassify();
+        initBanner();
+    }
+
+    private void initBanner() {
+
+
+        ApiManager.getBanner(new ResponseCallbackHandler() {
+            @Override
+            public void onSuccessResponse(String response, int type) {
+                Log.e(TAG, "response is " + response.toString());
+            }
+
+            @Override
+            public void onSuccessResponse(JSONObject response, int type) {
+
+            }
+
+            @Override
+            public void onSuccessResponse(JSONArray response, int type) {
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error, int type) {
+
+            }
+        }, 1, TAG);
     }
 
     //设置分类gridView

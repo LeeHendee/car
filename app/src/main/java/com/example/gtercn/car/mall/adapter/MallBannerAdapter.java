@@ -1,4 +1,4 @@
-package com.example.gtercn.car.adapter;
+package com.example.gtercn.car.mall.adapter;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
@@ -7,11 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.example.gtercn.car.R;
 import com.example.gtercn.car.bean.HomeAdBean;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**

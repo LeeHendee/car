@@ -259,4 +259,14 @@ public class ApiHttp {
         THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
         tHttpOpenHelper.requestJsonObjectPost(url, jsonObject, handler, type, tag);
     }
+
+//    ----------------------------------------------------- 以下是电商部分 -----------------------------------------------
+
+    /**
+     * 电商首页轮播图
+     */
+    public static void getBanner(String url, ResponseCallbackHandler handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestGet(url, handler, type, tag);
+    }
 }
