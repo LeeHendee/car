@@ -1,14 +1,21 @@
 package com.example.gtercn.car.mall.view;
 
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -22,9 +29,11 @@ import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.MallBannerAdapter;
 import com.example.gtercn.car.base.BaseFragment;
 import com.example.gtercn.car.bean.HomeAdBean;
+import com.example.gtercn.car.mall.entity.BannerEntity;
 import com.example.gtercn.car.mall.entity.ClassifyEntity;
 import com.example.gtercn.car.mall.adapter.ClassifyAdapter;
 import com.example.gtercn.car.net.THttpOpenHelper;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,7 +64,9 @@ public class StoreFragment extends BaseFragment {
 
     private MallBannerAdapter mAdapter;
 
-    private List<HomeAdBean> mBeans;
+//    private List<HomeAdBean> mBeans;
+
+    private List<BannerEntity.ResultBean> mBeans;
 
     private ClassifyAdapter mClassifyAdapter;
 
@@ -64,15 +75,29 @@ public class StoreFragment extends BaseFragment {
     //是否需要轮播标志
     private boolean isContinue = true;
 
+    private Thread mThread;
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message message) {
+            if (message.what == 100) {
+                mAdapter = new MallBannerAdapter(mBeans, getActivity());
+                mBannerVp.setAdapter(mAdapter);
+                autoPlayView();
+            } else if (message.what == 101) {
+                mBannerVp.setCurrentItem(mBannerVp.getCurrentItem() + 1);
+            }
+            return true;
+        }
+    });
+
     public StoreFragment() {
-        // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_store_layout, container, false);
+        Log.e(TAG, "onCreateView: ------------->>");
         return mView;
     }
 
@@ -80,7 +105,53 @@ public class StoreFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initListener();
-        autoPlayView();
+        Log.e(TAG, "onViewCreated: ------------->>");
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e(TAG, "onStart: ------------->>");
+    }
+
+    @Override
+    public void initView() {
+        mCartIv = (ImageView) mView.findViewById(R.id.iv_home_cart);
+        mSearchIv = (ImageView) mView.findViewById(R.id.iv_home_search);
+        mTitleRightIv = (ImageView) mView.findViewById(R.id.iv_title_right);
+        mBannerVp = (ViewPager) mView.findViewById(R.id.vp_banner);
+        mClassifyGv = (GridView) mView.findViewById(R.id.gv_classify);
+        initClassify();
+
+    }
+
+    private void autoPlayView() {
+        isContinue = true;
+        mThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isContinue) {
+                    try {
+                        Thread.sleep(2000);
+                        mHandler.sendEmptyMessage(101);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        if (!mThread.isAlive()) {
+            mThread.start();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e(TAG, "onStop: ------------->>");
+        isContinue = false;
+        mThread = null;
     }
 
     private void initListener() {
@@ -107,23 +178,30 @@ public class StoreFragment extends BaseFragment {
     };
 
     @Override
-    public void initView() {
-        mCartIv = (ImageView) mView.findViewById(R.id.iv_home_cart);
-        mSearchIv = (ImageView) mView.findViewById(R.id.iv_home_search);
-        mTitleRightIv = (ImageView) mView.findViewById(R.id.iv_title_right);
-        mBannerVp = (ViewPager) mView.findViewById(R.id.vp_banner);
-        mClassifyGv = (GridView) mView.findViewById(R.id.gv_classify);
-        initClassify();
+    public void initData() {
+        mBeans = new ArrayList<>();
         initBanner();
+
     }
 
     private void initBanner() {
-
-
         ApiManager.getBanner(new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
+                if (response != null) {
+                    Gson gson = new Gson();
+                    BannerEntity bannerEntity = gson.fromJson(response.toString(), BannerEntity.class);
+                    if (bannerEntity != null) {
+                        if (TextUtils.equals(bannerEntity.getErr_code(), "0")) {
+                            mBeans = bannerEntity.getResult();
+                            mHandler.sendEmptyMessage(100);
+                        }
+                    }
+
+
+                }
                 Log.e(TAG, "response is " + response.toString());
+
             }
 
             @Override
@@ -163,46 +241,6 @@ public class StoreFragment extends BaseFragment {
     }
 
     @Override
-    public void initData() {
-        mBeans = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            HomeAdBean b = new HomeAdBean();
-            if (i == 0) {
-                b.setRes(R.drawable.banner1);
-            } else if (i == 1) {
-                b.setRes(R.drawable.banner2);
-            } else if (i == 2) {
-                b.setRes(R.drawable.banner3);
-            } else if (i == 3) {
-                b.setRes(R.drawable.banner4);
-            } else if (i == 4) {
-                b.setRes(R.drawable.banner5);
-            }
-            mBeans.add(b);
-        }
-        mAdapter = new MallBannerAdapter(mBeans, getActivity());
-        mBannerVp.setAdapter(mAdapter);
-    }
-
-    private void autoPlayView() {
-        //自动播放图片
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isContinue) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mBannerVp.setCurrentItem(mBannerVp.getCurrentItem() + 1);
-                        }
-                    });
-                    SystemClock.sleep(2000);
-                }
-            }
-        }).start();
-    }
-
-    @Override
     protected void onExecuteSuccess(String result, int type) {
 
     }
@@ -211,5 +249,6 @@ public class StoreFragment extends BaseFragment {
     protected void onExecuteFailure(int type) {
 
     }
+
 
 }

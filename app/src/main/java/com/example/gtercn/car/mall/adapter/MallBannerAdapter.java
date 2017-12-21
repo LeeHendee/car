@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.example.gtercn.car.bean.HomeAdBean;
+import com.example.gtercn.car.mall.entity.BannerEntity;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -18,12 +21,12 @@ public class MallBannerAdapter extends PagerAdapter {
 
     private static final String TAG = "MallBannerAdapter";
 
-    private List<HomeAdBean> mBannerViews;
+    private List<BannerEntity.ResultBean> banners;
 
     private Context mContext;
 
-    public MallBannerAdapter(List<HomeAdBean> views, Context context) {
-        this.mBannerViews = views;
+    public MallBannerAdapter(List<BannerEntity.ResultBean> banners, Context context) {
+        this.banners = banners;
         mContext = context;
     }
 
@@ -41,7 +44,8 @@ public class MallBannerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imageView = new ImageView(mContext);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        imageView.setImageResource(mBannerViews.get(position % mBannerViews.size()).getRes());
+        Picasso.with(mContext).load(banners.get(position % banners.size()).getPicture_path()).into(imageView);
+
         container.addView(imageView);
         return imageView;
     }
