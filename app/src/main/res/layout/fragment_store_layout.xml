@@ -14,18 +14,18 @@
         android:id="@+id/ll_classify"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:orientation="horizontal"
         android:layout_below="@+id/vp_banner"
-        android:background="@color/white"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical">
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <GridView
             android:id="@+id/gv_classify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numColumns="5"
             android:layout_gravity="center_vertical"
+            android:numColumns="4"
             android:verticalSpacing="5dp" />
     </LinearLayout>
 
@@ -33,32 +33,60 @@
     <LinearLayout
         android:id="@+id/ll_qiang"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/ll_classify"
         android:background="@color/white"
+        android:orientation="vertical"
         android:layout_marginTop="10dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:src="@drawable/commodity_zhang_icon"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="20dp"
-            android:src="@drawable/commodity_zhang_icon" />
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:src="@color/line_gray" />
 
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:src="@color/line_common_color"
-        android:layout_below="@id/ll_qiang" />
-
-    <GridView
-        android:id="@+id/gv_qiang"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rec_qiang"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/ll_qiang"
-        android:background="@color/white" />
+        android:background="@color/white"
+        android:horizontalSpacing="2dp" />
+
+    <include layout="@layout/layout_loading" />
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:src="@drawable/icon_no_view"-->
+    <!--android:scaleType="center"-->
+    <!--android:layout_centerInParent="true"/>-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="敬请期待"-->
+    <!--android:textColor="@color/text_note_color"-->
+    <!--android:textSize="18sp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_below="@id/iv"-->
+    <!--android:layout_marginTop="10dp"/>-->
+
 
 </RelativeLayout>

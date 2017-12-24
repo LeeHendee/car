@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkError;
@@ -23,6 +25,7 @@ import com.android.volley.ParseError;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.example.gtercn.car.R;
 import com.example.gtercn.car.cache.CacheManager;
 import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.MD5;
@@ -41,7 +44,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
 
     protected ProgressDialog mDialog;
+
     protected float density = 1.5f;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -239,5 +245,39 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    protected void initRightTvBar(String title, String rightContent, View.OnClickListener rightTvListener) {
+        TextView titleTv = (TextView) findViewById(R.id.tv_title);
+        TextView rightTv = (TextView) findViewById(R.id.tv_title_right);
+        ImageView leftIv = (ImageView) findViewById(R.id.iv_title_left);
+        titleTv.setText(title);
+        rightTv.setVisibility(View.VISIBLE);
+        rightTv.setText(rightContent);
+        rightTv.setOnClickListener(rightTvListener);
+        leftIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+    }
+
+    protected void initRightIvBar(String title, int rightRes, View.OnClickListener rightIvListener) {
+        TextView titleTv = (TextView) findViewById(R.id.tv_title);
+        ImageView leftIv = (ImageView) findViewById(R.id.iv_title_left);
+        ImageView rightIv = (ImageView) findViewById(R.id.iv_title_right);
+        titleTv.setText(title);
+        rightIv.setVisibility(View.VISIBLE);
+        rightIv.setImageResource(rightRes);
+        rightIv.setOnClickListener(rightIvListener);
+        leftIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 }

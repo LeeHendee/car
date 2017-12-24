@@ -42,6 +42,7 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     public View getView(int position) {
+
         final TextView titleTv;
         View view = LayoutInflater.from(mContext).inflate(R.layout.main_tab_custom_view, null);
         ImageView iconIv = (ImageView) view.findViewById(R.id.main_tab_icon);

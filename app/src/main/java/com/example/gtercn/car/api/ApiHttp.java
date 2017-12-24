@@ -269,4 +269,28 @@ public class ApiHttp {
         THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
         tHttpOpenHelper.requestGet(url, handler, type, tag);
     }
+
+    /**
+     * 电商首页分类
+     */
+    public static void getClassify(String url, ResponseCallbackHandler handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestGet(url, handler, type, tag);
+    }
+
+    /**
+     * 电商首页秒杀列表
+     */
+    public static void getSeckill(String url, ResponseCallbackHandler handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestGet(url, handler, type, tag);
+    }
+
+    /**
+     * 电商品牌介绍列表
+     */
+    public static void getBrandList(String url, ResponseCallbackHandler handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestGet(url, handler, type, tag);
+    }
 }

@@ -325,6 +325,20 @@ public class ApiManager {
      */
     public static final String URL_HOME_BANNER = BaseUrl + "open/advertisement/list";
 
+    /**
+     * 电商首页分类
+     */
+    public static final String URL_HOME_CLASSIFY = BaseUrl + "open/goods/category/list";
+
+    /**
+     * 电商首页秒杀列表
+     */
+    public static final String URL_HOME_SECKILL = BaseUrl + "open/goods/hot";
+
+    /**
+     * 电商品牌介绍
+     */
+    public static final String URL_BRAND = BaseUrl + "open/goods/brand/list";
 
 
     /**
@@ -548,5 +562,29 @@ public class ApiManager {
     public static void getBanner(ResponseCallbackHandler handler, int type, String tag) {
         String url = ApiManager.URL_HOME_BANNER + "?city_code=0411";
         ApiHttp.getBanner(url, handler, type, tag);
+    }
+
+    /**
+     * 首页分类
+     */
+    public static void getClassify(ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_HOME_CLASSIFY;
+        ApiHttp.getClassify(url, handler, type, tag);
+    }
+
+    /**
+     * 首页秒杀产品列表
+     */
+    public static void getSeckill(ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_HOME_SECKILL + "?city_code=0411";
+        ApiHttp.getSeckill(url, handler, type, tag);
+    }
+
+    /**
+     * 电商品牌介绍列表
+     */
+    public static void getBrandList(String categoryId, ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_BRAND + "?category_id=" + categoryId;
+        ApiHttp.getBrandList(url, handler, type, tag);
     }
 }

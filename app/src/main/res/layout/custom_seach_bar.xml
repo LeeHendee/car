@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tm_actionbar_btn_back"
+        android:scaleType="center"
+        android:layout_gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/tv_search"
+        android:layout_width="320dp"
+        android:layout_height="30dp"
+        android:text="轮胎"
+        android:textColor="@color/text_note_color"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/icon_search"
+        android:paddingLeft="5dp"
+        android:textSize="12sp"
+        android:background="@drawable/search_bar_bg_gray" />
+
+</LinearLayout>

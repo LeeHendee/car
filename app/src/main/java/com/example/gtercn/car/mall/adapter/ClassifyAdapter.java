@@ -23,11 +23,11 @@ public class ClassifyAdapter extends BaseAdapter {
 
     private static final String TAG = "ClassifyAdapter";
 
-    private List<ClassifyEntity> list;
+    private List<ClassifyEntity.ResultBean> list;
 
     private Context mContext;
 
-    public ClassifyAdapter(Context context, List<ClassifyEntity> list) {
+    public ClassifyAdapter(Context context, List<ClassifyEntity.ResultBean> list) {
         this.list = list;
         mContext = context;
     }
@@ -49,11 +49,12 @@ public class ClassifyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ClassifyEntity.ResultBean bean = list.get(position);
         convertView = LayoutInflater.from(mContext).inflate(R.layout.item_home_classify, parent, false);
         TextView nameTv = (TextView) convertView.findViewById(R.id.tv_name);
         ImageView classifyIv = (ImageView) convertView.findViewById(R.id.iv_classify);
-        nameTv.setText(list.get(position).getName());
-        classifyIv.setImageResource(list.get(position).getRes());
+        nameTv.setText(bean.getTitle());
+        classifyIv.setImageResource(bean.getRes());
         convertView.setTag(nameTv);
         return convertView;
     }

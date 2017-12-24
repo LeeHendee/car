@@ -1,24 +1,23 @@
 package com.example.gtercn.car.mall.view;
 
 
-import android.graphics.Color;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,11 +27,13 @@ import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.MallBannerAdapter;
 import com.example.gtercn.car.base.BaseFragment;
-import com.example.gtercn.car.bean.HomeAdBean;
+import com.example.gtercn.car.mall.adapter.SecKillAdapter;
 import com.example.gtercn.car.mall.entity.BannerEntity;
 import com.example.gtercn.car.mall.entity.ClassifyEntity;
 import com.example.gtercn.car.mall.adapter.ClassifyAdapter;
-import com.example.gtercn.car.net.THttpOpenHelper;
+import com.example.gtercn.car.mall.entity.SecKillEntity;
+import com.example.gtercn.car.utils.RecyclerViewDivider;
+import com.example.gtercn.car.widget.DividerItemDecoration;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -50,7 +51,7 @@ public class StoreFragment extends BaseFragment {
 
     private GridView mClassifyGv;
 
-    private GridView mSecKillGv;
+    private RecyclerView mSecKillRecLv;
 
     private ImageView mCartIv;
 
@@ -64,28 +65,38 @@ public class StoreFragment extends BaseFragment {
 
     private MallBannerAdapter mAdapter;
 
-//    private List<HomeAdBean> mBeans;
+    private List<BannerEntity.ResultBean> mBannerList;
 
-    private List<BannerEntity.ResultBean> mBeans;
+    private List<ClassifyEntity.ResultBean> mClassifyList;
 
     private ClassifyAdapter mClassifyAdapter;
 
-    private List<ClassifyEntity> mClassifyList;
+    private SecKillAdapter mSecAdapter;
+
+    private List<SecKillEntity.ResultBean> mSecList;
 
     //是否需要轮播标志
     private boolean isContinue = true;
 
     private Thread mThread;
 
+    private RelativeLayout mLoadingRl;
+
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             if (message.what == 100) {
-                mAdapter = new MallBannerAdapter(mBeans, getActivity());
+                mAdapter = new MallBannerAdapter(mBannerList, getActivity());
                 mBannerVp.setAdapter(mAdapter);
                 autoPlayView();
             } else if (message.what == 101) {
                 mBannerVp.setCurrentItem(mBannerVp.getCurrentItem() + 1);
+            } else if (message.what == 102) {
+                mClassifyAdapter = new ClassifyAdapter(getActivity(), mClassifyList);
+                mClassifyGv.setAdapter(mClassifyAdapter);
+            } else {
+                mSecAdapter = new SecKillAdapter(getActivity(), mSecList);
+                mSecKillRecLv.setAdapter(mSecAdapter);
             }
             return true;
         }
@@ -106,7 +117,6 @@ public class StoreFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         initListener();
         Log.e(TAG, "onViewCreated: ------------->>");
-
     }
 
     @Override
@@ -122,8 +132,57 @@ public class StoreFragment extends BaseFragment {
         mTitleRightIv = (ImageView) mView.findViewById(R.id.iv_title_right);
         mBannerVp = (ViewPager) mView.findViewById(R.id.vp_banner);
         mClassifyGv = (GridView) mView.findViewById(R.id.gv_classify);
-        initClassify();
+        mSecKillRecLv = (RecyclerView) mView.findViewById(R.id.rec_qiang);
+        mSecKillRecLv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        mSecKillRecLv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
+        mLoadingRl = (RelativeLayout) mView.findViewById(R.id.rl_loading);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e(TAG, "onStop: ------------->>");
+        isContinue = false;
+        mThread = null;
+    }
+
+    private void initListener() {
+        mCartIv.setOnClickListener(mListener);
+        mSearchIv.setOnClickListener(mListener);
+        mTitleRightIv.setOnClickListener(mListener);
+        mClassifyGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String classifyId = mClassifyList.get((int) l).getId();
+                Intent intent = new Intent(getActivity(), BrandActivity.class);
+                intent.putExtra("classifyId", classifyId);
+                startActivity(intent);
+            }
+        });
+    }
+
+    View.OnClickListener mListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.iv_home_cart:
+                    showToastMsg("购物车");
+                    break;
+                case R.id.iv_title_right:
+                    showToastMsg("右按键");
+                    break;
+                case R.id.iv_home_search:
+                    showToastMsg("去搜索");
+                    break;
+            }
+        }
+    };
+
+    @Override
+    public void initData() {
+        initBanner();
+        initClassify();
+        initSecKill();
     }
 
     private void autoPlayView() {
@@ -146,62 +205,59 @@ public class StoreFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.e(TAG, "onStop: ------------->>");
-        isContinue = false;
-        mThread = null;
-    }
-
-    private void initListener() {
-        mCartIv.setOnClickListener(mListener);
-        mSearchIv.setOnClickListener(mListener);
-        mTitleRightIv.setOnClickListener(mListener);
-    }
-
-    View.OnClickListener mListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.iv_home_cart:
-                    showToastMsg("购物车");
-                    break;
-                case R.id.iv_title_right:
-                    showToastMsg("右按键");
-                    break;
-                case R.id.iv_home_search:
-                    showToastMsg("去搜索");
-                    break;
+    private void initSecKill() {
+        mLoadingRl.setVisibility(View.VISIBLE);
+        ApiManager.getSeckill(new ResponseCallbackHandler() {
+            @Override
+            public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
+                if (response != null) {
+                    Log.e(TAG, "response is " + response);
+                    Gson gson = new Gson();
+                    SecKillEntity secEntity = gson.fromJson(response, SecKillEntity.class);
+                    if (secEntity != null) {
+                        if (TextUtils.equals(secEntity.getErr_code(), "0")) {
+                            mSecList = secEntity.getResult();
+                            mHandler.sendEmptyMessage(103);
+                        }
+                    }
+                }
             }
-        }
-    };
 
-    @Override
-    public void initData() {
-        mBeans = new ArrayList<>();
-        initBanner();
+            @Override
+            public void onSuccessResponse(JSONObject response, int type) {
 
+            }
+
+            @Override
+            public void onSuccessResponse(JSONArray response, int type) {
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error, int type) {
+
+            }
+        }, 3, TAG);
     }
 
     private void initBanner() {
+        mLoadingRl.setVisibility(View.VISIBLE);
         ApiManager.getBanner(new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
                 if (response != null) {
+                    Log.e(TAG, "response is " + response);
                     Gson gson = new Gson();
-                    BannerEntity bannerEntity = gson.fromJson(response.toString(), BannerEntity.class);
+                    BannerEntity bannerEntity = gson.fromJson(response, BannerEntity.class);
                     if (bannerEntity != null) {
                         if (TextUtils.equals(bannerEntity.getErr_code(), "0")) {
-                            mBeans = bannerEntity.getResult();
+                            mBannerList = bannerEntity.getResult();
                             mHandler.sendEmptyMessage(100);
                         }
                     }
-
-
                 }
-                Log.e(TAG, "response is " + response.toString());
-
             }
 
             @Override
@@ -224,20 +280,40 @@ public class StoreFragment extends BaseFragment {
     //设置分类gridView
     private void initClassify() {
         mClassifyList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            ClassifyEntity entity = new ClassifyEntity();
-            entity.setName("分类" + (i + 1));
-            entity.setRes(R.drawable.ic_launcher);
-            mClassifyList.add(entity);
-        }
-        mClassifyAdapter = new ClassifyAdapter(getActivity(), mClassifyList);
-        mClassifyGv.setAdapter(mClassifyAdapter);
-        mClassifyGv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mLoadingRl.setVisibility(View.VISIBLE);
+        ApiManager.getClassify(new ResponseCallbackHandler() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), mClassifyList.get(position).getName(), Toast.LENGTH_SHORT).show();
+            public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
+                if (response != null) {
+                    Log.e(TAG, "response is " + response);
+                    Gson gson = new Gson();
+                    ClassifyEntity classifyEntity = gson.fromJson(response, ClassifyEntity.class);
+                    if (classifyEntity != null) {
+                        if (TextUtils.equals(classifyEntity.getErr_code(), "0")) {
+                            mClassifyList = classifyEntity.getResult();
+                            mHandler.sendEmptyMessage(102);
+                        }
+                    }
+                }
             }
-        });
+
+            @Override
+            public void onSuccessResponse(JSONObject response, int type) {
+
+            }
+
+            @Override
+            public void onSuccessResponse(JSONArray response, int type) {
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error, int type) {
+
+            }
+        }, 2, TAG);
+
     }
 
     @Override
