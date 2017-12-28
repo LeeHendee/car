@@ -17,5 +17,9 @@ public class Constants {
 
     public static final String APP_LAUNCH_FLAG = "isFirstLauncher";
 
+//    --------------  以下是电商部分  ---------------
+
+    public static String CITY_CODE = "0411";
+
 
 }

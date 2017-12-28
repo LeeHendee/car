@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.mall.entity.ProductListEntity;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.ls.LSException;
 
@@ -47,6 +48,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.soldTv.setText(bean.getSold_number() + "");
         holder.reviewsTv.setText(bean.getGoods_synopsis());
         holder.reviewsRateTv.setText(bean.getGoods_title());
+        Picasso.with(context).load(bean.getSmall_picture()).into(holder.productIv);
     }
 
     @Override

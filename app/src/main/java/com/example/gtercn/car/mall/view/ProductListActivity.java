@@ -1,16 +1,33 @@
 package com.example.gtercn.car.mall.view;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.ProductListAdapter;
+import com.example.gtercn.car.mall.entity.ProductListEntity;
+import com.example.gtercn.car.utils.Constants;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Yan on 2017/12/24.
@@ -39,10 +56,116 @@ public class ProductListActivity extends BaseActivity {
 
     private ProductListAdapter mAdapter;
 
+    private List<ProductListEntity.ResultBean> mProductList;
+
+    private List<TextView> mSortTvList;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        initData();
+        initListener();
+    }
+
+    private void initData() {
+        mSortTvList = new ArrayList<>();
+        mProductList = new ArrayList<>();
+        Intent intent = getIntent();
+        String brandId = intent.getStringExtra("brandId");
+        ApiManager.getProductList(brandId, Constants.CITY_CODE, new ResponseCallbackHandler() {
+            @Override
+            public void onSuccessResponse(String response, int type) {
+                if (mRefresh.isRefreshing()) {
+                    mRefresh.setRefreshing(false);
+                }
+                if (response != null) {
+                    Log.e(TAG, "onSuccessResponse: response is " + response);
+                    Gson gson = new Gson();
+                    ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
+                    mProductList = entity.getResult();
+                    setData();
+                }
+            }
+
+            @Override
+            public void onSuccessResponse(JSONObject response, int type) {
+
+            }
+
+            @Override
+            public void onSuccessResponse(JSONArray response, int type) {
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error, int type) {
+
+            }
+        }, 1, TAG);
+
+        mSortTvList.add(mComprehensiveSortTv);
+        mSortTvList.add(mSaleSortTv);
+        mSortTvList.add(mPriceSortTv);
+        mSortTvList.add(mSortTv);
+    }
+
+    private void setData() {
+        mAdapter = new ProductListAdapter(this, mProductList);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void initListener() {
+        mBackIv.setOnClickListener(mListener);
+        mSearchTv.setOnClickListener(mListener);
+        mComprehensiveSortTv.setOnClickListener(mListener);
+        mSaleSortTv.setOnClickListener(mListener);
+        mPriceSortTv.setOnClickListener(mListener);
+        mSortTv.setOnClickListener(mListener);
+
+        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initData();
+            }
+        });
+    }
+
+    private View.OnClickListener mListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.iv_back:
+
+                    break;
+                case R.id.tv_search:
+
+                    break;
+                case R.id.tv_comprehensive_sort:
+                    changeSortStatus(v.getId());
+                    break;
+                case R.id.tv_sale_sort:
+                    changeSortStatus(v.getId());
+                    break;
+                case R.id.tv_price_sort:
+                    changeSortStatus(v.getId());
+                    break;
+                case R.id.tv_sort:
+                    changeSortStatus(v.getId());
+                    break;
+            }
+        }
+    };
+
+    private void changeSortStatus(int id) {
+        for (int i = 0; i < mSortTvList.size(); i++) {
+            TextView tv = mSortTvList.get(i);
+            if (tv.getId() == id) {
+                tv.setTextColor(Color.BLUE);
+            } else {
+                tv.setTextColor(getResources().getColor(R.color.text_common_color));
+            }
+        }
     }
 
     private void initView() {
@@ -55,10 +178,8 @@ public class ProductListActivity extends BaseActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recy_production);
         mBackIv = (ImageView) findViewById(R.id.iv_back);
         mSearchTv = (TextView) findViewById(R.id.tv_search);
-
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
-
+        mRefresh.setColorSchemeResources(R.color.blue1);
     }
 
     @Override

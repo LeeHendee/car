@@ -1,6 +1,5 @@
 package com.example.gtercn.car.mall.view;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,8 +18,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
@@ -32,13 +29,10 @@ import com.example.gtercn.car.mall.entity.BannerEntity;
 import com.example.gtercn.car.mall.entity.ClassifyEntity;
 import com.example.gtercn.car.mall.adapter.ClassifyAdapter;
 import com.example.gtercn.car.mall.entity.SecKillEntity;
-import com.example.gtercn.car.utils.RecyclerViewDivider;
 import com.example.gtercn.car.widget.DividerItemDecoration;
 import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 

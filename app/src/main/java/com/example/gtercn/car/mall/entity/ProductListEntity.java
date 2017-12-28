@@ -8,8 +8,9 @@ import java.util.List;
 
 public class ProductListEntity {
 
+
     /**
-     * result : [{"id":"1","product_id":"d8d95ae59f4111e79954180373af859e","sku_code":"g_001","prime_price":1000,"promotion_price":500,"cost_price":430,"product_area":"0","goods_title":"米其林(Michelin)轮胎/汽车轮胎 205/55R16 91V 韧悦 ENERGY XM2 适配朗逸/马自达/速腾/本田思域/大众宝来","goods_synopsis":"更出色的坚韧性，更短的刹车距离，更长的行驶里程，米其林全能表现","goods_description":"米其林Energy XM2韧悦轮胎采用全新的IronFlex技术","goods_detail":"<div><\/div>","search_tag":"米其林,韧悦","stock":220,"picture_url":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg","sold_number":320,"is_hot":"Y","is_new":"Y","up_time":1505997988000,"down_time":1505997988000,"status":0,"city_code":"0411","update_time":1514072751000},{"id":"10","product_id":"d8d962799f4111e79954180373af859e","sku_code":"g_002","prime_price":455,"promotion_price":399,"cost_price":290,"product_area":"0","goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 旅悦 PRIMACY SUV 适配沃尔沃XC60/XC90/新胜达/哈佛H5等","goods_synopsis":"更出色的坚韧性，更短的刹车距离，更长的行驶里程，米其林全能表现","goods_description":"米其林Energy XM2旅悦轮胎采用全新的IronFlex技术：轮胎骨架采用高强度帘子线，使轮胎更坚固","goods_detail":"<div><\/div>","search_tag":"米其林,旅悦","stock":100,"picture_url":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","sold_number":120,"is_hot":"N","is_new":"Y","up_time":1513860388000,"down_time":1513860388000,"status":0,"city_code":"0411","update_time":1514072762000},{"id":"2","product_id":"d8d9609c9f4111e79954180373af859e","sku_code":"g_002","prime_price":1589,"promotion_price":1289,"cost_price":980,"product_area":"0","goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 竞驰","goods_synopsis":"更出色的坚韧性，更短的刹车距离，更长的行驶里程，米其林全能表现","goods_description":"米其林竞驰轮胎采用全新的IronFlex技术：轮胎骨架采用高强度帘子线，使轮胎更坚固，抗损坏能力提高；轮胎采用优化的胎体结构，使轮胎胎侧在承受意外压力时，","goods_detail":"<div><\/div>","search_tag":"米其林,竞驰","stock":100,"picture_url":"http://114.215.71.170:81/inn/advertisement/31da.jpg","sold_number":120,"is_hot":"Y","is_new":"N","up_time":1508589988000,"down_time":1505997988000,"status":0,"city_code":"0411","update_time":1514072782000}]
+     * result : [{"id":"1","product_id":"d8d95ae59f4111e79954180373af859e","sku_code":"g_001","prime_price":1000,"promotion_price":500,"cost_price":430,"product_area":"0","goods_title":"米其林(Michelin)轮胎/汽车轮胎 205/55R16 91V 韧悦 ENERGY XM2 适配朗逸/马自达/速腾/本田思域/大众宝来","goods_synopsis":"更出色的坚韧性，更短的刹车距离，更长的行驶里程，米其林全能表现","goods_description":"米其林Energy XM2韧悦轮胎采用全新的IronFlex技术","goods_detail":"<div><\/div>","search_tag":"米其林,韧悦","stock":220,"big_picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg","small_picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg","sold_number":320,"is_hot":"Y","is_new":"Y","up_time":1505997988000,"down_time":1505997988000,"status":0,"city_code":"0411","update_time":1514384800000},{"id":"10","product_id":"d8d962799f4111e79954180373af859e","sku_code":"g_002","prime_price":455,"promotion_price":399,"cost_price":290,"product_area":"0","goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 旅悦 PRIMACY SUV 适配沃尔沃XC60/XC90/新胜达/哈佛H5等","goods_synopsis":"更出色的坚韧性，更短的刹车距离，更长的行驶里程，米其林全能表现","goods_description":"米其林Energy XM2旅悦轮胎采用全新的IronFlex技术：轮胎骨架采用高强度帘子线，使轮胎更坚固","goods_detail":"<div><\/div>","search_tag":"米其林,旅悦","stock":100,"big_picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","small_picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","sold_number":120,"is_hot":"N","is_new":"Y","up_time":1513860388000,"down_time":1513860388000,"status":0,"city_code":"0411","update_time":1514384803000},{"id":"2","product_id":"d8d9609c9f4111e79954180373af859e","sku_code":"g_002","prime_price":1589,"promotion_price":1289,"cost_price":980,"product_area":"0","goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 竞驰","goods_synopsis":"更出色的坚韧性，更短的刹车距离，更长的行驶里程，米其林全能表现","goods_description":"米其林竞驰轮胎采用全新的IronFlex技术：轮胎骨架采用高强度帘子线，使轮胎更坚固，抗损坏能力提高；轮胎采用优化的胎体结构，使轮胎胎侧在承受意外压力时，","goods_detail":"<div><\/div>","search_tag":"米其林,竞驰","stock":100,"big_picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg","small_picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg","sold_number":120,"is_hot":"Y","is_new":"N","up_time":1508589988000,"down_time":1505997988000,"status":0,"city_code":"0411","update_time":1514384807000}]
      * err_code : 0
      * err_message : OK
      */
@@ -66,7 +67,8 @@ public class ProductListEntity {
          * goods_detail : <div></div>
          * search_tag : 米其林,韧悦
          * stock : 220
-         * picture_url : http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg
+         * big_picture : http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg
+         * small_picture : http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg
          * sold_number : 320
          * is_hot : Y
          * is_new : Y
@@ -74,7 +76,7 @@ public class ProductListEntity {
          * down_time : 1505997988000
          * status : 0
          * city_code : 0411
-         * update_time : 1514072751000
+         * update_time : 1514384800000
          */
 
         private String id;
@@ -90,7 +92,8 @@ public class ProductListEntity {
         private String goods_detail;
         private String search_tag;
         private int stock;
-        private String picture_url;
+        private String big_picture;
+        private String small_picture;
         private int sold_number;
         private String is_hot;
         private String is_new;
@@ -116,7 +119,8 @@ public class ProductListEntity {
                     ", goods_detail='" + goods_detail + '\'' +
                     ", search_tag='" + search_tag + '\'' +
                     ", stock=" + stock +
-                    ", picture_url='" + picture_url + '\'' +
+                    ", big_picture='" + big_picture + '\'' +
+                    ", small_picture='" + small_picture + '\'' +
                     ", sold_number=" + sold_number +
                     ", is_hot='" + is_hot + '\'' +
                     ", is_new='" + is_new + '\'' +
@@ -232,12 +236,20 @@ public class ProductListEntity {
             this.stock = stock;
         }
 
-        public String getPicture_url() {
-            return picture_url;
+        public String getBig_picture() {
+            return big_picture;
         }
 
-        public void setPicture_url(String picture_url) {
-            this.picture_url = picture_url;
+        public void setBig_picture(String big_picture) {
+            this.big_picture = big_picture;
+        }
+
+        public String getSmall_picture() {
+            return small_picture;
+        }
+
+        public void setSmall_picture(String small_picture) {
+            this.small_picture = small_picture;
         }
 
         public int getSold_number() {

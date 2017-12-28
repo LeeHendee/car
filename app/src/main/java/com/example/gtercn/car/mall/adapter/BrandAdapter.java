@@ -43,12 +43,14 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
 
     @Override
     public void onBindViewHolder(BrandViewHolder holder, int position) {
-        BrandListEntity.ResultBean bean = list.get(position);
+        final BrandListEntity.ResultBean bean = list.get(position);
         holder.mBrandNameTv.setText(bean.getCn_name());
         holder.mGoBuyTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProductListActivity.class);
+                intent.putExtra("brandId", bean.getId());
+                context.startActivity(intent);
             }
         });
         holder.mDescriptionTv.setText(bean.getDescrption());
