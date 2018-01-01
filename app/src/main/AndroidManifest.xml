@@ -102,6 +102,8 @@
         <!--以下是电商部分-->
         <activity android:name=".mall.view.BrandActivity" />
         <activity android:name=".mall.view.ProductListActivity" />
+        <activity android:name=".mall.view.ProductDetailActivity" />
+        <activity android:name=".mall.view.CartActivity" />
 
 
         <service android:name=".service.AppService" />

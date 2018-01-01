@@ -301,4 +301,12 @@ public class ApiHttp {
         THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
         tHttpOpenHelper.requestGet(url, handler, type, tag);
     }
+
+    /**
+     * 电商品牌介绍列表
+     */
+    public static void getProductDetail(String url, ResponseCallbackHandler handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestGet(url, handler, type, tag);
+    }
 }

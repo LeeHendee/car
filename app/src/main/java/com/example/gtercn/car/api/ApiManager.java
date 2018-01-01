@@ -345,6 +345,10 @@ public class ApiManager {
      */
     public static final String URL_BRAND_PRODUCT_LIST = BaseUrl + "open/goods/brand/search";
 
+    /**
+     * 电商商品详情
+     */
+    public static final String URL_PRODUCT_DETAIL = BaseUrl + "open/goods/page";
 
     /**
      * 自驾游列表
@@ -599,5 +603,14 @@ public class ApiManager {
     public static void getProductList(String brandId, String cityCode, ResponseCallbackHandler handler, int type, String tag) {
         String url = ApiManager.URL_BRAND_PRODUCT_LIST + "?brand_id=" + brandId + "&city_code=" + cityCode;
         ApiHttp.getProductList(url, handler, type, tag);
+    }
+
+    /**
+     * 电商商品详情
+     */
+    public static void getProductDetail(String goodId, String cityCode, ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_PRODUCT_DETAIL + "?city_code=" + cityCode + "&goods_id=" + goodId;
+        ApiHttp.getProductDetail(url, handler, type, tag);
+
     }
 }

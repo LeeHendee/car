@@ -18,6 +18,7 @@ import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
+import com.example.gtercn.car.mall.IListener;
 import com.example.gtercn.car.mall.adapter.ProductListAdapter;
 import com.example.gtercn.car.mall.entity.ProductListEntity;
 import com.example.gtercn.car.utils.Constants;
@@ -69,7 +70,6 @@ public class ProductListActivity extends BaseActivity {
     }
 
     private void initData() {
-        mSortTvList = new ArrayList<>();
         mProductList = new ArrayList<>();
         Intent intent = getIntent();
         String brandId = intent.getStringExtra("brandId");
@@ -104,15 +104,24 @@ public class ProductListActivity extends BaseActivity {
             }
         }, 1, TAG);
 
-        mSortTvList.add(mComprehensiveSortTv);
-        mSortTvList.add(mSaleSortTv);
-        mSortTvList.add(mPriceSortTv);
-        mSortTvList.add(mSortTv);
+
     }
 
     private void setData() {
         mAdapter = new ProductListAdapter(this, mProductList);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setmItemListener(new IListener() {
+            @Override
+            public void itemClickListener(int pos) {
+                String goodId = mProductList.get(pos).getId();
+                String cityCode = mProductList.get(pos).getCity_code();
+
+                Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
+                intent.putExtra("goodId", goodId);
+                intent.putExtra("cityCode", cityCode);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initListener() {
@@ -122,13 +131,20 @@ public class ProductListActivity extends BaseActivity {
         mSaleSortTv.setOnClickListener(mListener);
         mPriceSortTv.setOnClickListener(mListener);
         mSortTv.setOnClickListener(mListener);
-
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 initData();
             }
         });
+        mRecyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
+            @Override
+            public void onViewRecycled(RecyclerView.ViewHolder holder) {
+
+            }
+        });
+
+
     }
 
     private View.OnClickListener mListener = new View.OnClickListener() {
@@ -136,7 +152,7 @@ public class ProductListActivity extends BaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_back:
-
+                    finish();
                     break;
                 case R.id.tv_search:
 
@@ -180,6 +196,12 @@ public class ProductListActivity extends BaseActivity {
         mSearchTv = (TextView) findViewById(R.id.tv_search);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRefresh.setColorSchemeResources(R.color.blue1);
+
+        mSortTvList = new ArrayList<>();
+        mSortTvList.add(mComprehensiveSortTv);
+        mSortTvList.add(mSaleSortTv);
+        mSortTvList.add(mPriceSortTv);
+        mSortTvList.add(mSortTv);
     }
 
     @Override
