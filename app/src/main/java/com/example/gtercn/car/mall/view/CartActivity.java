@@ -36,11 +36,42 @@ public class CartActivity extends BaseActivity {
 
     private TextView mCheckoutCountTv;
 
+    private boolean isAll = false;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        initListener();
     }
+
+    private void initListener() {
+        mSelectAllLayout.setOnClickListener(mListener);
+        mCheckoutLayout.setOnClickListener(mListener);
+    }
+
+    private View.OnClickListener mListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.ll_select_all:
+                    if (isAll){
+                        mSelectAllIv.setImageResource(R.drawable.cart1_checkbox_normal);
+                        isAll = false;
+                    }else {
+                        mSelectAllIv.setImageResource(R.drawable.cart1_checkbox_check);
+                        isAll = true;
+                    }
+                    break;
+                case R.id.ll_to_checkout:
+                    Toast.makeText(CartActivity.this, "去结算", Toast.LENGTH_SHORT).show();
+                    mCheckoutCountTv.setText("("+99+")");
+                    break;
+            }
+        }
+    };
+
 
     private void initView() {
         setContentView(R.layout.activity_cart);
@@ -51,7 +82,7 @@ public class CartActivity extends BaseActivity {
         mCostTv = (TextView) findViewById(R.id.tv_cost);
         mTotalTv = (TextView) findViewById(R.id.tv_total);
         mDiscountTv = (TextView) findViewById(R.id.tv_discount);
-        mCheckoutCountTv = (TextView) findViewById(R.id.tv_checkout);
+        mCheckoutCountTv = (TextView) findViewById(R.id.tv_count);
         initRightTvBar("购物车", "编辑", new View.OnClickListener() {
             @Override
             public void onClick(View view) {

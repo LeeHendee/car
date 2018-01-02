@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_title"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/white"
-    android:id="@+id/rl_title"
-    >
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_title_left"
@@ -37,7 +36,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/orange_light" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -60,7 +62,7 @@
                 android:layout_height="2dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/orange_light"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -83,7 +85,7 @@
                 android:layout_height="2dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/orange_light"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </RelativeLayout>
 
 
@@ -95,8 +97,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:src="@drawable/jsbundles_jdreactaftersales_components_style_images_more"
-         />
+        android:src="@drawable/jsbundles_jdreactaftersales_components_style_images_more" />
 
     <TextView
         android:id="@+id/tv_title_right"
@@ -112,7 +113,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:src="@color/line_common_color"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:src="@color/line_common_color" />
 
 </RelativeLayout>

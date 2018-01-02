@@ -137,12 +137,7 @@ public class ProductListActivity extends BaseActivity {
                 initData();
             }
         });
-        mRecyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-            @Override
-            public void onViewRecycled(RecyclerView.ViewHolder holder) {
 
-            }
-        });
 
 
     }

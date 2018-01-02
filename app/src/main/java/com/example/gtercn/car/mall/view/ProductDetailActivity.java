@@ -32,7 +32,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import github.chenupt.springindicator.SpringIndicator;
 
 /**
  * Author ：LeeHang
@@ -86,7 +85,6 @@ public class ProductDetailActivity extends BaseActivity {
 
     private int curPosition;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,44 +133,47 @@ public class ProductDetailActivity extends BaseActivity {
                     startActivity(intent);
                     break;
                 case R.id.tv_product:
-                    mTitleProductTv.setTextSize(18);
-                    mTitleDetailTv.setTextSize(16);
-                    mTitleReviewsTv.setTextSize(16);
-                    mTitleProductTv.setTextColor(Color.BLUE);
-                    mTitleIndexOneTv.setVisibility(View.VISIBLE);
-                    mTitleIndexOneTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
-                    mTitleDetailTv.setTextColor(getResources().getColor(R.color.text_common_color));
-                    mTitleIndexTwoTv.setVisibility(View.GONE);
-                    mTitleReviewsTv.setTextColor(getResources().getColor(R.color.text_common_color));
-                    mTitleIndexThreeTv.setVisibility(View.GONE);
+                    changeTitleView(view.getId());
                     break;
                 case R.id.tv_detail:
-                    mTitleDetailTv.setTextSize(18);
-                    mTitleProductTv.setTextSize(16);
-                    mTitleReviewsTv.setTextSize(16);
-                    mTitleDetailTv.setTextColor(Color.BLUE);
-                    mTitleIndexTwoTv.setVisibility(View.VISIBLE);
-                    mTitleIndexTwoTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
-                    mTitleProductTv.setTextColor(getResources().getColor(R.color.text_common_color));
-                    mTitleIndexOneTv.setVisibility(View.GONE);
-                    mTitleReviewsTv.setTextColor(getResources().getColor(R.color.text_common_color));
-                    mTitleIndexThreeTv.setVisibility(View.GONE);
+                    changeTitleView(view.getId());
                     break;
                 case R.id.tv_reviews:
-                    mTitleReviewsTv.setTextSize(18);
-                    mTitleDetailTv.setTextSize(16);
-                    mTitleProductTv.setTextSize(16);
-                    mTitleReviewsTv.setTextColor(Color.BLUE);
-                    mTitleIndexThreeTv.setVisibility(View.VISIBLE);
-                    mTitleIndexThreeTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
-                    mTitleDetailTv.setTextColor(getResources().getColor(R.color.text_common_color));
-                    mTitleIndexTwoTv.setVisibility(View.GONE);
-                    mTitleProductTv.setTextColor(getResources().getColor(R.color.text_common_color));
-                    mTitleIndexOneTv.setVisibility(View.GONE);
+                    changeTitleView(view.getId());
                     break;
             }
         }
     };
+
+    private void changeTitleView(int selectId) {
+        for (int i = 0; i < titleTvList.size(); i++) {
+            TextView tv = titleTvList.get(i);
+            if (tv.getId() == selectId){
+                tv.setTextSize(18);
+                tv.setTextColor(Color.BLUE);
+            }else {
+                tv.setTextSize(16);
+                tv.setTextColor(getResources().getColor(R.color.text_common_color));
+            }
+            if (mTitleProductTv.getId() == selectId){
+                mTitleIndexOneTv.setVisibility(View.VISIBLE);
+                mTitleIndexTwoTv.setVisibility(View.GONE);
+                mTitleIndexThreeTv.setVisibility(View.GONE);
+                mTitleIndexOneTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
+            }else if (mTitleDetailTv.getId() == selectId){
+                mTitleIndexTwoTv.setVisibility(View.VISIBLE);
+                mTitleIndexOneTv.setVisibility(View.GONE);
+                mTitleIndexThreeTv.setVisibility(View.GONE);
+                mTitleIndexTwoTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
+            }else {
+                mTitleIndexThreeTv.setVisibility(View.VISIBLE);
+                mTitleIndexOneTv.setVisibility(View.GONE);
+                mTitleIndexTwoTv.setVisibility(View.GONE);
+                mTitleIndexThreeTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
+            }
+        }
+
+    }
 
     private void initData() {
         Intent intent = getIntent();
@@ -189,6 +190,10 @@ public class ProductDetailActivity extends BaseActivity {
                     ProductDetailEntity entity = gson.fromJson(response, ProductDetailEntity.class);
                     if (entity != null) {
                         mEntity = entity.getResult();
+                        if (mEntity == null){
+                            Toast.makeText(ProductDetailActivity.this, "暂无数据", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         setUI();
                     }
                 }
@@ -226,7 +231,6 @@ public class ProductDetailActivity extends BaseActivity {
         }
         mAdapter = new ProductDetailPagerAdapter(list, this);
         mImagePager.setAdapter(mAdapter);
-
     }
 
     private void initView() {
@@ -252,6 +256,7 @@ public class ProductDetailActivity extends BaseActivity {
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);
+        changeTitleView(mTitleProductTv.getId());
     }
 
     @Override
@@ -266,8 +271,6 @@ public class ProductDetailActivity extends BaseActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-
-
         return super.dispatchTouchEvent(ev);
     }
 
