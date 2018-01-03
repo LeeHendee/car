@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="100dp"
         android:layout_marginTop="5dp"
         android:background="@color/white"
         android:orientation="horizontal">
@@ -33,7 +33,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="240dp"
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:orientation="vertical">
@@ -53,22 +53,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:orientation="vertical"
-        android:padding="10dp">
+        >
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_marginLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
                 android:text="商品满意度"
                 android:textColor="@color/text_note_color"
                 android:textSize="14sp" />
@@ -77,32 +79,50 @@
                 android:id="@+id/rating_product"
                 style="@style/customRatingBar"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                 />
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="好评"
+                android:textColor="@color/text_note_color"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
                 android:text="服务满意度"
                 android:textColor="@color/text_note_color"
                 android:textSize="14sp" />
 
             <RatingBar
-
+                style="@style/customRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-
+                android:layout_gravity="center_vertical"
                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="好评"
+                android:textColor="@color/text_note_color"
+                android:textSize="14sp" />
 
 
         </LinearLayout>
@@ -110,24 +130,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
                 android:text="物流满意度"
                 android:textColor="@color/text_note_color"
                 android:textSize="14sp" />
 
             <RatingBar
-                android:id="@+id/rating_delivery"
+
+                style="@style/customRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:maxHeight="20dp"
-                android:minHeight="20dp"
-                android:progressDrawable="@drawable/icon" />
+                android:text="好评"
+                android:textColor="@color/text_note_color"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
