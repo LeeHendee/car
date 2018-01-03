@@ -161,6 +161,8 @@ public class StoreFragment extends BaseFragment {
             switch (view.getId()) {
                 case R.id.iv_home_cart:
                     showToastMsg("购物车");
+                    Intent intent = new Intent(getActivity(),ReviewPostActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.iv_title_right:
                     showToastMsg("右按键");

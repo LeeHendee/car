@@ -104,6 +104,7 @@
         <activity android:name=".mall.view.ProductListActivity" />
         <activity android:name=".mall.view.ProductDetailActivity" />
         <activity android:name=".mall.view.CartActivity" />
+        <activity android:name=".mall.view.ReviewPostActivity" />
 
 
         <service android:name=".service.AppService" />
