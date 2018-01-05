@@ -166,6 +166,8 @@ public class StoreFragment extends BaseFragment {
                     break;
                 case R.id.iv_title_right:
                     showToastMsg("右按键");
+                    Intent orderManageActivity = new Intent(getActivity(), OrderActivity.class);
+                    startActivity(orderManageActivity);
                     break;
                 case R.id.iv_home_search:
                     showToastMsg("去搜索");
