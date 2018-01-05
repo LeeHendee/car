@@ -104,7 +104,10 @@
         <activity android:name=".mall.view.ProductListActivity" />
         <activity android:name=".mall.view.ProductDetailActivity" />
         <activity android:name=".mall.view.CartActivity" />
-        <activity android:name=".mall.view.ReviewPostActivity" />
+        <activity
+            android:name=".mall.view.ReviewPostActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateAlwaysHidden" />
+        <activity android:name=".mall.view.OrderActivity" />
 
 
         <service android:name=".service.AppService" />
@@ -216,7 +219,8 @@
             android:authorities="com.example.gtercn.car.provider.rescue"
             android:exported="false"></provider>
 
-        <activity android:name=".activity.PeopleRollActivity"></activity>
+        <activity android:name=".activity.PeopleRollActivity" />
+
     </application>
 
 </manifest>
