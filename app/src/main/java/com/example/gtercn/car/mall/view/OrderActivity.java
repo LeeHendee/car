@@ -73,6 +73,7 @@ public class OrderActivity extends BaseActivity {
         setContentView(R.layout.activity_order);
         ButterKnife.bind(this);
         mIndexAll.setVisibility(View.VISIBLE);
+        initRightTvBar("我的订单", null, null);
         initData();
     }
 
