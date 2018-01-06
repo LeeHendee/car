@@ -12,6 +12,8 @@ import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.mall.adapter.OrderAdapter;
 import com.example.gtercn.car.mall.entity.OrderEntity;
 import com.example.gtercn.car.mall.entity.SingleItemEntity;
+import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
+import com.example.gtercn.car.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +72,16 @@ public class OrderActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
+        initData();
+    }
+
+    private void initView() {
         setContentView(R.layout.activity_order);
         ButterKnife.bind(this);
         mIndexAll.setVisibility(View.VISIBLE);
         initRightTvBar("我的订单", null, null);
-        initData();
+        mOrderRv.addItemDecoration(new RecyItemSpace(30));
     }
 
     private void initData() {

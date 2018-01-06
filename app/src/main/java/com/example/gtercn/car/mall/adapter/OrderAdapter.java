@@ -1,6 +1,7 @@
 package com.example.gtercn.car.mall.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         final OrderEntity entity = list.get(position);
-//        holder.orderNumberTv.setText(entity.getOrderNumber());
         holder.countTv.setText("共" + entity.getCountAll() + "件商品 实付款: ");
         holder.totalTv.setText("￥" + entity.getTotalCost());
         for (int i = 0; i < entity.getSingleItemList().size(); i++) {
@@ -57,7 +57,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             title.setText(single.getTitle());
             price.setText(single.getPrice());
             count.setText(single.getCount());
+            TextView line = new TextView(context);
+            line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,3));
+            line.setBackgroundColor(Color.WHITE);
+
             holder.wrapperLayout.addView(view);
+            holder.wrapperLayout.addView(line);
         }
         holder.orderNumberTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,8 +70,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 Toast.makeText(context, entity.getOrderNumber(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     @Override

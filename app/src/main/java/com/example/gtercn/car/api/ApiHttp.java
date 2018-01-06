@@ -309,4 +309,12 @@ public class ApiHttp {
         THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
         tHttpOpenHelper.requestGet(url, handler, type, tag);
     }
+
+    /**
+     * 电商购物车
+     */
+    public static void getCartInfo(String url, ResponseCallbackHandler handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestGet(url, handler, type, tag);
+    }
 }

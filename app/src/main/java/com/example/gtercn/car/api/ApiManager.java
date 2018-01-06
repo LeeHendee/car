@@ -351,6 +351,15 @@ public class ApiManager {
     public static final String URL_PRODUCT_DETAIL = BaseUrl + "open/goods/page";
 
     /**
+     * 电商购物车
+     */
+    public static final String URL_CART_INFO = BaseUrl + "cart/list";
+
+
+
+
+//    --------------------------------------以上是电商部分---------------------------------------
+    /**
      * 自驾游列表
      *
      * @param map
@@ -611,6 +620,15 @@ public class ApiManager {
     public static void getProductDetail(String goodId, String cityCode, ResponseCallbackHandler handler, int type, String tag) {
         String url = ApiManager.URL_PRODUCT_DETAIL + "?city_code=" + cityCode + "&goods_id=" + goodId;
         ApiHttp.getProductDetail(url, handler, type, tag);
+
+    }
+
+    /**
+     * 电商购物车
+     */
+    public static void getCartInfo(String token, String sign,String time, ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_CART_INFO+ "?token=" + token + "&sign=" + sign + "&t=" +time;
+        ApiHttp.getCartInfo(url, handler, type, tag);
 
     }
 }

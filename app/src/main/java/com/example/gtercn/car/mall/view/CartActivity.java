@@ -2,18 +2,35 @@ package com.example.gtercn.car.mall.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
+import com.example.gtercn.car.mall.adapter.CartAdapter;
+import com.example.gtercn.car.mall.entity.CartEntity;
+import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
+import com.example.gtercn.car.utils.Constants;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Yan on 2018/1/1.
+ * 购物车页面
  */
 
 public class CartActivity extends BaseActivity {
@@ -38,12 +55,55 @@ public class CartActivity extends BaseActivity {
 
     private boolean isAll = false;
 
+    private CartAdapter mAdapter;
+
+    private List<CartEntity.ResultBean> cartList;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        initData();
         initListener();
+    }
+
+    private void initData() {
+        cartList = new ArrayList<>();
+        String sign = "1";
+        String time = "time";
+        ApiManager.getCartInfo(Constants.TOKEN, sign, time, new ResponseCallbackHandler() {
+            @Override
+            public void onSuccessResponse(String response, int type) {
+                if (response!=null){
+                    Log.e(TAG, "onSuccessResponse: response is "+response );
+                    Gson gson = new Gson();
+                    CartEntity entity = gson.fromJson(response,CartEntity.class);
+                    if (entity!=null){
+                        cartList = entity.getResult();
+                        mAdapter = new CartAdapter(CartActivity.this,cartList);
+                        mCartRv.setLayoutManager(new LinearLayoutManager(CartActivity.this));
+                        mCartRv.addItemDecoration(new RecyItemSpace(30));
+                        mCartRv.setAdapter(mAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onSuccessResponse(JSONObject response, int type) {
+
+            }
+
+            @Override
+            public void onSuccessResponse(JSONArray response, int type) {
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error, int type) {
+
+            }
+        },1,TAG);
     }
 
     private void initListener() {
