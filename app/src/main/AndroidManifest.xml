@@ -109,6 +109,10 @@
             android:windowSoftInputMode="adjustUnspecified|stateAlwaysHidden" />
         <activity android:name=".mall.view.OrderActivity" />
 
+        <activity android:name=".mall.view.PostAddressActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateAlwaysHidden" />
+
+
 
         <service android:name=".service.AppService" />
 

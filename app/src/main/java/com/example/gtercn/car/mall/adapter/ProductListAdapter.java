@@ -52,7 +52,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(ProductionViewHolder holder, final int position) {
         ProductListEntity.ResultBean bean = list.get(position);
         holder.titleTv.setText(bean.getGoods_title());
-        holder.priceTv.setText(bean.getPromotion_price() + "");
+        holder.priceTv.setText(context.getResources().getString(R.string.rmb)+bean.getPromotion_price());
         holder.soldTv.setText(bean.getSold_number() + "");
         holder.reviewsTv.setText(bean.getGoods_synopsis());
         holder.reviewsRateTv.setText(bean.getGoods_title());

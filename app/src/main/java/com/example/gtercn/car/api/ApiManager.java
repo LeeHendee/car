@@ -3,6 +3,7 @@ package com.example.gtercn.car.api;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.interfaces.ResponseJSONObjectListener;
 import com.example.gtercn.car.interfaces.ResponseStringListener;
+import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.TLog;
 
 import org.json.JSONObject;
@@ -50,6 +51,8 @@ public class ApiManager {
     //外网测试环境
     private static final String HTTPS = "https://api.shunjiatianxia.com/car_home/app/v1";
     private static final String HTTP = "http://api.shunjiatianxia.com/car_home/app/v1";
+
+    private static final String YIZHAN_HTTP = "http://114.215.71.170/car_home/app/v1";
 
     private static final String BaseUrl = "http://114.215.71.170/car_inn/v1/";
 
@@ -161,7 +164,7 @@ public class ApiManager {
     /**
      * 主页广告条
      */
-    public static final String URL_AD = HTTP + "/open/home/advert/list";
+    public static final String URL_AD = YIZHAN_HTTP + "/open/home/advert/list";
 
     /**
      * 忘记密码
@@ -308,7 +311,7 @@ public class ApiManager {
     /**
      * 城市列表
      */
-    public static final String URL_CITY_LIST = HTTP + "/open/home/city/list";
+    public static final String URL_CITY_LIST = YIZHAN_HTTP + "/open/home/city/list";
 
 
     /**
@@ -355,6 +358,16 @@ public class ApiManager {
      */
     public static final String URL_CART_INFO = BaseUrl + "cart/list";
 
+    /**
+     * 电商变更购物车商品数量
+     */
+    public static final String URL_CHANGE_COUNT = BaseUrl + "/cart/number";
+
+
+    /**
+     * 商品列表排序
+     */
+    public static final String URL_SORT_PRODUCT = BaseUrl + "open/goods/sort";
 
 
 
@@ -629,6 +642,21 @@ public class ApiManager {
     public static void getCartInfo(String token, String sign,String time, ResponseCallbackHandler handler, int type, String tag) {
         String url = ApiManager.URL_CART_INFO+ "?token=" + token + "&sign=" + sign + "&t=" +time;
         ApiHttp.getCartInfo(url, handler, type, tag);
+    }
 
+    /**
+     * 电商购物车改变商品数量
+     */
+    public static void changeCount(String sign,String t ,Map<String,String> map,ResponseStringListener handler, int type, String tag) {
+        String url = ApiManager.URL_CHANGE_COUNT+"?token="+ Constants.TOKEN+"&sign="+sign+"&t="+t ;
+        ApiHttp.changeCount(url,map, handler, type, tag);
+    }
+
+    /**
+     * 电商购物车
+     */
+    public static void sortProduct(String cityCode,String priceFlag,String sortType,ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_SORT_PRODUCT+ "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" +sortType;
+        ApiHttp.getCartInfo(url, handler, type, tag);
     }
 }

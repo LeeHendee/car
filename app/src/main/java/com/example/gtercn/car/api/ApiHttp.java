@@ -317,4 +317,20 @@ public class ApiHttp {
         THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
         tHttpOpenHelper.requestGet(url, handler, type, tag);
     }
+
+    /**
+     * 电商购物车变更商品数量
+     */
+    public static void changeCount(String url,Map<String ,String > map, ResponseStringListener handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestFormDataFilePost(url,map,null,handler,type,tag);
+    }
+
+    /**
+     * 电商商品列表筛选
+     */
+    public static void sortProduct(String url,ResponseCallbackHandler handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestGet(url,handler,type,tag);
+    }
 }

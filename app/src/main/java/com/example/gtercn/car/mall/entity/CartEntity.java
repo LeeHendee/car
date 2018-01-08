@@ -78,6 +78,16 @@ public class CartEntity {
         private int weight;
         private List<SpecItemListBean> spec_item_list;
 
+        private boolean isSelected;
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
+
         @Override
         public String toString() {
             return "ResultBean{" +
@@ -92,6 +102,7 @@ public class CartEntity {
                     ", small_picture='" + small_picture + '\'' +
                     ", weight=" + weight +
                     ", spec_item_list=" + spec_item_list +
+                    ", isSelected=" + isSelected +
                     '}';
         }
 

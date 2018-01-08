@@ -707,7 +707,7 @@ public class HomeFragment extends BaseFragment implements
         try {
             String url = ApiManager.URL_AD;
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("city_code", SharedPreferenceHelper.getValue(ApiManager.CITY_CODE));
+            jsonObject.put("city_code", "2102");
             THttpOpenHelper.newInstance().requestJsonObjectPost(url, jsonObject, this, AD, "adv.");
         } catch (JSONException e) {
             e.printStackTrace();

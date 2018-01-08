@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.mall.IListener;
 import com.example.gtercn.car.mall.entity.CartEntity;
 import com.squareup.picasso.Picasso;
 
@@ -27,6 +28,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     private List<CartEntity.ResultBean> list;
 
+    private IListener listener;
+
+    private IChangeCount iChangeCount;
+
+    public void setiChangeCount(IChangeCount iChangeCount) {
+        this.iChangeCount = iChangeCount;
+    }
+
+    public void setListener(IListener listener) {
+        this.listener = listener;
+    }
+
     public CartAdapter(Context context, List<CartEntity.ResultBean> list) {
         this.context = context;
         this.list = list;
@@ -40,12 +53,46 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     @Override
-    public void onBindViewHolder(CartViewHolder holder, int position) {
-        CartEntity.ResultBean bean = list.get(position);
+    public void onBindViewHolder(CartViewHolder holder, final int position) {
+        final CartEntity.ResultBean bean = list.get(position);
         holder.titleTv.setText(bean.getGoods_title());
-        holder.priceTv.setText("￥"+bean.getPromotion_price());
+        holder.priceTv.setText(context.getResources().getString(R.string.rmb)+bean.getPromotion_price());
         holder.countTv.setText(bean.getNumber()+"");
         Picasso.with(context).load(bean.getSmall_picture()).into(holder.productIv);
+        if (bean.isSelected()){
+            holder.checkIv.setImageResource(R.drawable.cart1_checkbox_check);
+        }else {
+            holder.checkIv.setImageResource(R.drawable.cart1_checkbox_normal);
+        }
+        holder.checkIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.itemClickListener(position);
+
+            }
+        });
+
+        holder.minusTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iChangeCount.changeCount(false,position);
+            }
+        });
+
+        holder.plusTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                iChangeCount.changeCount(true,position);
+            }
+        });
+
+        if (bean.getNumber() == 1){
+            holder.minusTv.setTextColor(context.getResources().getColor(R.color.text_note_color));
+        }else {
+            holder.minusTv.setTextColor(context.getResources().getColor(R.color.text_common_color));
+        }
+
+
     }
 
     @Override
@@ -73,5 +120,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             plusTv = (TextView) itemView.findViewById(R.id.tv_plus);
             countTv = (TextView) itemView.findViewById(R.id.tv_count);
         }
+    }
+
+    public interface IChangeCount{
+        void changeCount(boolean isAdd,int pos);
     }
 }

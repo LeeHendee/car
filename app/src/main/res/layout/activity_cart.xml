@@ -6,24 +6,20 @@
 
     <include
         android:id="@+id/rl_title"
+        layout="@layout/custom_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        layout="@layout/custom_title_bar" />
+        android:layout_height="50dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recy_cart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rl_title" />
 
     <LinearLayout
+        android:id="@+id/ll_bottom_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@color/white"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/ll_select_all"
@@ -36,8 +32,8 @@
 
             <ImageView
                 android:id="@+id/iv_select_all"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:src="@drawable/cart1_checkbox_normal" />
 
             <TextView
@@ -49,6 +45,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_total"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
@@ -88,8 +85,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="总额:"
-                    android:textSize="10sp"
-                    android:textColor="@color/text_common_color" />
+                    android:textColor="@color/text_common_color"
+                    android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/tv_total"
@@ -97,17 +94,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="￥2018.00"
-                    android:textSize="10sp"
-                    android:textColor="@color/text_common_color" />
+                    android:textColor="@color/text_common_color"
+                    android:textSize="10sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:text="优惠:"
-                    android:textSize="10sp"
                     android:textColor="@color/text_common_color"
-                    />
+                    android:textSize="10sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_discount"
@@ -115,8 +112,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="￥2018.00"
+                    android:textColor="@color/text_common_color"
                     android:textSize="10sp"
-                    android:textColor="@color/text_common_color" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -150,18 +148,18 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginLeft="2dp"
                     android:layout_toRightOf="@id/tv_checkout"
+                    android:singleLine="true"
                     android:text="(10)"
                     android:textColor="@color/white"
-                    android:textSize="10sp"
-                    android:singleLine="true"/>
-
+                    android:textSize="10sp" />
             </RelativeLayout>
-
-
         </LinearLayout>
-
-
     </LinearLayout>
 
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_cart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_bottom_view"
+        android:layout_below="@id/rl_title" />
 </RelativeLayout>

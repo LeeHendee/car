@@ -149,6 +149,14 @@ public class THttpOpenHelper {
         return map;
     }
 
+    public Map<String, String> getFormDataHeaders() {
+        Map<String, String> map = new HashMap<>();
+        map.put("Charset", "UTF-8");
+        map.put("Content-Type", "form-data");
+//        map.put("Content-Type", "application/x-www-form-urlencoded");
+        return map;
+    }
+
     /**
      * Volley headers,配置Cookies
      *
@@ -279,6 +287,52 @@ public class THttpOpenHelper {
         return mRequestQueue.add(stringRequest);
     }
 
+    /**
+     * post method, request data of String from net.
+     * {@link #requestGet(String, ResponseCallbackHandler, int, String)}
+     *
+     * @param url
+     * @param map
+     * @param handler
+     * @param type
+     * @return
+     */
+    public Object requestFormDataPost(final String url, final Map map,
+                              final ResponseCallbackHandler handler,
+                              final int type, final String tag) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        handler.onSuccessResponse(response, type);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        handler.onErrorResponse(error, type);
+                    }
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return getFormDataHeaders();
+            }
+
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return map;
+            }
+
+        };
+        stringRequest.setTag(tag);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT, MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        return mRequestQueue.add(stringRequest);
+    }
+
+
 
     /**
      * get method, request data of JSONObject from net.
@@ -353,6 +407,7 @@ public class THttpOpenHelper {
     public Object requestJsonObjectPost(final String url, final JSONObject jsonObject,
                                         final ResponseJSONObjectListener handler,
                                         final int type, final String tag) {
+        String u = url;
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override

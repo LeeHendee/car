@@ -78,5 +78,6 @@
     <string name="cancel">取消</string>
     <string name="update_app">有新版本，现在是否更新 ？</string>
     <string name="app_update_info">已是最新版本</string>
+    <string name="rmb">¥</string>
 
 </resources>

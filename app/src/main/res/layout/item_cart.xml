@@ -10,10 +10,13 @@
 
     <ImageView
         android:id="@+id/iv_check"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="22dp"
+        android:layout_height="match_parent"
         android:src="@drawable/cart1_checkbox_normal"
         android:layout_gravity="center_vertical"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+
         />
 
     <ImageView
@@ -62,7 +65,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:text="-"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:gravity="center"/>
 
                 <TextView
@@ -92,7 +95,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:text="+"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:gravity="center"/>
 
             </LinearLayout>

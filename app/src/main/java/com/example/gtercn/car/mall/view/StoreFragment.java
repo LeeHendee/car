@@ -161,7 +161,7 @@ public class StoreFragment extends BaseFragment {
             switch (view.getId()) {
                 case R.id.iv_home_cart:
                     showToastMsg("购物车");
-                    Intent intent = new Intent(getActivity(),ReviewPostActivity.class);
+                    Intent intent = new Intent(getActivity(),CartActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.iv_title_right:
@@ -171,6 +171,8 @@ public class StoreFragment extends BaseFragment {
                     break;
                 case R.id.iv_home_search:
                     showToastMsg("去搜索");
+                    Intent postAdIntent = new Intent(getActivity(),PostAddressActivity.class);
+                    startActivity(postAdIntent);
                     break;
             }
         }
@@ -273,6 +275,7 @@ public class StoreFragment extends BaseFragment {
 
             }
         }, 1, TAG);
+
     }
 
     //设置分类gridView

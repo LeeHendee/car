@@ -36,7 +36,6 @@ import java.util.List;
 
 public class ProductListActivity extends BaseActivity {
 
-
     private static final String TAG = "ProductListActivity";
 
     private ImageView mBackIv;
@@ -60,6 +59,10 @@ public class ProductListActivity extends BaseActivity {
     private List<ProductListEntity.ResultBean> mProductList;
 
     private List<TextView> mSortTvList;
+
+    private int priceFlag = 0;
+
+    private int sortType = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,8 +141,6 @@ public class ProductListActivity extends BaseActivity {
             }
         });
 
-
-
     }
 
     private View.OnClickListener mListener = new View.OnClickListener() {
@@ -154,12 +155,23 @@ public class ProductListActivity extends BaseActivity {
                     break;
                 case R.id.tv_comprehensive_sort:
                     changeSortStatus(v.getId());
+                    sortType = 0;
+                    sortProduct(priceFlag,sortType);
                     break;
                 case R.id.tv_sale_sort:
                     changeSortStatus(v.getId());
+                    sortType = 1;
+                    sortProduct(priceFlag,sortType);
                     break;
                 case R.id.tv_price_sort:
                     changeSortStatus(v.getId());
+                    sortType = 2;
+                    if (priceFlag == 0){
+                        priceFlag = 1;
+                    }else {
+                        priceFlag = 0;
+                    }
+                    sortProduct(priceFlag,sortType);
                     break;
                 case R.id.tv_sort:
                     changeSortStatus(v.getId());
@@ -167,6 +179,36 @@ public class ProductListActivity extends BaseActivity {
             }
         }
     };
+
+    private void sortProduct(int priceFlag,int sortType) {
+        ApiManager.sortProduct(Constants.CITY_CODE, priceFlag+"", sortType+"", new ResponseCallbackHandler() {
+            @Override
+            public void onSuccessResponse(String response, int type) {
+                if (response != null) {
+                    Log.e(TAG, "onSuccessResponse: response is " + response);
+                    Gson gson = new Gson();
+                    ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
+                    mProductList = entity.getResult();
+                    setData();
+                }
+            }
+
+            @Override
+            public void onSuccessResponse(JSONObject response, int type) {
+
+            }
+
+            @Override
+            public void onSuccessResponse(JSONArray response, int type) {
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error, int type) {
+
+            }
+        },2,TAG);
+    }
 
     private void changeSortStatus(int id) {
         for (int i = 0; i < mSortTvList.size(); i++) {
