@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -149,7 +150,54 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
     };
 
     private void delCart() {
+        String sign = "sign";
+        String time = "time";
+        String delIds = getDelIds();
+        Map<String, String> params = new HashMap<>();
+        params.put("cart_ids", delIds);
+        ApiManager.delCartItem(sign, time, params, new ResponseStringListener() {
+            @Override
+            public void onSuccessResponse(String response, int type) {
+                if (response != null) {
+                    Log.e(TAG, "onSuccessResponse: " + response);
+                    Gson gson = new Gson();
+                    ResultEntity entity = gson.fromJson(response, ResultEntity.class);
+                    if (entity != null) {
+                        if (TextUtils.equals(entity.getErr_code(), "0")) {
+                            Toast.makeText(CartActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                            initData();
+                        }
 
+                    }
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error, int type) {
+
+            }
+        }, 3, TAG);
+
+    }
+
+    private String getDelIds() {
+        if (cartList == null) {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < cartList.size(); i++) {
+            CartEntity.ResultBean b = cartList.get(i);
+            if (b.isSelected()) {
+                if (i != cartList.size() - 1) {
+                    sb.append(b.getId() + ",");
+                } else {
+                    sb.append(b.getId() + "");
+                }
+            }
+        }
+        String delIds = sb.toString();
+
+        return delIds;
     }
 
     private void isSelectAll(boolean isAll) {

@@ -333,4 +333,20 @@ public class ApiHttp {
         THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
         tHttpOpenHelper.requestGet(url,handler,type,tag);
     }
+
+    /**
+     * 电商新增收获地址
+     */
+    public static void submitNewAd(String url, JSONObject params, ResponseJSONObjectListener handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestJsonObjectPost(url, params, handler, type, tag);
+    }
+
+    /**
+     * 电商删除购物车产品
+     */
+    public static void delCartItem(String url, Map<String, String> map, ResponseStringListener handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestFormDataFilePost(url, map, null, handler, type, tag);
+    }
 }

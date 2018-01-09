@@ -363,12 +363,20 @@ public class ApiManager {
      */
     public static final String URL_CHANGE_COUNT = BaseUrl + "/cart/number";
 
-
     /**
-     * 商品列表排序
+     * 电商商品列表排序
      */
     public static final String URL_SORT_PRODUCT = BaseUrl + "open/goods/sort";
 
+    /**
+     * 电商新增收获地址；
+     */
+    public static final String URL_SUBMIT_NEW_AD = BaseUrl + "address/add";
+
+    /**
+     * 电商删除购物车
+     */
+    public static final String URL_DEL_PRODUCT = BaseUrl + "/cart/delete";
 
 
 //    --------------------------------------以上是电商部分---------------------------------------
@@ -658,5 +666,21 @@ public class ApiManager {
     public static void sortProduct(String cityCode,String priceFlag,String sortType,ResponseCallbackHandler handler, int type, String tag) {
         String url = ApiManager.URL_SORT_PRODUCT+ "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" +sortType;
         ApiHttp.getCartInfo(url, handler, type, tag);
+    }
+
+    /**
+     * 电商新增地址
+     */
+    public static void submitNewAd(String sign, String t, JSONObject map, ResponseJSONObjectListener handler, int type, String tag) {
+        String url = ApiManager.URL_SUBMIT_NEW_AD + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + t;
+        ApiHttp.submitNewAd(url, map, handler, type, tag);
+    }
+
+    /**
+     * 电商删除购物车商品
+     */
+    public static void delCartItem(String sign, String t, Map<String, String> map, ResponseStringListener handler, int type, String tag) {
+        String url = ApiManager.URL_DEL_PRODUCT + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + t;
+        ApiHttp.delCartItem(url, map, handler, type, tag);
     }
 }
