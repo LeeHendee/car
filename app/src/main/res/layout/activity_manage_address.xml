@@ -6,13 +6,6 @@
 
     <include layout="@layout/custom_title_bar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recy_address"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rl_title"
-        android:layout_above="@id/btn_add_ad" />
-
     <Button
         android:id="@+id/btn_add_ad"
         android:layout_width="match_parent"
@@ -22,5 +15,14 @@
         android:textSize="16sp"
         android:textColor="@color/white"
         android:layout_alignParentBottom="true" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_address"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"
+        android:layout_above="@id/btn_add_ad" />
+
+
 
 </RelativeLayout>

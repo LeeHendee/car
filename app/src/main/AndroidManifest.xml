@@ -112,6 +112,7 @@
         <activity android:name=".mall.view.PostAddressActivity"
             android:windowSoftInputMode="adjustUnspecified|stateAlwaysHidden" />
 
+        <activity android:name=".mall.view.ManageAddressActivity" />
 
 
         <service android:name=".service.AppService" />

@@ -378,6 +378,11 @@ public class ApiManager {
      */
     public static final String URL_DEL_PRODUCT = BaseUrl + "/cart/delete";
 
+    /**
+     * 电商地址管理列表
+     */
+    public static final String URL_MANAGE_ADDRESS = BaseUrl + "address/list";
+
 
 //    --------------------------------------以上是电商部分---------------------------------------
     /**
@@ -682,5 +687,13 @@ public class ApiManager {
     public static void delCartItem(String sign, String t, Map<String, String> map, ResponseStringListener handler, int type, String tag) {
         String url = ApiManager.URL_DEL_PRODUCT + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + t;
         ApiHttp.delCartItem(url, map, handler, type, tag);
+    }
+
+    /**
+     * 电商地址管理列表
+     */
+    public static void getAddressList(String sign,String time,ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_MANAGE_ADDRESS+ "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" +time;
+        ApiHttp.getAddressList(url, handler, type, tag);
     }
 }
