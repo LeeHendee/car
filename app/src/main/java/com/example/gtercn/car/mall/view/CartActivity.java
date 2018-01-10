@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +77,8 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
 
     private boolean isDel;
 
+    private RelativeLayout mLoadingRl;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +94,7 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
         ApiManager.getCartInfo(Constants.TOKEN, sign, time, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
                 if (response != null) {
                     Log.e(TAG, "onSuccessResponse: response is " + response);
                     Gson gson = new Gson();
@@ -117,7 +121,7 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
-
+                mLoadingRl.setVisibility(View.GONE);
             }
         }, 1, TAG);
     }
@@ -155,9 +159,11 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
         String delIds = getDelIds();
         Map<String, String> params = new HashMap<>();
         params.put("cart_ids", delIds);
+        mLoadingRl.setVisibility(View.VISIBLE);
         ApiManager.delCartItem(sign, time, params, new ResponseStringListener() {
             @Override
             public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
                 if (response != null) {
                     Log.e(TAG, "onSuccessResponse: " + response);
                     Gson gson = new Gson();
@@ -174,7 +180,7 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
-
+                mLoadingRl.setVisibility(View.GONE);
             }
         }, 3, TAG);
 
@@ -234,6 +240,7 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
         mCheckoutCountTv = (TextView) findViewById(R.id.tv_count);
         mTotalLayout = (LinearLayout) findViewById(R.id.ll_total);
         mDelTv = (TextView) findViewById(R.id.tv_checkout);
+        mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
         mCartRv.setLayoutManager(new LinearLayoutManager(CartActivity.this));
         mCartRv.addItemDecoration(new RecyItemSpace(30));
         setTitle(false);
@@ -325,10 +332,11 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
         Map<String, String> params = new HashMap<>();
         params.put("cart_id", cartId);
         params.put("number", count);
-
+        mLoadingRl.setVisibility(View.VISIBLE);
         ApiManager.changeCount(sign, time, params, new ResponseStringListener() {
             @Override
             public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
                 if (response != null) {
                     Log.e(TAG, "onSuccessResponse: " + response);
                     Gson gson = new Gson();
@@ -341,7 +349,7 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
-
+                mLoadingRl.setVisibility(View.GONE);
             }
         }, 2, TAG);
     }

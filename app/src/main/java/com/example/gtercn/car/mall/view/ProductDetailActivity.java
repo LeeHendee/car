@@ -83,6 +83,8 @@ public class ProductDetailActivity extends BaseActivity {
 
     private TextView mIndexTotalTv;
 
+    private RelativeLayout mLoadingRl;
+
     private int curPosition;
 
     @Override
@@ -184,6 +186,7 @@ public class ProductDetailActivity extends BaseActivity {
         ApiManager.getProductDetail(goodId, cityCode, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
                 Log.e(TAG, "onSuccessResponse: response is " + response);
                 if (response != null) {
                     Gson gson = new Gson();
@@ -211,7 +214,7 @@ public class ProductDetailActivity extends BaseActivity {
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
-
+                mLoadingRl.setVisibility(View.GONE);
             }
         }, 1, TAG);
     }
@@ -253,6 +256,7 @@ public class ProductDetailActivity extends BaseActivity {
         mTitleRl = (RelativeLayout) findViewById(R.id.rl_title);
         mIndexCurTv = (TextView) findViewById(R.id.tv_index_cur);
         mIndexTotalTv = (TextView) findViewById(R.id.tv_index_total);
+        mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);

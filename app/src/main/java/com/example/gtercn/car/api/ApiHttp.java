@@ -357,4 +357,20 @@ public class ApiHttp {
         THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
         tHttpOpenHelper.requestGet(url,handler,type,tag);
     }
+
+    /**
+     * 电商地址管理列表-设置默认收货地址
+     */
+    public static void setDefaultAddress(String url, Map<String, String> map, ResponseStringListener handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestFormDataFilePost(url, map, null, handler, type, tag);
+    }
+
+    /**
+     * 电商地址管理列表-删除地址
+     */
+    public static void delAddress(String url, Map<String, String> map, ResponseStringListener handler, int type, String tag) {
+        THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();
+        tHttpOpenHelper.requestFormDataFilePost(url, map, null, handler, type, tag);
+    }
 }

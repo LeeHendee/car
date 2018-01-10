@@ -1,5 +1,6 @@
 package com.example.gtercn.car.mall.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * Used to :
  */
 
-public class AddressEntity {
+public class AddressEntity implements Serializable {
 
     /**
      * result : [{"id":"11bd2214e4dd4dd0b331239db5aa19da","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁省","city":"大连市","district":"高新区","address":"高能街42号","postal_code":"116000","name":"张三","phone":"18642690085","default_flag":"N","insert_time":1515313198000,"update_time":1515317877000},{"id":"4139fcda1e5c4badb299ae4182180cbd","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁省","city":"大连市","district":"中山区","address":"独立街12号012","postal_code":"116000","name":"李四","phone":"18642690085","default_flag":"N","insert_time":1515314153000,"update_time":1515483675000},{"id":"50092d7161254033bd6d5dc17fcb4ed9","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁","city":"大连","district":"沙河口区","postal_code":"122100","name":"lee","phone":"888888","default_flag":"Y","insert_time":1515491063000,"update_time":1515491063000},{"id":"5471fef3dad84ddca3289eaf18866690","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁","city":"大连","district":"沙河口区","postal_code":"122100","name":"lee","phone":"888888","default_flag":"N","insert_time":1515491061000,"update_time":1515491062000},{"id":"59ef83c7ada2429780ee1edc58abd899","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁省","city":"大连市","district":"沙河口区","address":"交通大学","postal_code":"116000","name":"Lee","phone":"116000","default_flag":"N","insert_time":1515491525000,"update_time":1515491525000},{"id":"640b4adb25614c0a90653c971f6ce852","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁","city":"大连","district":"沙河口区","address":"交大附近","postal_code":"122100","name":"lee","phone":"888888","default_flag":"N","insert_time":1515483675000,"update_time":1515491057000},{"id":"8d259bc6304d4f10ac8ee47b89659405","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁","city":"大连","district":"沙河口区","postal_code":"122100","name":"lee","phone":"888888","default_flag":"N","insert_time":1515491062000,"update_time":1515491063000},{"id":"ac250bd71d6a408285529c6fe2a8075b","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁省","city":"大连市","district":"旅顺口区","address":"你猜","postal_code":"116000","name":"嘿嘿","phone":"116000","default_flag":"N","insert_time":1515491716000,"update_time":1515491716000},{"id":"ced86bb4afa0485781665aea68e69597","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","province":"辽宁","city":"大连","district":"沙河口区","postal_code":"122100","name":"lee","phone":"888888","default_flag":"N","insert_time":1515491057000,"update_time":1515491061000}]
@@ -53,7 +54,7 @@ public class AddressEntity {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable {
         /**
          * id : 11bd2214e4dd4dd0b331239db5aa19da
          * user_id : 0779243b57824b0da9e79ed4a7f8f4b6
@@ -82,6 +83,16 @@ public class AddressEntity {
         private long insert_time;
         private long update_time;
 
+        private boolean isSelected;
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
+
         @Override
         public String toString() {
             return "ResultBean{" +
@@ -97,6 +108,7 @@ public class AddressEntity {
                     ", default_flag='" + default_flag + '\'' +
                     ", insert_time=" + insert_time +
                     ", update_time=" + update_time +
+                    ", isSelected=" + isSelected +
                     '}';
         }
 

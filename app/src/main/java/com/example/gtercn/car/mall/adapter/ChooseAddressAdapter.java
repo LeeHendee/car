@@ -17,19 +17,17 @@ import java.util.List;
 
 /**
  * Author ：LeeHang
- * CreateTime ：2018/1/9.
- * Used to : 地址管理adapter
+ * CreateTime ：2018/1/10.
+ * Used to :
  */
 
-public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder> {
+public class ChooseAddressAdapter extends RecyclerView.Adapter<ChooseAddressAdapter.ChooseAddressViewHolder> {
 
-    private static final String TAG = "AddressAdapter";
+    private static final String TAG = "ChooseAddressAdapter";
 
-    public static final int SET_DEFAULT = 0;
+    public static final int SET_SELECTED = 0;
 
     public static final int DO_EDIT = 1;
-
-    public static final int DO_DEL = 2;
 
     private Context context;
 
@@ -41,42 +39,36 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         this.mListener = mListener;
     }
 
-    public AddressAdapter(Context context, List<AddressEntity.ResultBean> list) {
+    public ChooseAddressAdapter(Context context, List<AddressEntity.ResultBean> list) {
         this.context = context;
         this.list = list;
     }
 
     @Override
-    public AddressViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.item_address, parent, false);
-        AddressViewHolder holder = new AddressViewHolder(itemView);
+    public ChooseAddressAdapter.ChooseAddressViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(context).inflate(R.layout.item_choose_address, parent, false);
+        ChooseAddressViewHolder holder = new ChooseAddressViewHolder(itemView);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(AddressViewHolder holder, final int position) {
+    public void onBindViewHolder(ChooseAddressViewHolder holder, final int position) {
         AddressEntity.ResultBean bean = list.get(position);
         holder.nameTv.setText(bean.getName());
         holder.telTv.setText(bean.getPhone());
         holder.addressTv.setText(bean.getAddress());
 
-        if (bean.getDefault_flag().equals("Y")) {
-            holder.defaultIv.setImageResource(R.drawable.cart1_checkbox_check);
+        if (bean.isSelected()) {
+            holder.selectedIv.setVisibility(View.VISIBLE);
+            holder.selectedIv.setImageResource(R.drawable.icon_choosed_address);
         } else {
-            holder.defaultIv.setImageResource(R.drawable.cart1_checkbox_normal);
+            holder.selectedIv.setVisibility(View.GONE);
         }
 
-        holder.defaultIv.setOnClickListener(new View.OnClickListener() {
+        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.listener(position, SET_DEFAULT);
-            }
-        });
-
-        holder.delLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.listener(position, DO_DEL);
+                mListener.listener(position, SET_SELECTED);
             }
         });
 
@@ -86,7 +78,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
                 mListener.listener(position, DO_EDIT);
             }
         });
-
     }
 
     @Override
@@ -94,24 +85,22 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         return list != null ? list.size() : 0;
     }
 
-    class AddressViewHolder extends RecyclerView.ViewHolder {
+    class ChooseAddressViewHolder extends RecyclerView.ViewHolder {
         TextView nameTv;
         TextView telTv;
         TextView addressTv;
-        ImageView defaultIv;
-        LinearLayout delLayout;
+        ImageView selectedIv;
         LinearLayout editLayout;
+        LinearLayout itemLayout;
 
-        public AddressViewHolder(View itemView) {
+        public ChooseAddressViewHolder(View itemView) {
             super(itemView);
             nameTv = (TextView) itemView.findViewById(R.id.tv_name);
             telTv = (TextView) itemView.findViewById(R.id.tv_tel);
             addressTv = (TextView) itemView.findViewById(R.id.tv_address);
-            defaultIv = (ImageView) itemView.findViewById(R.id.iv_default);
-            delLayout = (LinearLayout) itemView.findViewById(R.id.ll_del);
+            selectedIv = (ImageView) itemView.findViewById(R.id.iv_selected);
             editLayout = (LinearLayout) itemView.findViewById(R.id.ll_edit);
+            itemLayout = (LinearLayout) itemView.findViewById(R.id.ll_choose_address);
         }
     }
-
-
 }

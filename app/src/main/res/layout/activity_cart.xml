@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/pager_bg">
 
+
     <include
         android:id="@+id/rl_title"
         layout="@layout/custom_title_bar"
@@ -162,4 +163,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/ll_bottom_view"
         android:layout_below="@id/rl_title" />
+
+    <include layout="@layout/layout_loading" />
 </RelativeLayout>

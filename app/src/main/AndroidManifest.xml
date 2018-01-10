@@ -114,6 +114,8 @@
 
         <activity android:name=".mall.view.ManageAddressActivity" />
 
+        <activity android:name=".mall.view.ChooseAddressActivity" />
+
 
         <service android:name=".service.AppService" />
 

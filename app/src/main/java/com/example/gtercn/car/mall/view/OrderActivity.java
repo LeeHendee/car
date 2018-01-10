@@ -65,6 +65,9 @@ public class OrderActivity extends BaseActivity {
     @BindView(R.id.recy_order)
     RecyclerView mOrderRv;
 
+    @BindView(R.id.rl_loading)
+    RelativeLayout mLoadingRl;
+
     private OrderAdapter mAdapter;
 
     private List<OrderEntity> orderList;
@@ -104,6 +107,7 @@ public class OrderActivity extends BaseActivity {
             orderList.add(entity);
         }
         mOrderRv.setLayoutManager(new LinearLayoutManager(this));
+        mLoadingRl.setVisibility(View.GONE);
         mAdapter = new OrderAdapter(this, orderList);
         mOrderRv.setAdapter(mAdapter);
     }

@@ -369,9 +369,14 @@ public class ApiManager {
     public static final String URL_SORT_PRODUCT = BaseUrl + "open/goods/sort";
 
     /**
-     * 电商新增收获地址；
+     * 电商新增地址；
      */
     public static final String URL_SUBMIT_NEW_AD = BaseUrl + "address/add";
+
+    /**
+     * 电商编辑地址；
+     */
+    public static final String URL_EDIT_ADDRESS = BaseUrl + "address/update";
 
     /**
      * 电商删除购物车
@@ -382,6 +387,16 @@ public class ApiManager {
      * 电商地址管理列表
      */
     public static final String URL_MANAGE_ADDRESS = BaseUrl + "address/list";
+
+    /**
+     * 电商地址管理列表-设置默认收货地址
+     */
+    public static final String URL_SET_DEFAULT_ADDRESS = BaseUrl + "address/default/set";
+
+    /**
+     * 电商地址管理列表-删除地址
+     */
+    public static final String URL_DEL_ADDRESS = BaseUrl + "address/delete";
 
 
 //    --------------------------------------以上是电商部分---------------------------------------
@@ -682,6 +697,14 @@ public class ApiManager {
     }
 
     /**
+     * 电商编辑地址
+     */
+    public static void editAddress(String sign, String t, JSONObject map, ResponseJSONObjectListener handler, int type, String tag) {
+        String url = ApiManager.URL_EDIT_ADDRESS + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + t;
+        ApiHttp.submitNewAd(url, map, handler, type, tag);
+    }
+
+    /**
      * 电商删除购物车商品
      */
     public static void delCartItem(String sign, String t, Map<String, String> map, ResponseStringListener handler, int type, String tag) {
@@ -695,5 +718,21 @@ public class ApiManager {
     public static void getAddressList(String sign,String time,ResponseCallbackHandler handler, int type, String tag) {
         String url = ApiManager.URL_MANAGE_ADDRESS+ "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" +time;
         ApiHttp.getAddressList(url, handler, type, tag);
+    }
+
+    /**
+     * 电商地址管理列表-设置默认收货地址
+     */
+    public static void setDefaultAddress(String sign, String t, Map<String, String> map, ResponseStringListener handler, int type, String tag) {
+        String url = ApiManager.URL_SET_DEFAULT_ADDRESS + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + t;
+        ApiHttp.setDefaultAddress(url, map, handler, type, tag);
+    }
+
+    /**
+     * 电商地址管理列表-删除地址
+     */
+    public static void delAddress(String sign, String t, Map<String, String> map, ResponseStringListener handler, int type, String tag) {
+        String url = ApiManager.URL_DEL_ADDRESS + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + t;
+        ApiHttp.delAddress(url, map, handler, type, tag);
     }
 }

@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,8 @@ public class ProductListActivity extends BaseActivity {
 
     private List<TextView> mSortTvList;
 
+    private RelativeLayout mLoadingRl;
+
     private int priceFlag = 0;
 
     private int sortType = 0;
@@ -79,6 +82,7 @@ public class ProductListActivity extends BaseActivity {
         ApiManager.getProductList(brandId, Constants.CITY_CODE, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
                 if (mRefresh.isRefreshing()) {
                     mRefresh.setRefreshing(false);
                 }
@@ -103,7 +107,7 @@ public class ProductListActivity extends BaseActivity {
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
-
+                mLoadingRl.setVisibility(View.GONE);
             }
         }, 1, TAG);
 
@@ -181,9 +185,11 @@ public class ProductListActivity extends BaseActivity {
     };
 
     private void sortProduct(int priceFlag,int sortType) {
+        mLoadingRl.setVisibility(View.VISIBLE);
         ApiManager.sortProduct(Constants.CITY_CODE, priceFlag+"", sortType+"", new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
+                mLoadingRl.setVisibility(View.GONE);
                 if (response != null) {
                     Log.e(TAG, "onSuccessResponse: response is " + response);
                     Gson gson = new Gson();
@@ -205,7 +211,7 @@ public class ProductListActivity extends BaseActivity {
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
-
+                mLoadingRl.setVisibility(View.GONE);
             }
         },2,TAG);
     }
@@ -231,6 +237,7 @@ public class ProductListActivity extends BaseActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recy_production);
         mBackIv = (ImageView) findViewById(R.id.iv_back);
         mSearchTv = (TextView) findViewById(R.id.tv_search);
+        mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRefresh.setColorSchemeResources(R.color.blue1);
 

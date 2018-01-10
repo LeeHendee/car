@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,8 @@ public class ReviewPostActivity extends BaseActivity {
     private TextView mReviewTypeTwoTv;
 
     private TextView mReviewTypeThreeTv;
+
+    private RelativeLayout mLoadingRl;
 
     private boolean isOn = true;
 
@@ -156,6 +159,7 @@ public class ReviewPostActivity extends BaseActivity {
                     }
                 }
             });
+            mLoadingRl.setVisibility(View.GONE);
         }
     }
 
@@ -172,6 +176,7 @@ public class ReviewPostActivity extends BaseActivity {
         mReviewTypeOneTv = (TextView) findViewById(R.id.tv_review_type_one);
         mReviewTypeTwoTv = (TextView) findViewById(R.id.tv_review_type_two);
         mReviewTypeThreeTv = (TextView) findViewById(R.id.tv_review_type_three);
+        mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
         initRightTvBar("发表评论", "发布", new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -171,8 +171,8 @@ public class StoreFragment extends BaseFragment {
                     break;
                 case R.id.iv_home_search:
                     showToastMsg("去搜索");
-                    Intent postAdIntent = new Intent(getActivity(),PostAddressActivity.class);
-                    startActivity(postAdIntent);
+                    Intent addressIntent = new Intent(getActivity(), ChooseAddressActivity.class);
+                    startActivity(addressIntent);
                     break;
             }
         }
