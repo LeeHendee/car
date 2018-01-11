@@ -45,7 +45,7 @@ public class OrderConfirmActivity extends BaseActivity {
     TextView mOrgTotalTv;
 
     @BindView(R.id.tv_delivery_fee)
-    TextView mDelieryFeeTv;
+    TextView mDeliveryFeeTv;
 
     @BindView(R.id.tv_total_pay)
     TextView mTotalPayTv;
