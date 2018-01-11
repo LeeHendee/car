@@ -56,8 +56,6 @@ public class OrderConfirmActivity extends BaseActivity {
     @BindView(R.id.ll_product_view)
     LinearLayout mProductLayout;
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
