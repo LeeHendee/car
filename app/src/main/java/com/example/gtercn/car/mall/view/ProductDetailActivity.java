@@ -83,6 +83,8 @@ public class ProductDetailActivity extends BaseActivity {
 
     private TextView mIndexTotalTv;
 
+    private TextView mBuyTv;
+
     private RelativeLayout mLoadingRl;
 
     private int curPosition;
@@ -101,6 +103,7 @@ public class ProductDetailActivity extends BaseActivity {
         mTitleDetailTv.setOnClickListener(mListener);
         mTitleReviewsTv.setOnClickListener(mListener);
         mTitleRightIv.setOnClickListener(mListener);
+        mBuyTv.setOnClickListener(mListener);
         mImagePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -142,6 +145,10 @@ public class ProductDetailActivity extends BaseActivity {
                     break;
                 case R.id.tv_reviews:
                     changeTitleView(view.getId());
+                    break;
+                case R.id.tv_buy:
+                    Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
+                    startActivity(toBuy);
                     break;
             }
         }
@@ -257,6 +264,7 @@ public class ProductDetailActivity extends BaseActivity {
         mIndexCurTv = (TextView) findViewById(R.id.tv_index_cur);
         mIndexTotalTv = (TextView) findViewById(R.id.tv_index_total);
         mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
+        mBuyTv = (TextView) findViewById(R.id.tv_buy);
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);

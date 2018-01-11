@@ -80,7 +80,6 @@ public class ProductListActivity extends BaseActivity {
         Intent intent = getIntent();
         String brandId = intent.getStringExtra("brandId");
         ApiManager.getProductList(brandId, Constants.CITY_CODE, new ResponseCallbackHandler() {
-            @Override
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
                 if (mRefresh.isRefreshing()) {
@@ -160,22 +159,22 @@ public class ProductListActivity extends BaseActivity {
                 case R.id.tv_comprehensive_sort:
                     changeSortStatus(v.getId());
                     sortType = 0;
-                    sortProduct(priceFlag,sortType);
+                    sortProduct(priceFlag, sortType);
                     break;
                 case R.id.tv_sale_sort:
                     changeSortStatus(v.getId());
                     sortType = 1;
-                    sortProduct(priceFlag,sortType);
+                    sortProduct(priceFlag, sortType);
                     break;
                 case R.id.tv_price_sort:
                     changeSortStatus(v.getId());
                     sortType = 2;
-                    if (priceFlag == 0){
+                    if (priceFlag == 0) {
                         priceFlag = 1;
-                    }else {
+                    } else {
                         priceFlag = 0;
                     }
-                    sortProduct(priceFlag,sortType);
+                    sortProduct(priceFlag, sortType);
                     break;
                 case R.id.tv_sort:
                     changeSortStatus(v.getId());
@@ -184,9 +183,9 @@ public class ProductListActivity extends BaseActivity {
         }
     };
 
-    private void sortProduct(int priceFlag,int sortType) {
+    private void sortProduct(int priceFlag, int sortType) {
         mLoadingRl.setVisibility(View.VISIBLE);
-        ApiManager.sortProduct(Constants.CITY_CODE, priceFlag+"", sortType+"", new ResponseCallbackHandler() {
+        ApiManager.sortProduct(Constants.CITY_CODE, priceFlag + "", sortType + "", new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
@@ -213,7 +212,7 @@ public class ProductListActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error, int type) {
                 mLoadingRl.setVisibility(View.GONE);
             }
-        },2,TAG);
+        }, 2, TAG);
     }
 
     private void changeSortStatus(int id) {

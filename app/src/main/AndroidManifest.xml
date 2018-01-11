@@ -116,6 +116,7 @@
 
         <activity android:name=".mall.view.ChooseAddressActivity" />
 
+        <activity android:name=".mall.view.OrderConfirmActivity" />
 
         <service android:name=".service.AppService" />
 
