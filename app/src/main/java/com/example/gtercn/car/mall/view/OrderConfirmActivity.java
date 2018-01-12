@@ -3,18 +3,26 @@ package com.example.gtercn.car.mall.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
-
+import com.example.gtercn.car.bean.User;
+import com.example.gtercn.car.net.THttpOpenHelper;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.MediaType;
+
 
 /**
  * Author ：LeeHang
@@ -30,7 +38,7 @@ public class OrderConfirmActivity extends BaseActivity {
     RelativeLayout mAddressRl;
 
     @BindView(R.id.rl_loading)
-    RelativeLayout mLoardingRl;
+    RelativeLayout mLoadingRl;
 
     @BindView(R.id.tv_name)
     TextView mNameTv;
@@ -64,7 +72,24 @@ public class OrderConfirmActivity extends BaseActivity {
     }
 
     private void initData() {
-        mLoardingRl.setVisibility(View.GONE);
+        mLoadingRl.setVisibility(View.GONE);
+
+        OkHttpUtils
+                .get()
+                .url("http://114.215.71.170/car_inn/v1/open/goods/category/list ")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e("BaseActivity", "e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e("BaseActivity", "response is " + response);
+                    }
+                });
+
     }
 
     private void initView() {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pager_bg">
+
+    <include layout="@layout/custom_title_bar" />
+
+    <include layout="@layout/layout_loading" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_common_color" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_province"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="辽宁"
+            android:textSize="14sp"
+            android:textColor="@color/text_common_color"
+            android:gravity="center" />
+
+        <ImageView
+            android:layout_width="1px"
+            android:layout_height="18sp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/line_common_color" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="大连"
+            android:textSize="14sp"
+            android:textColor="@color/text_common_color"
+            android:gravity="center" />
+
+        <ImageView
+            android:layout_width="1px"
+            android:layout_height="18sp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/line_common_color" />
+
+        <TextView
+            android:id="@+id/tv_district"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="西岗区"
+            android:textSize="14sp"
+            android:textColor="@color/text_common_color"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_common_color" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_station"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

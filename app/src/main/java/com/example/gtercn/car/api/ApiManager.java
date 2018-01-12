@@ -683,8 +683,8 @@ public class ApiManager {
     /**
      * 电商购物车
      */
-    public static void sortProduct(String cityCode,String priceFlag,String sortType,ResponseCallbackHandler handler, int type, String tag) {
-        String url = ApiManager.URL_SORT_PRODUCT+ "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" +sortType;
+    public static void sortProduct(String brandId, String cityCode, String priceFlag, String sortType, ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_SORT_PRODUCT + "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" + sortType + "&brandId=" + brandId;
         ApiHttp.getCartInfo(url, handler, type, tag);
     }
 

@@ -91,5 +91,6 @@ dependencies {
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'liji.library.dev:citypickerview:0.7.0'
+    compile 'com.zhy:okhttputils:2.6.2'
 
 }

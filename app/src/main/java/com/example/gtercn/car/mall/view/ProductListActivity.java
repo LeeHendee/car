@@ -66,6 +66,7 @@ public class ProductListActivity extends BaseActivity {
     private int priceFlag = 0;
 
     private int sortType = 0;
+    private String mBrandId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,39 +79,8 @@ public class ProductListActivity extends BaseActivity {
     private void initData() {
         mProductList = new ArrayList<>();
         Intent intent = getIntent();
-        String brandId = intent.getStringExtra("brandId");
-        ApiManager.getProductList(brandId, Constants.CITY_CODE, new ResponseCallbackHandler() {
-            public void onSuccessResponse(String response, int type) {
-                mLoadingRl.setVisibility(View.GONE);
-                if (mRefresh.isRefreshing()) {
-                    mRefresh.setRefreshing(false);
-                }
-                if (response != null) {
-                    Log.e(TAG, "onSuccessResponse: response is " + response);
-                    Gson gson = new Gson();
-                    ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
-                    mProductList = entity.getResult();
-                    setData();
-                }
-            }
-
-            @Override
-            public void onSuccessResponse(JSONObject response, int type) {
-
-            }
-
-            @Override
-            public void onSuccessResponse(JSONArray response, int type) {
-
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error, int type) {
-                mLoadingRl.setVisibility(View.GONE);
-            }
-        }, 1, TAG);
-
-
+        mBrandId = intent.getStringExtra("brandId");
+        sortProduct(priceFlag, sortType);
     }
 
     private void setData() {
@@ -121,7 +91,6 @@ public class ProductListActivity extends BaseActivity {
             public void itemClickListener(int pos) {
                 String goodId = mProductList.get(pos).getId();
                 String cityCode = mProductList.get(pos).getCity_code();
-
                 Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
                 intent.putExtra("goodId", goodId);
                 intent.putExtra("cityCode", cityCode);
@@ -174,6 +143,7 @@ public class ProductListActivity extends BaseActivity {
                     } else {
                         priceFlag = 0;
                     }
+
                     sortProduct(priceFlag, sortType);
                     break;
                 case R.id.tv_sort:
@@ -185,7 +155,7 @@ public class ProductListActivity extends BaseActivity {
 
     private void sortProduct(int priceFlag, int sortType) {
         mLoadingRl.setVisibility(View.VISIBLE);
-        ApiManager.sortProduct(Constants.CITY_CODE, priceFlag + "", sortType + "", new ResponseCallbackHandler() {
+        ApiManager.sortProduct(mBrandId, Constants.CITY_CODE, priceFlag + "", sortType + "", new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
