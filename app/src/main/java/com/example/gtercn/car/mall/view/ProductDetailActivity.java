@@ -148,6 +148,8 @@ public class ProductDetailActivity extends BaseActivity {
                     break;
                 case R.id.tv_buy:
                     Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
+                    //传递过去数量，总价，
+
                     startActivity(toBuy);
                     break;
             }

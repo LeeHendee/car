@@ -12,11 +12,14 @@ import android.widget.Toast;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
-import com.example.gtercn.car.bean.User;
-import com.example.gtercn.car.net.THttpOpenHelper;
+import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -74,19 +77,45 @@ public class OrderConfirmActivity extends BaseActivity {
     private void initData() {
         mLoadingRl.setVisibility(View.GONE);
 
+        Intent intent = getIntent();
+        String goodId = intent.getStringExtra("goodId");
+        String number = intent.getStringExtra("number");
+        String totalCost = intent.getStringExtra("totalCost");
+        String propertyIds = intent.getStringExtra("propertyIds");
+        String addressId = intent.getStringExtra("addressId");
+//        String goodId = intent.getStringExtra("goodId");
+
+        String sign = "sign";
+        String time = "time";
+        String url = ApiManager.URL_BUY_NOW+"?token="+ Constants.TOKEN +"&sign="+sign+"&t="+time;
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("goods_id",goodId);
+            params.put("number",number);
+            params.put("total_price",totalCost);
+            params.put("spec_item_ids",propertyIds);
+            params.put("address_id",addressId);
+            params.put("customer_mark","123");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         OkHttpUtils
-                .get()
-                .url("http://114.215.71.170/car_inn/v1/open/goods/category/list ")
+                .postString()
+                .url(url)
+                .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                .content(new Gson().toJson(params))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.e("BaseActivity", "e is " + e.toString());
+
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e("BaseActivity", "response is " + response);
+
                     }
                 });
 

@@ -398,6 +398,12 @@ public class ApiManager {
      */
     public static final String URL_DEL_ADDRESS = BaseUrl + "address/delete";
 
+    /**
+     * 电商立即购买
+     */
+    public static final String URL_BUY_NOW = BaseUrl + "/order/buynow";
+
+
 
 //    --------------------------------------以上是电商部分---------------------------------------
     /**
