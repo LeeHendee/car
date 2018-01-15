@@ -4,16 +4,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.mall.adapter.OrderAdapter;
 import com.example.gtercn.car.mall.entity.OrderEntity;
 import com.example.gtercn.car.mall.entity.SingleItemEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
+import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.widget.DividerItemDecoration;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 /**
  * Author ：LeeHang
@@ -72,6 +78,8 @@ public class OrderActivity extends BaseActivity {
 
     private List<OrderEntity> orderList;
 
+    private String mStatus = "0";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +118,29 @@ public class OrderActivity extends BaseActivity {
         mLoadingRl.setVisibility(View.GONE);
         mAdapter = new OrderAdapter(this, orderList);
         mOrderRv.setAdapter(mAdapter);
+
+        String sign = "sign";
+        String time = "time";
+        String url = ApiManager.URL_ORDER_LIST;
+        OkHttpUtils
+                .get()
+                .url(url)
+                .addParams("status", mStatus)
+                .addParams("token", Constants.TOKEN)
+                .addParams("sign", sign)
+                .addParams("t", time)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "onResponse: response is " + response);
+                    }
+                });
     }
 
     @OnClick({

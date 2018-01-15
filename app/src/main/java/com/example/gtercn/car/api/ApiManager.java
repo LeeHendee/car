@@ -394,14 +394,24 @@ public class ApiManager {
     public static final String URL_SET_DEFAULT_ADDRESS = BaseUrl + "address/default/set";
 
     /**
+     * 电商获取默认收货地址
+     */
+    public static final String URL_GET_DEFAULT_ADDRESS = BaseUrl + "address/default/get";
+
+    /**
      * 电商地址管理列表-删除地址
      */
     public static final String URL_DEL_ADDRESS = BaseUrl + "address/delete";
 
     /**
-     * 电商立即购买
+     * 电商生成预订单
      */
-    public static final String URL_BUY_NOW = BaseUrl + "/order/buynow";
+    public static final String URL_PRE_ORDER = BaseUrl + "/order/settlement";
+
+    /**
+     * 电商列表
+     */
+    public static final String URL_ORDER_LIST = BaseUrl + "/order/list";
 
 
 

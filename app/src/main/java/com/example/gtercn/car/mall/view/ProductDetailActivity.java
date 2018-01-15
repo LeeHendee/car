@@ -89,6 +89,8 @@ public class ProductDetailActivity extends BaseActivity {
 
     private int curPosition;
 
+    private int count;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,7 +151,10 @@ public class ProductDetailActivity extends BaseActivity {
                 case R.id.tv_buy:
                     Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
                     //传递过去数量，总价，
-
+                    count = count == 0 ? 1 : count;
+                    toBuy.putExtra("number", count + "");
+                    toBuy.putExtra("totalCost", mEntity.getPromotion_price() * count + "");
+                    toBuy.putExtra("goodId", mEntity.getId());
                     startActivity(toBuy);
                     break;
             }

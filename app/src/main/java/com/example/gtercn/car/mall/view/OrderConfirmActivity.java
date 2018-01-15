@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.mall.entity.DefaultEntity;
+import com.example.gtercn.car.mall.entity.PreOrderEntity;
 import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -19,6 +21,9 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,50 +80,100 @@ public class OrderConfirmActivity extends BaseActivity {
     }
 
     private void initData() {
+        getDefaultAddress();
         mLoadingRl.setVisibility(View.GONE);
 
         Intent intent = getIntent();
-        String goodId = intent.getStringExtra("goodId");
+        final String goodId = intent.getStringExtra("goodId");
         String number = intent.getStringExtra("number");
         String totalCost = intent.getStringExtra("totalCost");
         String propertyIds = intent.getStringExtra("propertyIds");
-        String addressId = intent.getStringExtra("addressId");
-//        String goodId = intent.getStringExtra("goodId");
 
+        Log.e(TAG, "initData: goodId is " + goodId);
+        Log.e(TAG, "initData: number is " + number);
+        Log.e(TAG, "initData: totalCost is " + totalCost);
+        Log.e(TAG, "initData: propertyIds is " + propertyIds);
+
+        PreOrderEntity entity = new PreOrderEntity();
+        List<PreOrderEntity.GoodsAttrListBean> list = new ArrayList<>();
+        PreOrderEntity.GoodsAttrListBean bean = new PreOrderEntity.GoodsAttrListBean();
+        bean.setGoods_id(goodId);
+        bean.setNumber(number);
+        bean.setSpec_item_ids("1");
+        list.add(bean);
+        entity.setGoods_attr_list(list);
+        entity.setTotal_price(totalCost);
+        entity.setAddress_id("1");
+        entity.setCustomer_mark("");
+        entity.setInvoice("N");
+        entity.setItem_count("0");
         String sign = "sign";
         String time = "time";
-        String url = ApiManager.URL_BUY_NOW+"?token="+ Constants.TOKEN +"&sign="+sign+"&t="+time;
-
-        JSONObject params = new JSONObject();
-        try {
-            params.put("goods_id",goodId);
-            params.put("number",number);
-            params.put("total_price",totalCost);
-            params.put("spec_item_ids",propertyIds);
-            params.put("address_id",addressId);
-            params.put("customer_mark","123");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        Log.e(TAG, "initData: entity is " + entity.toString());
+        String url = ApiManager.URL_PRE_ORDER + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
         OkHttpUtils
                 .postString()
                 .url(url)
                 .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                .content(new Gson().toJson(params))
+                .content(new Gson().toJson(entity))
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        Log.e(TAG, "onError: e is " + e.toString());
+                        mLoadingRl.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-
+                        mLoadingRl.setVisibility(View.GONE);
+                        if (response != null) {
+                            Log.e(TAG, "onResponse: response is " + response);
+                            Gson gson = new Gson();
+                        }
                     }
                 });
 
+    }
+
+    private void setAddressUi(DefaultEntity entity) {
+        mNameTv.setText(entity.getResult().getName());
+        mTelTv.setText(entity.getResult().getPhone());
+        mAddressTv.setText(entity.getResult().getProvince() + entity.getResult().getCity() + entity.getResult().getDistrict() + " " + entity.getResult().getAddress());
+    }
+
+    private void getDefaultAddress() {
+        String sign = "sign";
+        String time = "time";
+
+        OkHttpUtils
+                .get()
+                .url(ApiManager.URL_GET_DEFAULT_ADDRESS)
+                .addParams("token", Constants.TOKEN)
+                .addParams("sign", sign)
+                .addParams("t", time)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mLoadingRl.setVisibility(View.GONE);
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mLoadingRl.setVisibility(View.GONE);
+                        if (response != null) {
+                            Log.e(TAG, "onResponse: response is " + response);
+                            Gson gson = new Gson();
+                            DefaultEntity entity = gson.fromJson(response, DefaultEntity.class);
+                            if (entity != null) {
+                                setAddressUi(entity);
+                            }
+
+                        }
+                    }
+                });
     }
 
     private void initView() {
