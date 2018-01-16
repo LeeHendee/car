@@ -7,7 +7,6 @@
 
     <include layout="@layout/custom_title_bar" />
 
-    <include layout="@layout/layout_loading" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -153,11 +152,11 @@
         android:layout_height="1px"
         android:background="@color/line_common_color" />
 
+    <include layout="@layout/layout_loading" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_order"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
+        android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -12,8 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gtercn.car.R;
-import com.example.gtercn.car.mall.entity.OrderEntity;
+import com.example.gtercn.car.mall.entity.OrderListEntity;
 import com.example.gtercn.car.mall.entity.SingleItemEntity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -29,9 +30,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     private Context context;
 
-    private List<OrderEntity> list;
+    private List<OrderListEntity.ResultBean> list;
 
-    public OrderAdapter(Context context, List<OrderEntity> list) {
+    public OrderAdapter(Context context, List<OrderListEntity.ResultBean> list) {
         this.context = context;
         this.list = list;
     }
@@ -45,18 +46,21 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
-        final OrderEntity entity = list.get(position);
-        holder.countTv.setText("共" + entity.getCountAll() + "件商品 实付款: ");
-        holder.totalTv.setText("￥" + entity.getTotalCost());
-        for (int i = 0; i < entity.getSingleItemList().size(); i++) {
-            SingleItemEntity single = entity.getSingleItemList().get(i);
+        final OrderListEntity.ResultBean entity = list.get(position);
+        holder.countTv.setText("共" + entity.getItem_count() + "件商品 实付款: ");
+        holder.totalTv.setText("￥" + entity.getTotal_amount());
+        List<OrderListEntity.ResultBean.OrderDetailsBean> itemList = entity.getOrder_details();
+        for (int i = 0; i < itemList.size(); i++) {
+            OrderListEntity.ResultBean.OrderDetailsBean single = itemList.get(i);
             View view = LayoutInflater.from(context).inflate(R.layout.item_single_product, null, false);
             TextView title = (TextView) view.findViewById(R.id.tv_title);
             TextView price = (TextView) view.findViewById(R.id.tv_price);
             TextView count = (TextView) view.findViewById(R.id.tv_count);
-            title.setText(single.getTitle());
-            price.setText(single.getPrice());
-            count.setText(single.getCount());
+            ImageView itemIv = (ImageView) view.findViewById(R.id.iv_item);
+//            title.setText(single.getTitle());
+//            price.setText(single.getPrice());
+            count.setText(single.getNumber() + "");
+            Picasso.with(context).load(single.getSmall_picture()).into(itemIv);
             TextView line = new TextView(context);
             line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,3));
             line.setBackgroundColor(Color.WHITE);
@@ -67,7 +71,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.orderNumberTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, entity.getOrderNumber(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, entity.getOrder_no(), Toast.LENGTH_SHORT).show();
             }
         });
     }

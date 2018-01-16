@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pager_bg">
+
+    <include layout="@layout/custom_title_bar" />
+
+    <RelativeLayout
+        android:id="@+id/rl_need_pay"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/rl_title"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="应付金额"
+            android:textColor="@color/text_common_color"
+            android:textSize="14sp"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/tv_need_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥0.00"
+            android:textColor="@color/orange_txt"
+            android:textSize="14sp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_choose_pay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="选择支付方式"
+        android:layout_below="@id/rl_need_pay"
+        android:textSize="14sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_alipay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_choose_pay"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_alipay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon_pay_alipay" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="支付宝"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/iv_alipay" />
+
+        <ImageView
+            android:id="@+id/iv_select_alipay"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/cart1_checkbox_unable" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_alipay"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_wechat_pay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/icon_pay_wechat" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信支付"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/iv_wechat_pay" />
+
+        <ImageView
+            android:id="@+id/iv_select_wechat"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/cart1_checkbox_unable" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_go_pay"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bg_orange"
+        android:text="使用支付宝支付￥00.00"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+</RelativeLayout>

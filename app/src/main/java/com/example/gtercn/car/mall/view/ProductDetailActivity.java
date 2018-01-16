@@ -152,9 +152,8 @@ public class ProductDetailActivity extends BaseActivity {
                     Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
                     //传递过去数量，总价，
                     count = count == 0 ? 1 : count;
-                    toBuy.putExtra("number", count + "");
-                    toBuy.putExtra("totalCost", mEntity.getPromotion_price() * count + "");
-                    toBuy.putExtra("goodId", mEntity.getId());
+                    toBuy.putExtra("number", count);
+                    toBuy.putExtra("singEntity", mEntity);
                     startActivity(toBuy);
                     break;
             }

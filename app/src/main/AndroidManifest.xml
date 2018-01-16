@@ -107,7 +107,7 @@
         <activity
             android:name=".mall.view.ReviewPostActivity"
             android:windowSoftInputMode="adjustUnspecified|stateAlwaysHidden" />
-        <activity android:name=".mall.view.OrderActivity" />
+        <activity android:name=".mall.view.OrderListActivity" />
 
         <activity android:name=".mall.view.PostAddressActivity"
             android:windowSoftInputMode="adjustUnspecified|stateAlwaysHidden" />
@@ -118,6 +118,7 @@
 
         <activity android:name=".mall.view.OrderConfirmActivity" />
         <activity android:name=".mall.view.BaseTestActivity" />
+        <activity android:name=".mall.view.ChoosePayActivity" />
 
 
         <service android:name=".service.AppService" />

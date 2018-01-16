@@ -1,11 +1,12 @@
 package com.example.gtercn.car.mall.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Yan on 2017/12/29.
  */
 
-public class ProductDetailEntity {
-
+public class ProductDetailEntity implements Serializable {
 
     /**
      * err_code : 0
@@ -50,7 +51,7 @@ public class ProductDetailEntity {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable {
         /**
          * id : 1
          * product_id : d8d95ae59f4111e79954180373af859e

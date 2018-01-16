@@ -5,12 +5,10 @@ import java.util.List;
 /**
  * Author ：LeeHang
  * CreateTime ：2018/1/15.
- * Used to :
+ * Used to : 提交订单，参数封装
  */
 
 public class PreOrderEntity {
-
-
     /**
      * goods_attr_list : [{"goods_id":"String,商品id","number":"String,商品数量","spec_item_ids":"String,商品规格ids,多个id逗号隔开（选填）"}]
      * item_count : String,商品件数(非商品数量)

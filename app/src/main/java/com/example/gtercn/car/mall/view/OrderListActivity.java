@@ -9,14 +9,15 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.adapter.GalleryAdapter;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.mall.adapter.OrderAdapter;
-import com.example.gtercn.car.mall.entity.OrderEntity;
+import com.example.gtercn.car.mall.entity.OrderListEntity;
 import com.example.gtercn.car.mall.entity.SingleItemEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
-import com.example.gtercn.car.widget.DividerItemDecoration;
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -34,9 +35,9 @@ import okhttp3.Call;
  * Used to : 订单管理页面
  */
 
-public class OrderActivity extends BaseActivity {
+public class OrderListActivity extends BaseActivity {
 
-    private static final String TAG = "OrderActivity";
+    private static final String TAG = "OrderListActivity";
 
     @BindView(R.id.rl_all)
     RelativeLayout mAllRl;
@@ -76,7 +77,7 @@ public class OrderActivity extends BaseActivity {
 
     private OrderAdapter mAdapter;
 
-    private List<OrderEntity> orderList;
+    private List<OrderListEntity.ResultBean> orderList;
 
     private String mStatus = "0";
 
@@ -84,7 +85,7 @@ public class OrderActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        initData();
+        initData(mStatus);
     }
 
     private void initView() {
@@ -93,39 +94,18 @@ public class OrderActivity extends BaseActivity {
         mIndexAll.setVisibility(View.VISIBLE);
         initRightTvBar("我的订单", null, null);
         mOrderRv.addItemDecoration(new RecyItemSpace(30));
+        mOrderRv.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void initData() {
+    private void initData(String status) {
         orderList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            OrderEntity entity = new OrderEntity();
-            entity.setCountAll("99");
-            entity.setOrderNumber("127356713");
-            entity.setTotalCost("999");
-
-            List<SingleItemEntity> list = new ArrayList<>();
-            for (int j = 0; j < 2; j++) {
-                SingleItemEntity single = new SingleItemEntity();
-                single.setCount("66");
-                single.setPrice("66.66");
-                single.setTitle("啥的卡死的卡死的打算阿斯顿分开爱上代付款就爱看打飞机按点发生大阿斯顿开发及");
-                list.add(single);
-            }
-            entity.setSingleItemList(list);
-            orderList.add(entity);
-        }
-        mOrderRv.setLayoutManager(new LinearLayoutManager(this));
-        mLoadingRl.setVisibility(View.GONE);
-        mAdapter = new OrderAdapter(this, orderList);
-        mOrderRv.setAdapter(mAdapter);
-
         String sign = "sign";
         String time = "time";
         String url = ApiManager.URL_ORDER_LIST;
         OkHttpUtils
                 .get()
                 .url(url)
-                .addParams("status", mStatus)
+                .addParams("status", status)
                 .addParams("token", Constants.TOKEN)
                 .addParams("sign", sign)
                 .addParams("t", time)
@@ -134,13 +114,30 @@ public class OrderActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Log.e(TAG, "onError: e is " + e.toString());
+                        mLoadingRl.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e(TAG, "onResponse: response is " + response);
+                        mLoadingRl.setVisibility(View.GONE);
+                        if (response != null) {
+                            Gson gson = new Gson();
+                            OrderListEntity entity = gson.fromJson(response, OrderListEntity.class);
+                            if (entity != null) {
+                                orderList = entity.getResult();
+                                setUi();
+                            }
+                        }
+
+
                     }
                 });
+    }
+
+    private void setUi() {
+        mAdapter = new OrderAdapter(this, orderList);
+        mOrderRv.setAdapter(mAdapter);
     }
 
     @OnClick({
@@ -153,6 +150,8 @@ public class OrderActivity extends BaseActivity {
     void myClick(View view) {
         switch (view.getId()) {
             case R.id.rl_all:
+                mStatus = "0";
+                initData(mStatus);
                 mIndexAll.setVisibility(View.VISIBLE);
                 mIndexWaitPay.setVisibility(View.GONE);
                 mIndexWaitAccept.setVisibility(View.GONE);
@@ -160,6 +159,8 @@ public class OrderActivity extends BaseActivity {
                 mIndexDone.setVisibility(View.GONE);
                 break;
             case R.id.rl_wait_pay:
+                mStatus = "1";
+                initData(mStatus);
                 mIndexAll.setVisibility(View.GONE);
                 mIndexWaitPay.setVisibility(View.VISIBLE);
                 mIndexWaitAccept.setVisibility(View.GONE);
@@ -167,6 +168,8 @@ public class OrderActivity extends BaseActivity {
                 mIndexDone.setVisibility(View.GONE);
                 break;
             case R.id.rl_wait_accept:
+                mStatus = "3";
+                initData(mStatus);
                 mIndexAll.setVisibility(View.GONE);
                 mIndexWaitPay.setVisibility(View.GONE);
                 mIndexWaitAccept.setVisibility(View.VISIBLE);
@@ -174,6 +177,8 @@ public class OrderActivity extends BaseActivity {
                 mIndexDone.setVisibility(View.GONE);
                 break;
             case R.id.rl_wait_review:
+                mStatus = "1";
+                initData(mStatus);
                 mIndexAll.setVisibility(View.GONE);
                 mIndexWaitPay.setVisibility(View.GONE);
                 mIndexWaitAccept.setVisibility(View.GONE);
@@ -181,6 +186,8 @@ public class OrderActivity extends BaseActivity {
                 mIndexDone.setVisibility(View.GONE);
                 break;
             case R.id.rl_done:
+                mStatus = "4";
+                initData(mStatus);
                 mIndexAll.setVisibility(View.GONE);
                 mIndexWaitPay.setVisibility(View.GONE);
                 mIndexWaitAccept.setVisibility(View.GONE);
