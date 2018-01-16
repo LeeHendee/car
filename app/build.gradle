@@ -92,5 +92,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'liji.library.dev:citypickerview:0.7.0'
     compile 'com.zhy:okhttputils:2.6.2'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 
 }

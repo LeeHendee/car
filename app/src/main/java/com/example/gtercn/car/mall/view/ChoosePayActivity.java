@@ -4,10 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.gtercn.car.R;
-import com.example.gtercn.car.adapter.MainViewPagerAdapter;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
