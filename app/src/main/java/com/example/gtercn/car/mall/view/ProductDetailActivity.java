@@ -8,9 +8,13 @@ import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ import com.example.gtercn.car.mall.adapter.ProductDetailPagerAdapter;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
 import com.example.gtercn.car.mall.entity.ProductListEntity;
 import com.example.gtercn.car.mall.entity.PropertyListEntity;
+import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -93,9 +98,15 @@ public class ProductDetailActivity extends BaseActivity {
 
     private RelativeLayout mLoadingRl;
 
+    private LinearLayout mSelectPropertyLayout;
+
     private int curPosition;
 
     private int count;
+
+    private View mView;
+
+    private List<PropertyListEntity.ResultBean.SpecListBean> propertyList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,6 +124,7 @@ public class ProductDetailActivity extends BaseActivity {
         mTitleReviewsTv.setOnClickListener(mListener);
         mTitleRightIv.setOnClickListener(mListener);
         mBuyTv.setOnClickListener(mListener);
+        mSelectPropertyLayout.setOnClickListener(mListener);
         mImagePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -163,6 +175,9 @@ public class ProductDetailActivity extends BaseActivity {
                     toBuy.putExtra("singEntity", mEntity);
                     startActivity(toBuy);
                     break;
+                case R.id.ll_select_property:
+                    setPropertyUi();
+                    break;
             }
         }
     };
@@ -194,7 +209,6 @@ public class ProductDetailActivity extends BaseActivity {
                 mTitleIndexThreeTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
             }
         }
-
     }
 
     private void initData() {
@@ -258,7 +272,8 @@ public class ProductDetailActivity extends BaseActivity {
 
     private void initView() {
         titleTvList = new ArrayList<>();
-        setContentView(R.layout.activity_product_detail);
+        mView = LayoutInflater.from(this).inflate(R.layout.activity_product_detail, null);
+        setContentView(mView);
         mImagePager = (ViewPager) findViewById(R.id.vp_product_detail);
         mDescriptionTv = (TextView) findViewById(R.id.tv_title);
         mSalePriceTv = (TextView) findViewById(R.id.tv_sale_price);
@@ -277,6 +292,7 @@ public class ProductDetailActivity extends BaseActivity {
         mIndexCurTv = (TextView) findViewById(R.id.tv_index_cur);
         mIndexTotalTv = (TextView) findViewById(R.id.tv_index_total);
         mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
+        mSelectPropertyLayout = (LinearLayout) findViewById(R.id.ll_select_property);
         mBuyTv = (TextView) findViewById(R.id.tv_buy);
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
@@ -307,7 +323,7 @@ public class ProductDetailActivity extends BaseActivity {
                             Gson gson = new Gson();
                             PropertyListEntity entity = gson.fromJson(response, PropertyListEntity.class);
                             if (entity != null && entity.getErr_code().equals("0")) {
-                                setPropertyUi();
+                                propertyList = entity.getResult().getSpec_list();
                             }
                         }
                     }
@@ -315,6 +331,33 @@ public class ProductDetailActivity extends BaseActivity {
     }
 
     private void setPropertyUi() {
+        View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_view, null);
+        final PopupWindow pw = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout closeRl = (RelativeLayout) popView.findViewById(R.id.rl_close);
+        TextView priceTv = (TextView) popView.findViewById(R.id.tv_price);
+        TextView property1Tv = (TextView) popView.findViewById(R.id.tv_property1);
+        TextView property2Tv = (TextView) popView.findViewById(R.id.tv_property2);
+        TextView countTv = (TextView) popView.findViewById(R.id.tv_count);
+        ImageView propertyIv = (ImageView) popView.findViewById(R.id.iv_property);
+        LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
+        for (int i = 0; i < propertyList.size(); i++) {
+            View itemView = LayoutInflater.from(this).inflate(R.layout.item_property, null);
+            TextView propertyName = (TextView) itemView.findViewById(R.id.tv_property_name);
+            FlowLayout proptertyFlow = (FlowLayout) itemView.findViewById(R.id.flow_property);
+            propertyName.setText(propertyList.get(i).getName());
+            propertiesLayout.addView(itemView);
+        }
+        priceTv.setText(getResources().getString(R.string.rmb) + mEntity.getPromotion_price());
+        Picasso.with(this).load(mEntity.getSmall_picture()).into(propertyIv);
+        closeRl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pw.dismiss();
+            }
+        });
+        pw.setFocusable(true);
+        pw.setOutsideTouchable(true);
+        pw.showAtLocation(mView, Gravity.BOTTOM, 0, 0);
 
     }
 
