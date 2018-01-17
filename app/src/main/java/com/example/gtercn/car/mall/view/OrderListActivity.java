@@ -129,8 +129,6 @@ public class OrderListActivity extends BaseActivity {
                                 setUi();
                             }
                         }
-
-
                     }
                 });
     }
@@ -147,6 +145,8 @@ public class OrderListActivity extends BaseActivity {
             R.id.rl_wait_review,
             R.id.rl_done,
     })
+
+        //订单状态，0查询全部,1待付款,4已发货(待收货),5已签收(待评价),6已评价(订单完成),
     void myClick(View view) {
         switch (view.getId()) {
             case R.id.rl_all:
@@ -168,7 +168,7 @@ public class OrderListActivity extends BaseActivity {
                 mIndexDone.setVisibility(View.GONE);
                 break;
             case R.id.rl_wait_accept:
-                mStatus = "3";
+                mStatus = "4";
                 initData(mStatus);
                 mIndexAll.setVisibility(View.GONE);
                 mIndexWaitPay.setVisibility(View.GONE);
@@ -177,7 +177,7 @@ public class OrderListActivity extends BaseActivity {
                 mIndexDone.setVisibility(View.GONE);
                 break;
             case R.id.rl_wait_review:
-                mStatus = "1";
+                mStatus = "5";
                 initData(mStatus);
                 mIndexAll.setVisibility(View.GONE);
                 mIndexWaitPay.setVisibility(View.GONE);
@@ -186,7 +186,7 @@ public class OrderListActivity extends BaseActivity {
                 mIndexDone.setVisibility(View.GONE);
                 break;
             case R.id.rl_done:
-                mStatus = "4";
+                mStatus = "6";
                 initData(mStatus);
                 mIndexAll.setVisibility(View.GONE);
                 mIndexWaitPay.setVisibility(View.GONE);

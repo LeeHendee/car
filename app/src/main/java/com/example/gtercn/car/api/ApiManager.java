@@ -49,8 +49,11 @@ public class ApiManager {
 //    private static final String HTTP = "http://192.168.1.192/car_home/app/v1";
 
     //外网测试环境
-    private static final String HTTPS = "https://api.shunjiatianxia.com/car_home/app/v1";
-    private static final String HTTP = "http://api.shunjiatianxia.com/car_home/app/v1";
+//    private static final String HTTPS = "https://api.shunjiatianxia.com/car_home/app/v1";
+//    private static final String HTTP = "http://api.shunjiatianxia.com/car_home/app/v1";
+
+    private static final String HTTPS = "https://114.215.71.170/car_home/app/v1";
+    private static final String HTTP = "http://114.215.71.170/car_home/app/v1";
 
     private static final String YIZHAN_HTTP = "http://114.215.71.170/car_home/app/v1";
 
