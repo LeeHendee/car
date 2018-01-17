@@ -23,14 +23,20 @@ import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.ProductDetailPagerAdapter;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
+import com.example.gtercn.car.mall.entity.ProductListEntity;
+import com.example.gtercn.car.mall.entity.PropertyListEntity;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 
 /**
@@ -95,6 +101,7 @@ public class ProductDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        getProperty();
         initData();
         initListener();
     }
@@ -253,7 +260,7 @@ public class ProductDetailActivity extends BaseActivity {
         titleTvList = new ArrayList<>();
         setContentView(R.layout.activity_product_detail);
         mImagePager = (ViewPager) findViewById(R.id.vp_product_detail);
-        mDescriptionTv = (TextView) findViewById(R.id.tv_product_description);
+        mDescriptionTv = (TextView) findViewById(R.id.tv_title);
         mSalePriceTv = (TextView) findViewById(R.id.tv_sale_price);
         mGoodReviewsRateTv = (TextView) findViewById(R.id.tv_good_reviews_rate);
         mSoldCountTv = (TextView) findViewById(R.id.tv_sold_count);
@@ -275,6 +282,40 @@ public class ProductDetailActivity extends BaseActivity {
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);
         changeTitleView(mTitleProductTv.getId());
+    }
+
+
+    private void getProperty() {
+        String categoryId = "7";
+        String isSearch = "1";
+        OkHttpUtils
+                .get()
+                .url(ApiManager.URL_PROPERTY_LIST)
+                .addParams("category_id", categoryId)
+                .addParams("is_search", isSearch)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response != null) {
+                            Log.e(TAG, "onResponse: response is " + response);
+                            Gson gson = new Gson();
+                            PropertyListEntity entity = gson.fromJson(response, PropertyListEntity.class);
+                            if (entity != null && entity.getErr_code().equals("0")) {
+                                setPropertyUi();
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void setPropertyUi() {
+
     }
 
     @Override

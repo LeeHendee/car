@@ -416,6 +416,11 @@ public class ApiManager {
      */
     public static final String URL_ORDER_LIST = BaseUrl + "/order/list";
 
+    /**
+     * 电商产品属性
+     */
+    public static final String URL_PROPERTY_LIST = BaseUrl + "open/goods/spec/list";
+
 
 
 //    --------------------------------------以上是电商部分---------------------------------------
