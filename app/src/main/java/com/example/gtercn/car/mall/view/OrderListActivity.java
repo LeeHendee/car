@@ -9,12 +9,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.gtercn.car.R;
-import com.example.gtercn.car.adapter.GalleryAdapter;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
-import com.example.gtercn.car.mall.adapter.OrderAdapter;
+import com.example.gtercn.car.mall.adapter.OrderListAdapter;
 import com.example.gtercn.car.mall.entity.OrderListEntity;
-import com.example.gtercn.car.mall.entity.SingleItemEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
@@ -75,7 +73,7 @@ public class OrderListActivity extends BaseActivity {
     @BindView(R.id.rl_loading)
     RelativeLayout mLoadingRl;
 
-    private OrderAdapter mAdapter;
+    private OrderListAdapter mAdapter;
 
     private List<OrderListEntity.ResultBean> orderList;
 
@@ -134,7 +132,7 @@ public class OrderListActivity extends BaseActivity {
     }
 
     private void setUi() {
-        mAdapter = new OrderAdapter(this, orderList);
+        mAdapter = new OrderListAdapter(this, orderList);
         mOrderRv.setAdapter(mAdapter);
     }
 

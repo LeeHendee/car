@@ -4,21 +4,31 @@ import java.util.List;
 
 /**
  * Author ：LeeHang
- * CreateTime ：2018/1/5.
- * Used to : 订单列表实体类
+ * CreateTime ：2018/1/18.
+ * Used to :
  */
 
-public class OrderListEntity {
+public class OrderDetailEntity {
+
 
     /**
-     * result : [{"id":"c3d5b3af9a9449e18684e986375cc56c","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","order_no":"G29AE1516163779520","order_status":4,"order_time":1516201289000,"item_count":1,"total_amount":100,"payment":100,"address_id":"1","logistics_id":"1","customer_mark":"客户备注信息（选填）","invoice":"Y","invoice_type":"E","invoice_title":"发票抬头（选填）","invoice_content":"发票内容（选填）","order_details":[{"id":"74d174af8e2c4c03b55669d803292c12","order_id":"c3d5b3af9a9449e18684e986375cc56c","goods_id":"2","number":1,"small_picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg","small_picture_list":["http://114.215.71.170:81/inn/advertisement/31da.jpg"],"goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 竞驰"},{"id":"b0507a4b4ef347619a1a9d4eaf9ae7f5","order_id":"c3d5b3af9a9449e18684e986375cc56c","goods_id":"2","number":1,"small_picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg","small_picture_list":["http://114.215.71.170:81/inn/advertisement/31da.jpg"],"goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 竞驰"},{"id":"89b3beaef5784221b8fb7298befbeb3c","order_id":"c3d5b3af9a9449e18684e986375cc56c","goods_id":"1","number":1,"small_picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg","small_picture_list":["http://114.215.71.170:81/inn/advertisement/9c93.jpg","http://114.215.71.170:81/inn/advertisement/9c93.jpg","http://114.215.71.170:81/inn/advertisement/9c93.jpg"],"goods_title":"米其林(Michelin)轮胎/汽车轮胎 205/55R16 91V 韧悦 ENERGY XM2 适配朗逸/马自达/速腾/本田思域/大众宝来"}],"logistics_detail":[{"id":"4","logistics_id":"1","description":"【大连市】 您的订单在京东【大连分拨中心】发货完成，准备送往京东【沙河口站】","create_time":1516014761000},{"id":"3","logistics_id":"1","description":"【大连市】 您的订单在京东【大连分拨中心】分拣完成","create_time":1515930521000},{"id":"2","logistics_id":"1","description":"【沈阳市】 您的订单在京东【沈阳沈北分拣中心】发货完成，准备送往京东【大连分拨中心】","create_time":1515723478000},{"id":"1","logistics_id":"1","description":"您的订单已经拣货完成","create_time":1515633478000}],"logistics_no":"E558963265001","logistics_name":"顺丰速运","realname":"张三","telphone":"18642693215","address":"辽宁省大连市中山区友好路125号3201"}]
      * err_code : 0
      * err_message : OK
+     * result : {"id":"c3d5b3af9a9449e18684e986375cc56c","user_id":"0779243b57824b0da9e79ed4a7f8f4b6","order_no":"G29AE1516163779520","order_status":4,"order_time":1516201289000,"item_count":1,"total_amount":100,"payment":100,"address_id":"1","logistics_id":"1","customer_mark":"客户备注信息（选填）","invoice":"Y","invoice_type":"E","invoice_title":"发票抬头（选填）","invoice_content":"发票内容（选填）","order_details":[{"id":"74d174af8e2c4c03b55669d803292c12","order_id":"c3d5b3af9a9449e18684e986375cc56c","goods_id":"2","number":1,"small_picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg","small_picture_list":["http://114.215.71.170:81/inn/advertisement/31da.jpg"],"goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 竞驰"},{"id":"b0507a4b4ef347619a1a9d4eaf9ae7f5","order_id":"c3d5b3af9a9449e18684e986375cc56c","goods_id":"2","number":1,"small_picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg","small_picture_list":["http://114.215.71.170:81/inn/advertisement/31da.jpg"],"goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 竞驰"},{"id":"89b3beaef5784221b8fb7298befbeb3c","order_id":"c3d5b3af9a9449e18684e986375cc56c","goods_id":"1","number":1,"small_picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg","small_picture_list":["http://114.215.71.170:81/inn/advertisement/9c93.jpg","http://114.215.71.170:81/inn/advertisement/9c93.jpg","http://114.215.71.170:81/inn/advertisement/9c93.jpg"],"goods_title":"米其林(Michelin)轮胎/汽车轮胎 205/55R16 91V 韧悦 ENERGY XM2 适配朗逸/马自达/速腾/本田思域/大众宝来"}],"logistics_detail":[{"id":"4","logistics_id":"1","description":"【大连市】 您的订单在京东【大连分拨中心】发货完成，准备送往京东【沙河口站】","create_time":1516014761000},{"id":"3","logistics_id":"1","description":"【大连市】 您的订单在京东【大连分拨中心】分拣完成","create_time":1515930521000},{"id":"2","logistics_id":"1","description":"【沈阳市】 您的订单在京东【沈阳沈北分拣中心】发货完成，准备送往京东【大连分拨中心】","create_time":1515723478000},{"id":"1","logistics_id":"1","description":"您的订单已经拣货完成","create_time":1515633478000}],"logistics_no":"E558963265001","logistics_name":"顺丰速运","realname":"张三","telphone":"18642693215","address":"辽宁省大连市中山区友好路125号3201"}
      */
 
     private String err_code;
     private String err_message;
-    private List<ResultBean> result;
+    private ResultBean result;
+
+    @Override
+    public String toString() {
+        return "OrderDetailEntity{" +
+                "err_code='" + err_code + '\'' +
+                ", err_message='" + err_message + '\'' +
+                ", result=" + result +
+                '}';
+    }
 
     public String getErr_code() {
         return err_code;
@@ -36,11 +46,11 @@ public class OrderListEntity {
         this.err_message = err_message;
     }
 
-    public List<ResultBean> getResult() {
+    public ResultBean getResult() {
         return result;
     }
 
-    public void setResult(List<ResultBean> result) {
+    public void setResult(ResultBean result) {
         this.result = result;
     }
 

@@ -119,6 +119,7 @@
         <activity android:name=".mall.view.OrderConfirmActivity" />
         <activity android:name=".mall.view.BaseTestActivity" />
         <activity android:name=".mall.view.ChoosePayActivity" />
+        <activity android:name=".mall.view.OrderDetailActivity" />
 
 
         <service android:name=".service.AppService" />

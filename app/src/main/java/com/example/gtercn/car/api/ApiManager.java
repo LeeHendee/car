@@ -412,9 +412,14 @@ public class ApiManager {
     public static final String URL_PRE_ORDER = BaseUrl + "/order/settlement";
 
     /**
-     * 电商列表
+     * 电商订单列表
      */
     public static final String URL_ORDER_LIST = BaseUrl + "/order/list";
+
+    /**
+     * 电商订单详情
+     */
+    public static final String URL_ORDER_DETAIL = BaseUrl + "/order/detail";
 
     /**
      * 电商产品属性

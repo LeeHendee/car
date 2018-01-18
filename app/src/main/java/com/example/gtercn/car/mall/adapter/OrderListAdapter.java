@@ -1,6 +1,7 @@
 package com.example.gtercn.car.mall.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.mall.entity.OrderListEntity;
-import com.example.gtercn.car.mall.entity.SingleItemEntity;
+import com.example.gtercn.car.mall.view.OrderDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -24,15 +25,15 @@ import java.util.List;
  * Used to : 订单管理适配器
  */
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
+public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderViewHolder> {
 
-    private static final String TAG = "OrderAdapter";
+    private static final String TAG = "OrderListAdapter";
 
     private Context context;
 
     private List<OrderListEntity.ResultBean> list;
 
-    public OrderAdapter(Context context, List<OrderListEntity.ResultBean> list) {
+    public OrderListAdapter(Context context, List<OrderListEntity.ResultBean> list) {
         this.context = context;
         this.list = list;
     }
@@ -74,6 +75,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 Toast.makeText(context, entity.getOrder_no(), Toast.LENGTH_SHORT).show();
             }
         });
+        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, OrderDetailActivity.class);
+                intent.putExtra("orderId", entity.getId());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -89,6 +99,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         LinearLayout wrapperLayout;
 
+        LinearLayout itemLayout;
+
         TextView totalTv;
 
         TextView countTv;
@@ -100,6 +112,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             countTv = (TextView) itemView.findViewById(R.id.tv_count);
             delIv = (ImageView) itemView.findViewById(R.id.iv_del);
             wrapperLayout = (LinearLayout) itemView.findViewById(R.id.ll_wrapper);
+            itemLayout = (LinearLayout) itemView.findViewById(R.id.ll_item);
         }
     }
 }
