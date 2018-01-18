@@ -78,6 +78,7 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initListener();
     }
 
     @Override
@@ -144,11 +145,27 @@ public class OrderDetailActivity extends BaseActivity {
         mOrderTotalTv.setText(getResources().getString(R.string.rmb) + bean.getTotal_amount());
         mActualPayTv.setText(getResources().getString(R.string.rmb) + bean.getPayment());
         mCreateTimeTv.setText(bean.getOrder_time() + "");
-
-
     }
 
+
+    private void initListener() {
+        mCopyTv.setOnClickListener(mListener);
+    }
+
+    private View.OnClickListener mListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.tv_copy:
+
+                    break;
+            }
+        }
+    };
+
     private String getOrderStatus(OrderDetailEntity.ResultBean bean) {
+        if (bean == null)
+            return null;
         int orderStatus = bean.getOrder_status();
         switch (orderStatus) {
             case 1:
@@ -163,7 +180,6 @@ public class OrderDetailActivity extends BaseActivity {
                 return "待评价";
             case 6:
                 return "已完成";
-
         }
         return null;
     }

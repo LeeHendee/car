@@ -26,13 +26,14 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
             signingConfig signingConfigs.cheyizhan
         }
         debug {
             debuggable true
+
         }
     }
     lintOptions {

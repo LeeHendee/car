@@ -5,7 +5,19 @@
     android:background="@color/pager_bg"
     android:orientation="vertical">
 
-    <TextView
+    <include layout="@layout/custom_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
         android:id="@+id/tv_status"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -18,7 +30,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:background="@color/white"
         android:orientation="horizontal">
 
@@ -26,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:paddingLeft="10dp"
             android:text="订单号："
             android:textColor="@color/text_note_color" />
@@ -35,7 +47,7 @@
             android:id="@+id/tv_order_number"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3.5"
+            android:layout_weight="3"
             android:ellipsize="end"
             android:gravity="center|left"
             android:paddingLeft="5dp"
@@ -47,10 +59,10 @@
             android:id="@+id/tv_copy"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="6dp"
             android:layout_weight="1"
             android:background="@drawable/order_button_bg"
             android:gravity="center"
@@ -62,14 +74,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/icon_location" />
 
@@ -336,5 +348,7 @@
 
     </LinearLayout>
 
+    </LinearLayout>
 
+    </ScrollView>
 </LinearLayout>
