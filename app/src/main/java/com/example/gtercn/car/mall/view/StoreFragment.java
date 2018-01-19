@@ -148,8 +148,10 @@ public class StoreFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String classifyId = mClassifyList.get((int) l).getId();
+                String classifyName = mClassifyList.get((int) l).getTitle();
                 Intent intent = new Intent(getActivity(), BrandActivity.class);
                 intent.putExtra("classifyId", classifyId);
+                intent.putExtra("classifyName", classifyName);
                 startActivity(intent);
             }
         });

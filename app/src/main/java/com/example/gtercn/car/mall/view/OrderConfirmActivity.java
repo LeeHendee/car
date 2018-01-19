@@ -93,7 +93,6 @@ public class OrderConfirmActivity extends BaseActivity {
         productEntity = (ProductDetailEntity.ResultBean) intent.getSerializableExtra("singEntity");
         mCount = intent.getIntExtra("number", 0);
         setUi(mCount);
-
     }
 
     private void setUi(int count) {

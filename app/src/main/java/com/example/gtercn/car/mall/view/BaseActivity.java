@@ -1,9 +1,12 @@
 package com.example.gtercn.car.mall.view;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,5 +86,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void showToast(int msg) {
         Toast.makeText(this, msg + "", Toast.LENGTH_SHORT).show();
     }
+
 
 }

@@ -36,12 +36,14 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 
 /**
@@ -96,6 +98,10 @@ public class ProductDetailActivity extends BaseActivity {
 
     private TextView mBuyTv;
 
+    private TextView mAddCartTv;
+
+    private ImageView mCartIv;
+
     private RelativeLayout mLoadingRl;
 
     private LinearLayout mSelectPropertyLayout;
@@ -124,6 +130,8 @@ public class ProductDetailActivity extends BaseActivity {
         mTitleReviewsTv.setOnClickListener(mListener);
         mTitleRightIv.setOnClickListener(mListener);
         mBuyTv.setOnClickListener(mListener);
+        mAddCartTv.setOnClickListener(mListener);
+        mCartIv.setOnClickListener(mListener);
         mSelectPropertyLayout.setOnClickListener(mListener);
         mImagePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -178,9 +186,52 @@ public class ProductDetailActivity extends BaseActivity {
                 case R.id.ll_select_property:
                     setPropertyUi();
                     break;
+                case R.id.tv_add_cart:
+                    //将此商品加入购物车
+                    addToCart();
+                    break;
+                case R.id.iv_cart:
+                    //跳转到购物车
+                    Intent goToCart = new Intent(ProductDetailActivity.this, CartActivity.class);
+                    startActivity(goToCart);
+                    break;
+
             }
         }
     };
+
+    private void addToCart() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("goods_id", 2);
+            params.put("number", 1);
+            params.put("spec_item_ids", 2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //// TODO: 2018/1/19 此接口未调通 
+        OkHttpUtils
+                .postString()
+                .url(ApiManager.URL_ADD_CART)
+                .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                .content(new Gson().toJson(params))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response != null) {
+                            Log.e(TAG, "response: response is " + response);
+
+
+                        }
+                    }
+                });
+    }
 
     private void changeTitleView(int selectId) {
         for (int i = 0; i < titleTvList.size(); i++) {
@@ -294,6 +345,8 @@ public class ProductDetailActivity extends BaseActivity {
         mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
         mSelectPropertyLayout = (LinearLayout) findViewById(R.id.ll_select_property);
         mBuyTv = (TextView) findViewById(R.id.tv_buy);
+        mAddCartTv = (TextView) findViewById(R.id.tv_add_cart);
+        mCartIv = (ImageView) findViewById(R.id.iv_cart);
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);

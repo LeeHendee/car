@@ -49,6 +49,8 @@ public class BrandActivity extends BaseActivity {
 
     private BrandAdapter mAdapter;
 
+    private String mBrandName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,13 @@ public class BrandActivity extends BaseActivity {
         //需要传入一个分类id
         Intent intent = getIntent();
         String classifyId = intent.getStringExtra("classifyId");
+        mBrandName = intent.getStringExtra("classifyName");
+        initRightIvBar(mBrandName, R.drawable.icon_search, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(BrandActivity.this, "搜索", Toast.LENGTH_SHORT).show();
+            }
+        });
         ApiManager.getBrandList(classifyId, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
@@ -103,12 +112,6 @@ public class BrandActivity extends BaseActivity {
 
     private void initView() {
         setContentView(R.layout.activity_brand);
-        initRightIvBar("分类名", R.drawable.icon_search, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(BrandActivity.this, "搜索", Toast.LENGTH_SHORT).show();
-            }
-        });
         mSwipe = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         mBrandRv = (RecyclerView) findViewById(R.id.rec_brand);
         mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);

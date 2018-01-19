@@ -387,6 +387,11 @@ public class ApiManager {
     public static final String URL_DEL_PRODUCT = BaseUrl + "/cart/delete";
 
     /**
+     * 电商加入到购物车
+     */
+    public static final String URL_ADD_CART = BaseUrl + "/cart/add" + "?token=" + Constants.TOKEN + "&sign=1&time=1";
+
+    /**
      * 电商地址管理列表
      */
     public static final String URL_MANAGE_ADDRESS = BaseUrl + "address/list";

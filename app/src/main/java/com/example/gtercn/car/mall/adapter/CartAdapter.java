@@ -1,17 +1,21 @@
 package com.example.gtercn.car.mall.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.mall.IListener;
 import com.example.gtercn.car.mall.entity.CartEntity;
+import com.example.gtercn.car.mall.view.ProductDetailActivity;
+import com.example.gtercn.car.utils.Constants;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -86,6 +90,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             }
         });
 
+        holder.itemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProductDetailActivity.class);
+                intent.putExtra("goodId", bean.getId());
+                intent.putExtra("cityCode", Constants.CITY_CODE);
+                context.startActivity(intent);
+            }
+        });
+
         if (bean.getNumber() == 1){
             holder.minusTv.setTextColor(context.getResources().getColor(R.color.text_note_color));
         }else {
@@ -109,6 +123,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         TextView minusTv;
         TextView plusTv;
         TextView countTv;
+        LinearLayout itemLayout;
+
 
         public CartViewHolder(View itemView) {
             super(itemView);
@@ -119,6 +135,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             minusTv = (TextView) itemView.findViewById(R.id.tv_minus);
             plusTv = (TextView) itemView.findViewById(R.id.tv_plus);
             countTv = (TextView) itemView.findViewById(R.id.tv_count);
+            itemLayout = (LinearLayout) itemView.findViewById(R.id.ll_item);
         }
     }
 

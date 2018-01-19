@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_custom_dialog">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="80dp"
+            android:text="dialog_content"
+            android:padding="20dp"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@color/text_common_color" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_common_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_left"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="取消"
+                android:textColor="@color/text_note_color"
+                android:textSize="18sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tv_right"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="确定"
+                android:textColor="@color/text_note_color"
+                android:textSize="18sp"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

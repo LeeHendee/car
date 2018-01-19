@@ -89,12 +89,7 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        initRightIvBar("订单详情", R.drawable.shop_cart, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(OrderDetailActivity.this, "跳转到购物车", Toast.LENGTH_SHORT).show();
-            }
-        });
+        initRightIvBar("订单详情", 0, null);
     }
 
     @Override
@@ -157,7 +152,6 @@ public class OrderDetailActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.tv_copy:
-
                     break;
             }
         }

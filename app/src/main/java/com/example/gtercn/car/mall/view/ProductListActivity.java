@@ -189,7 +189,7 @@ public class ProductListActivity extends BaseActivity {
         for (int i = 0; i < mSortTvList.size(); i++) {
             TextView tv = mSortTvList.get(i);
             if (tv.getId() == id) {
-                tv.setTextColor(Color.BLUE);
+                tv.setTextColor(getResources().getColor(R.color.orange_txt));
             } else {
                 tv.setTextColor(getResources().getColor(R.color.text_common_color));
             }
