@@ -431,6 +431,11 @@ public class ApiManager {
      */
     public static final String URL_PROPERTY_LIST = BaseUrl + "open/goods/spec/list";
 
+    /**
+     * 电商生成预订单接口
+     */
+    public static final String URL_CREATE_PRE_ORDER = BaseUrl + "order/tobuy";
+
 
 
 //    --------------------------------------以上是电商部分---------------------------------------
@@ -676,8 +681,8 @@ public class ApiManager {
     /**
      * 电商品牌介绍列表
      */
-    public static void getBrandList(String categoryId, ResponseCallbackHandler handler, int type, String tag) {
-        String url = ApiManager.URL_BRAND + "?category_id=" + categoryId;
+    public static void getBrandList(String categoryId, String cityCode, ResponseCallbackHandler handler, int type, String tag) {
+        String url = ApiManager.URL_BRAND + "?category_id=" + categoryId + "&city_code=" + cityCode;
         ApiHttp.getBrandList(url, handler, type, tag);
     }
 

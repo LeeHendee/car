@@ -23,6 +23,7 @@ import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.BrandAdapter;
 import com.example.gtercn.car.mall.entity.BrandListEntity;
 import com.example.gtercn.car.mall.entity.SecKillEntity;
+import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -70,7 +71,8 @@ public class BrandActivity extends BaseActivity {
                 Toast.makeText(BrandActivity.this, "搜索", Toast.LENGTH_SHORT).show();
             }
         });
-        ApiManager.getBrandList(classifyId, new ResponseCallbackHandler() {
+        String cityCode = Constants.CITY_CODE;
+        ApiManager.getBrandList(classifyId, cityCode, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
                 if (mSwipe.isRefreshing()) {

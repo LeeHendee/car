@@ -26,6 +26,7 @@ import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.ProductDetailPagerAdapter;
+import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
 import com.example.gtercn.car.mall.entity.ProductListEntity;
 import com.example.gtercn.car.mall.entity.PropertyListEntity;
@@ -39,6 +40,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +116,8 @@ public class ProductDetailActivity extends BaseActivity {
 
     private List<PropertyListEntity.ResultBean.SpecListBean> propertyList;
 
+    private CreatePreOrderEntity params;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,11 +180,18 @@ public class ProductDetailActivity extends BaseActivity {
                     changeTitleView(view.getId());
                     break;
                 case R.id.tv_buy:
+                    params = new CreatePreOrderEntity();
                     Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
                     //传递过去数量，总价，
                     count = count == 0 ? 1 : count;
-                    toBuy.putExtra("number", count);
-                    toBuy.putExtra("singEntity", mEntity);
+                    List<CreatePreOrderEntity.GoodsListBean> listBeen = new ArrayList<>();
+                    CreatePreOrderEntity.GoodsListBean bean = new CreatePreOrderEntity.GoodsListBean();
+                    bean.setGoods_id(mEntity.getId());
+                    bean.setNumber(count + "");
+                    bean.setSpec_item_ids("1");
+                    listBeen.add(bean);
+                    params.setGoods_list(listBeen);
+                    toBuy.putExtra("params", params);
                     startActivity(toBuy);
                     break;
                 case R.id.ll_select_property:

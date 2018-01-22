@@ -1,5 +1,6 @@
 package com.example.gtercn.car.mall.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ import com.example.gtercn.car.interfaces.ResponseStringListener;
 import com.example.gtercn.car.mall.IListener;
 import com.example.gtercn.car.mall.adapter.CartAdapter;
 import com.example.gtercn.car.mall.entity.CartEntity;
+import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
@@ -146,7 +148,21 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
                         Toast.makeText(CartActivity.this, "去删除", Toast.LENGTH_SHORT).show();
                         delCart();
                     } else {
-                        Toast.makeText(CartActivity.this, "去结算", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(CartActivity.this, OrderConfirmActivity.class);
+                        CreatePreOrderEntity params = new CreatePreOrderEntity();
+                        List<CreatePreOrderEntity.GoodsListBean> listBeen = new ArrayList<>();
+                        CreatePreOrderEntity.GoodsListBean bean = new CreatePreOrderEntity.GoodsListBean();
+                        for (int i = 0; i < cartList.size(); i++) {
+                            if (cartList.get(i).isSelected()) {
+                                bean.setGoods_id(cartList.get(i).getGoods_id());
+                                bean.setNumber(cartList.get(i).getNumber() + "");
+                                bean.setSpec_item_ids(cartList.get(i).getSpec_item_ids());
+                                listBeen.add(bean);
+                            }
+                        }
+                        params.setGoods_list(listBeen);
+                        intent.putExtra("params", params);
+                        startActivity(intent);
                     }
                     break;
             }
@@ -283,10 +299,12 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
     }
 
     @Override
-    protected void onExecuteSuccess(String result, int type) {}
+    protected void onExecuteSuccess(String result, int type) {
+    }
 
     @Override
-    protected void onExecuteFailure(int type) {}
+    protected void onExecuteFailure(int type) {
+    }
 
     @Override
     public void itemClickListener(int pos) {

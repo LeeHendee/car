@@ -8,8 +8,9 @@ import java.util.List;
 
 public class BrandListEntity {
 
+
     /**
-     * result : [{"id":"dc1dab999f3d11e79954180373af859e","category_id":"7","cn_name":"米其林","en_name":"MICHELIN","sort":1,"logo":"logo.png","descrption":"米其林","picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg"},{"id":"dc1daf7a9f3d11e79954180373af859e","category_id":"7","cn_name":"马牌","en_name":"Continental","sort":2,"logo":"logo.png","descrption":"马牌","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg"},{"id":"dc1db0299f3d11e79954180373af859e","category_id":"7","cn_name":"普利司通","en_name":"Bridgestone","sort":3,"logo":"logo.png","descrption":"普利司通","picture":"http://114.215.71.170:81/inn/advertisement/bb12.jpg"},{"id":"dc1db09a9f3d11e79954180373af859e","category_id":"7","cn_name":"邓禄普","en_name":"DUNLOP","sort":4,"logo":"logo.png","descrption":"邓禄普","picture":"http://114.215.71.170:81/inn/advertisement/d875.jpg"},{"id":"dc1db1019f3d11e79954180373af859e","category_id":"7","cn_name":"固特异","en_name":"Goodyear","sort":5,"logo":"logo.png","descrption":"固特异","picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg"},{"id":"dc1db1579f3d11e79954180373af859e","category_id":"7","cn_name":"佳通轮胎","en_name":"Giti","sort":6,"logo":"logo.png","descrption":"佳通轮胎","picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg"},{"id":"dc1db1a99f3d11e79954180373af859e","category_id":"7","cn_name":"韩泰","en_name":"Hankook","sort":7,"logo":"logo.png","descrption":"韩泰","picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg"},{"id":"dc1db1ff9f3d11e79954180373af859e","category_id":"7","cn_name":"倍耐力","en_name":"Pirelli","sort":8,"logo":"logo.png","descrption":"倍耐力","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg"},{"id":"dc1db2a59f3d11e79954180373af859e","category_id":"7","cn_name":"玛吉斯","en_name":"","sort":9,"logo":"logo.png","descrption":"玛吉斯","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg"},{"id":"dc1db2f89f3d11e79954180373af859e","category_id":"7","cn_name":"朝阳","en_name":"Continental","sort":10,"logo":"logo.png","descrption":"朝阳","picture":"http://114.215.71.170:81/inn/advertisement/d875.jpg"},{"id":"dc1db3689f3d11e79954180373af859e","category_id":"7","cn_name":"锦湖","en_name":"Bridgestone","sort":11,"logo":"logo.png","descrption":"锦湖","picture":"http://114.215.71.170:81/inn/advertisement/bb12.jpg"},{"id":"dc1db3be9f3d11e79954180373af859e","category_id":"7","cn_name":"优科豪马","en_name":"yokohama","sort":12,"logo":"logo.png","descrption":"优科豪马","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg"},{"id":"dc1db41b9f3d11e79954180373af859e","category_id":"7","cn_name":"玲珑轮胎","en_name":"","sort":13,"logo":"logo.png","descrption":"玲珑轮胎","picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg"}]
+     * result : [{"id":"dc1dab999f3d11e79954180373af859e","category_id":"7","cn_name":"米其林","en_name":"MICHELIN","sort":1,"logo":"logo.png","descrption":"米其林","picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg","picture_list":[{"picture_url":"http://114.215.71.170:81/inn/advertisement/9c93.jpg","goods_id":"2"},{"picture_url":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","goods_id":"1"}]},{"id":"dc1daf7a9f3d11e79954180373af859e","category_id":"7","cn_name":"马牌","en_name":"Continental","sort":2,"logo":"logo.png","descrption":"马牌","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg","picture_list":[]},{"id":"dc1db0299f3d11e79954180373af859e","category_id":"7","cn_name":"普利司通","en_name":"Bridgestone","sort":3,"logo":"logo.png","descrption":"普利司通","picture":"http://114.215.71.170:81/inn/advertisement/bb12.jpg"},{"id":"dc1db09a9f3d11e79954180373af859e","category_id":"7","cn_name":"邓禄普","en_name":"DUNLOP","sort":4,"logo":"logo.png","descrption":"邓禄普","picture":"http://114.215.71.170:81/inn/advertisement/d875.jpg"},{"id":"dc1db1019f3d11e79954180373af859e","category_id":"7","cn_name":"固特异","en_name":"Goodyear","sort":5,"logo":"logo.png","descrption":"固特异","picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg"},{"id":"dc1db1579f3d11e79954180373af859e","category_id":"7","cn_name":"佳通轮胎","en_name":"Giti","sort":6,"logo":"logo.png","descrption":"佳通轮胎","picture":"http://114.215.71.170:81/inn/advertisement/31da.jpg"},{"id":"dc1db1a99f3d11e79954180373af859e","category_id":"7","cn_name":"韩泰","en_name":"Hankook","sort":7,"logo":"logo.png","descrption":"韩泰","picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg"},{"id":"dc1db1ff9f3d11e79954180373af859e","category_id":"7","cn_name":"倍耐力","en_name":"Pirelli","sort":8,"logo":"logo.png","descrption":"倍耐力","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg"},{"id":"dc1db2a59f3d11e79954180373af859e","category_id":"7","cn_name":"玛吉斯","en_name":"","sort":9,"logo":"logo.png","descrption":"玛吉斯","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg"},{"id":"dc1db2f89f3d11e79954180373af859e","category_id":"7","cn_name":"朝阳","en_name":"Continental","sort":10,"logo":"logo.png","descrption":"朝阳","picture":"http://114.215.71.170:81/inn/advertisement/d875.jpg"},{"id":"dc1db3689f3d11e79954180373af859e","category_id":"7","cn_name":"锦湖","en_name":"Bridgestone","sort":11,"logo":"logo.png","descrption":"锦湖","picture":"http://114.215.71.170:81/inn/advertisement/bb12.jpg"},{"id":"dc1db3be9f3d11e79954180373af859e","category_id":"7","cn_name":"优科豪马","en_name":"yokohama","sort":12,"logo":"logo.png","descrption":"优科豪马","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg"},{"id":"dc1db41b9f3d11e79954180373af859e","category_id":"7","cn_name":"玲珑轮胎","en_name":"","sort":13,"logo":"logo.png","descrption":"玲珑轮胎","picture":"http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/9c93.jpg"}]
      * err_code : 0
      * err_message : OK
      */
@@ -61,6 +62,7 @@ public class BrandListEntity {
          * logo : logo.png
          * descrption : 米其林
          * picture : http://114.215.71.170:81/inn/advertisement/9c93.jpg,http://114.215.71.170:81/inn/advertisement/b121b.jpg
+         * picture_list : [{"picture_url":"http://114.215.71.170:81/inn/advertisement/9c93.jpg","goods_id":"2"},{"picture_url":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","goods_id":"1"}]
          */
 
         private String id;
@@ -71,6 +73,7 @@ public class BrandListEntity {
         private String logo;
         private String descrption;
         private String picture;
+        private List<PictureListBean> picture_list;
 
         @Override
         public String toString() {
@@ -83,6 +86,7 @@ public class BrandListEntity {
                     ", logo='" + logo + '\'' +
                     ", descrption='" + descrption + '\'' +
                     ", picture='" + picture + '\'' +
+                    ", picture_list=" + picture_list +
                     '}';
         }
 
@@ -148,6 +152,48 @@ public class BrandListEntity {
 
         public void setPicture(String picture) {
             this.picture = picture;
+        }
+
+        public List<PictureListBean> getPicture_list() {
+            return picture_list;
+        }
+
+        public void setPicture_list(List<PictureListBean> picture_list) {
+            this.picture_list = picture_list;
+        }
+
+        public static class PictureListBean {
+            /**
+             * picture_url : http://114.215.71.170:81/inn/advertisement/9c93.jpg
+             * goods_id : 2
+             */
+
+            private String picture_url;
+            private String goods_id;
+
+            @Override
+            public String toString() {
+                return "PictureListBean{" +
+                        "picture_url='" + picture_url + '\'' +
+                        ", goods_id='" + goods_id + '\'' +
+                        '}';
+            }
+
+            public String getPicture_url() {
+                return picture_url;
+            }
+
+            public void setPicture_url(String picture_url) {
+                this.picture_url = picture_url;
+            }
+
+            public String getGoods_id() {
+                return goods_id;
+            }
+
+            public void setGoods_id(String goods_id) {
+                this.goods_id = goods_id;
+            }
         }
     }
 }

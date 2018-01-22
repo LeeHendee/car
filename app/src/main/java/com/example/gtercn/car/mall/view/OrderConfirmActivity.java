@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.mall.entity.ConfirmOrderEntity;
+import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
 import com.example.gtercn.car.mall.entity.DefaultEntity;
 import com.example.gtercn.car.mall.entity.PreOrderEntity;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
@@ -80,6 +82,10 @@ public class OrderConfirmActivity extends BaseActivity {
     private ProductDetailEntity.ResultBean productEntity;
     private int mCount;
 
+    private CreatePreOrderEntity params;
+
+    private List<ConfirmOrderEntity.ResultBean.GoodsListBean> list;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,24 +96,61 @@ public class OrderConfirmActivity extends BaseActivity {
     private void initData() {
         getDefaultAddress();
         Intent intent = getIntent();
-        productEntity = (ProductDetailEntity.ResultBean) intent.getSerializableExtra("singEntity");
-        mCount = intent.getIntExtra("number", 0);
-        setUi(mCount);
+        params = (CreatePreOrderEntity) intent.getSerializableExtra("params");
+
+        String sign = "sign";
+        String time = "time";
+        String url = ApiManager.URL_CREATE_PRE_ORDER + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
+        OkHttpUtils
+                .postString()
+                .url(url)
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
+                .content(new Gson().toJson(params))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response != null) {
+                            Log.e(TAG, "onResponse: response is " + response);
+                            ConfirmOrderEntity entity = new Gson().fromJson(response, ConfirmOrderEntity.class);
+                            if (entity != null) {
+                                list = entity.getResult().getGoods_list();
+                                setUi();
+                            }
+                        }
+                    }
+                });
+
     }
 
-    private void setUi(int count) {
-        View view = LayoutInflater.from(this).inflate(R.layout.item_single_product, null);
-        ImageView itemIv = (ImageView) view.findViewById(R.id.iv_item);
-        TextView titleTv = (TextView) view.findViewById(R.id.tv_title);
-        TextView priceTv = (TextView) view.findViewById(R.id.tv_price);
-        TextView countTv = (TextView) view.findViewById(R.id.tv_count);
-        Picasso.with(this).load(productEntity.getSmall_picture()).into(itemIv);
-        titleTv.setText(productEntity.getGoods_title());
-        priceTv.setText(getResources().getString(R.string.rmb) + productEntity.getPromotion_price());
-        countTv.setText("x" + count);
-        mOrgTotalTv.setText(getResources().getString(R.string.rmb) + productEntity.getPromotion_price() * count);
-        mTotalPayTv.setText("实付款: " + getResources().getString(R.string.rmb) + productEntity.getPromotion_price() * count);
-        mProductLayout.addView(view);
+
+    // TODO: 2018/1/22 待调试
+    private void setUi() {
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                ConfirmOrderEntity.ResultBean.GoodsListBean bean = list.get(i);
+                View view = LayoutInflater.from(this).inflate(R.layout.item_single_product, null);
+                ImageView itemIv = (ImageView) view.findViewById(R.id.iv_item);
+                TextView titleTv = (TextView) view.findViewById(R.id.tv_title);
+                TextView priceTv = (TextView) view.findViewById(R.id.tv_price);
+                TextView countTv = (TextView) view.findViewById(R.id.tv_count);
+                Picasso.with(this).load(bean.getPicture()).into(itemIv);
+                titleTv.setText(bean.getGoods_title());
+                priceTv.setText(getResources().getString(R.string.rmb) + bean.getPromotion_price());
+                countTv.setText("x" + bean.getNumber());
+
+                mProductLayout.addView(view);
+            }
+            mOrgTotalTv.setText(getResources().getString(R.string.rmb) + "111");
+            mTotalPayTv.setText("实付款: " + getResources().getString(R.string.rmb) + "99");
+        }
+
+
     }
 
     private void setAddressUi(DefaultEntity entity) {
@@ -191,7 +234,7 @@ public class OrderConfirmActivity extends BaseActivity {
         OkHttpUtils
                 .postString()
                 .url(url)
-                .mediaType(MediaType.parse("application/json;charset=utf-8"))
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
                 .content(new Gson().toJson(entity))
                 .build()
                 .execute(new StringCallback() {
