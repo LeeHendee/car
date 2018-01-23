@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.mall.entity.CommitOrderResultEntity;
 import com.example.gtercn.car.mall.entity.ConfirmOrderEntity;
 import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
 import com.example.gtercn.car.mall.entity.DefaultEntity;
@@ -25,9 +26,6 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,12 +77,13 @@ public class OrderConfirmActivity extends BaseActivity {
     @BindView(R.id.ll_product_view)
     LinearLayout mProductLayout;
 
-    private ProductDetailEntity.ResultBean productEntity;
-    private int mCount;
-
     private CreatePreOrderEntity params;
 
+    private ConfirmOrderEntity mEntity;
+
     private List<ConfirmOrderEntity.ResultBean.GoodsListBean> list;
+
+    private String mAddressId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,10 +93,8 @@ public class OrderConfirmActivity extends BaseActivity {
     }
 
     private void initData() {
-        getDefaultAddress();
         Intent intent = getIntent();
         params = (CreatePreOrderEntity) intent.getSerializableExtra("params");
-
         String sign = "sign";
         String time = "time";
         String url = ApiManager.URL_CREATE_PRE_ORDER + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
@@ -110,26 +107,26 @@ public class OrderConfirmActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        mLoadingRl.setVisibility(View.GONE);
                         Log.e(TAG, "onError: e is " + e.toString());
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        mLoadingRl.setVisibility(View.GONE);
                         if (response != null) {
                             Log.e(TAG, "onResponse: response is " + response);
-                            ConfirmOrderEntity entity = new Gson().fromJson(response, ConfirmOrderEntity.class);
-                            if (entity != null) {
-                                list = entity.getResult().getGoods_list();
+                            mEntity = new Gson().fromJson(response, ConfirmOrderEntity.class);
+                            if (mEntity != null) {
+                                list = mEntity.getResult().getGoods_list();
                                 setUi();
+                                setAddressUi();
                             }
                         }
                     }
                 });
-
     }
 
-
-    // TODO: 2018/1/22 待调试
     private void setUi() {
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
@@ -146,49 +143,16 @@ public class OrderConfirmActivity extends BaseActivity {
 
                 mProductLayout.addView(view);
             }
-            mOrgTotalTv.setText(getResources().getString(R.string.rmb) + "111");
-            mTotalPayTv.setText("实付款: " + getResources().getString(R.string.rmb) + "99");
+            mOrgTotalTv.setText(getResources().getString(R.string.rmb) + mEntity.getResult().getTotal_price());
+            mDeliveryFeeTv.setText(getResources().getString(R.string.rmb) + 0);
+            mTotalPayTv.setText("实付款:  " + getResources().getString(R.string.rmb) + mEntity.getResult().getTotal_price());
         }
-
-
     }
 
-    private void setAddressUi(DefaultEntity entity) {
-        mNameTv.setText(entity.getResult().getName());
-        mTelTv.setText(entity.getResult().getPhone());
-        mAddressTv.setText(entity.getResult().getProvince() + entity.getResult().getCity() + entity.getResult().getDistrict() + " " + entity.getResult().getAddress());
-    }
-
-    private void getDefaultAddress() {
-        String sign = "sign";
-        String time = "time";
-        OkHttpUtils
-                .get()
-                .url(ApiManager.URL_GET_DEFAULT_ADDRESS)
-                .addParams("token", Constants.TOKEN)
-                .addParams("sign", sign)
-                .addParams("t", time)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        mLoadingRl.setVisibility(View.GONE);
-                        Log.e(TAG, "onError: e is " + e.toString());
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        mLoadingRl.setVisibility(View.GONE);
-                        if (response != null) {
-                            Log.e(TAG, "onResponse: response is " + response);
-                            Gson gson = new Gson();
-                            DefaultEntity entity = gson.fromJson(response, DefaultEntity.class);
-                            if (entity != null) {
-                                setAddressUi(entity);
-                            }
-                        }
-                    }
-                });
+    private void setAddressUi() {
+        mNameTv.setText(mEntity.getResult().getName());
+        mTelTv.setText(mEntity.getResult().getPhone());
+        mAddressTv.setText(mEntity.getResult().getAddress());
     }
 
     private void initView() {
@@ -207,26 +171,46 @@ public class OrderConfirmActivity extends BaseActivity {
             case R.id.rl_address:
                 Toast.makeText(this, "跳转的选择地址", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(OrderConfirmActivity.this, ChooseAddressActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 100);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 100) {
+                Log.e(TAG, "onActivityResult ");
+                mNameTv.setText(data.getStringExtra("name"));
+                mTelTv.setText(data.getStringExtra("tel"));
+                mAddressTv.setText(data.getStringExtra("address"));
+                mAddressId = data.getStringExtra("addressId");
+            }
         }
     }
 
     private void orderConfirm() {
         PreOrderEntity entity = new PreOrderEntity();
-        List<PreOrderEntity.GoodsAttrListBean> list = new ArrayList<>();
-        PreOrderEntity.GoodsAttrListBean bean = new PreOrderEntity.GoodsAttrListBean();
-//        bean.setGoods_id(productEntity.getProduct_id());
-        bean.setGoods_id("2");
-        bean.setNumber(mCount + "");
-        bean.setSpec_item_ids("1");
-        list.add(bean);
-        entity.setGoods_attr_list(list);
-        entity.setTotal_price(productEntity.getPromotion_price() * mCount + "");
-        entity.setAddress_id("1");
+        List<PreOrderEntity.GoodsAttrListBean> goodsList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            PreOrderEntity.GoodsAttrListBean bean = new PreOrderEntity.GoodsAttrListBean();
+            bean.setGoods_id(list.get(i).getGoods_id());
+            bean.setNumber(list.get(i).getNumber());
+            bean.setSpec_item_ids(list.get(i).getSpec_item_ids());
+            goodsList.add(bean);
+        }
+
+        entity.setGoods_attr_list(goodsList);
+        //总价格：
+        entity.setTotal_price(mEntity.getResult().getTotal_price() + "");
+        entity.setAddress_id(mEntity.getResult().getAddres_id());
         entity.setCustomer_mark("生成订单1");
         entity.setInvoice("N");
-        entity.setItem_count(mCount + "");
+        entity.setItem_count(list.size() + "");
+        entity.setExpert_id("1");
+        entity.setInvoice_type("e");
+        entity.setInvoice_content("餐费");
         String sign = "sign";
         String time = "time";
         Log.e(TAG, "initData: entity is " + entity.toString());
@@ -250,12 +234,64 @@ public class OrderConfirmActivity extends BaseActivity {
                         if (response != null) {
                             Log.e(TAG, "onResponse: response is " + response);
                             Gson gson = new Gson();
-                            Intent intent = new Intent(OrderConfirmActivity.this, ChoosePayActivity.class);
-                            startActivity(intent);
+                            CommitOrderResultEntity entity = gson.fromJson(response, CommitOrderResultEntity.class);
+                            if (entity != null && entity.getErr_code().equals("0")) {
+                                Intent intent = new Intent(OrderConfirmActivity.this, ChoosePayActivity.class);
+                                startActivity(intent);
+                            }
                         }
                     }
                 });
     }
+
+    private void computeTotal() {
+        if (list != null && list.size() > 0) {
+            double total = 0;
+            double price = 0;
+            double totalSingle = 0;
+            int count = 0;
+            for (int i = 0; i < list.size(); i++) {
+                ConfirmOrderEntity.ResultBean.GoodsListBean bean = list.get(i);
+                count = Integer.valueOf(bean.getNumber());
+                price = Double.valueOf(bean.getPromotion_price());
+                totalSingle = price * count;
+                total += totalSingle;
+            }
+            Log.e(TAG, "computeTotal: total is " + total);
+        }
+    }
+
+    //    private void getDefaultAddress() {
+//        String sign = "sign";
+//        String time = "time";
+//        OkHttpUtils
+//                .get()
+//                .url(ApiManager.URL_GET_DEFAULT_ADDRESS)
+//                .addParams("token", Constants.TOKEN)
+//                .addParams("sign", sign)
+//                .addParams("t", time)
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        mLoadingRl.setVisibility(View.GONE);
+//                        Log.e(TAG, "onError: e is " + e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        mLoadingRl.setVisibility(View.GONE);
+//                        if (response != null) {
+//                            Log.e(TAG, "onResponse: response is " + response);
+//                            Gson gson = new Gson();
+//                            DefaultEntity entity = gson.fromJson(response, DefaultEntity.class);
+//                            if (entity != null) {
+//                                setAddressUi(entity);
+//                            }
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     protected void onExecuteSuccess(String result, int type) {

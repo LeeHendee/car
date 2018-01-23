@@ -389,7 +389,7 @@ public class ApiManager {
     /**
      * 电商加入到购物车
      */
-    public static final String URL_ADD_CART = BaseUrl + "/cart/add" + "?token=" + Constants.TOKEN + "&sign=1&time=1";
+    public static final String URL_ADD_CART = BaseUrl + "/cart/add";
 
     /**
      * 电商地址管理列表

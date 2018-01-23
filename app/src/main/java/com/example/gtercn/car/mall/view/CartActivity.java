@@ -151,8 +151,8 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
                         Intent intent = new Intent(CartActivity.this, OrderConfirmActivity.class);
                         CreatePreOrderEntity params = new CreatePreOrderEntity();
                         List<CreatePreOrderEntity.GoodsListBean> listBeen = new ArrayList<>();
-                        CreatePreOrderEntity.GoodsListBean bean = new CreatePreOrderEntity.GoodsListBean();
                         for (int i = 0; i < cartList.size(); i++) {
+                            CreatePreOrderEntity.GoodsListBean bean = new CreatePreOrderEntity.GoodsListBean();
                             if (cartList.get(i).isSelected()) {
                                 bean.setGoods_id(cartList.get(i).getGoods_id());
                                 bean.setNumber(cartList.get(i).getNumber() + "");

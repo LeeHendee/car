@@ -30,7 +30,9 @@ import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
 import com.example.gtercn.car.mall.entity.ProductListEntity;
 import com.example.gtercn.car.mall.entity.PropertyListEntity;
+import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
+import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -214,18 +216,18 @@ public class ProductDetailActivity extends BaseActivity {
     private void addToCart() {
         JSONObject params = new JSONObject();
         try {
-            params.put("goods_id", 2);
-            params.put("number", 1);
-            params.put("spec_item_ids", 2);
+            params.put("goods_id", "2");
+            params.put("number", "2");
+            params.put("spec_item_ids", "2");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //// TODO: 2018/1/19 此接口未调通 
+        String url = ApiManager.URL_ADD_CART + "?token=" + Constants.TOKEN + "&sign=1&time=1";
         OkHttpUtils
                 .postString()
-                .url(ApiManager.URL_ADD_CART)
-                .mediaType(MediaType.parse("application/json;charset=utf-8"))
-                .content(new Gson().toJson(params))
+                .url(url)
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
+                .content(params.toString())
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -237,8 +239,10 @@ public class ProductDetailActivity extends BaseActivity {
                     public void onResponse(String response, int id) {
                         if (response != null) {
                             Log.e(TAG, "response: response is " + response);
-
-
+                            ResultEntity entity = new Gson().fromJson(response, ResultEntity.class);
+                            if (entity != null && entity.getErr_code().equals("0")) {
+                                Toast.makeText(ProductDetailActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

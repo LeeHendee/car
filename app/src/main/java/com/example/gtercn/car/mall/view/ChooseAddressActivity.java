@@ -160,6 +160,13 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
                     bean.setSelected(true);
                 }
                 mAdapter.notifyDataSetChanged();
+                Intent backIntent = new Intent();
+                backIntent.putExtra("name", bean.getName());
+                backIntent.putExtra("tel", bean.getPhone());
+                backIntent.putExtra("address", bean.getProvince() + bean.getCity() + bean.getDistrict() + bean.getAddress());
+                backIntent.putExtra("addressId", bean.getId());
+                setResult(RESULT_OK, backIntent);
+                finish();
                 break;
         }
     }

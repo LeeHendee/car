@@ -76,12 +76,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:minHeight="20dp">
 
                             <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:src="@drawable/icon_relief_location" />
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:src="@drawable/icon_relief_location"
+                                android:layout_gravity="center_vertical" />
 
                             <TextView
                                 android:id="@+id/tv_address"
@@ -92,7 +94,8 @@
                                 android:singleLine="true"
                                 android:text="辽宁省大连市开发区安盛购物广场"
                                 android:textColor="@color/text_note_color"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                android:layout_gravity="center_vertical" />
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
