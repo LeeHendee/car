@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,11 +27,13 @@ import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.ProductDetailPagerAdapter;
+import com.example.gtercn.car.mall.adapter.ReviewTitleAdapter;
 import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
 import com.example.gtercn.car.mall.entity.ProductListEntity;
 import com.example.gtercn.car.mall.entity.PropertyListEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
+import com.example.gtercn.car.mall.entity.ReviewsEntity;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
 import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
@@ -53,7 +56,7 @@ import okhttp3.MediaType;
 /**
  * Author ：LeeHang
  * CreateTime ：2017/12/29.
- * Used to :
+ * Used to : 产品展示页
  */
 
 public class ProductDetailActivity extends BaseActivity {
@@ -120,6 +123,16 @@ public class ProductDetailActivity extends BaseActivity {
 
     private CreatePreOrderEntity params;
 
+    private LinearLayout productLl;
+    private LinearLayout reviewsLl;
+    private LinearLayout detailLl;
+
+    private LinearLayout reviewTitleLl;
+
+    private RecyclerView reviewsRv;
+
+    private ReviewTitleAdapter titleAdapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,12 +187,21 @@ public class ProductDetailActivity extends BaseActivity {
                     break;
                 case R.id.tv_product:
                     changeTitleView(view.getId());
+                    productLl.setVisibility(View.VISIBLE);
+                    detailLl.setVisibility(View.GONE);
+                    reviewsLl.setVisibility(View.GONE);
                     break;
                 case R.id.tv_detail:
                     changeTitleView(view.getId());
+                    productLl.setVisibility(View.GONE);
+                    detailLl.setVisibility(View.VISIBLE);
+                    reviewsLl.setVisibility(View.GONE);
                     break;
                 case R.id.tv_reviews:
                     changeTitleView(view.getId());
+                    productLl.setVisibility(View.GONE);
+                    detailLl.setVisibility(View.GONE);
+                    reviewsLl.setVisibility(View.VISIBLE);
                     break;
                 case R.id.tv_buy:
                     params = new CreatePreOrderEntity();
@@ -298,6 +320,7 @@ public class ProductDetailActivity extends BaseActivity {
                             return;
                         }
                         setUI();
+                        getReviews(mEntity.getId());
                     }
                 }
             }
@@ -362,12 +385,43 @@ public class ProductDetailActivity extends BaseActivity {
         mBuyTv = (TextView) findViewById(R.id.tv_buy);
         mAddCartTv = (TextView) findViewById(R.id.tv_add_cart);
         mCartIv = (ImageView) findViewById(R.id.iv_cart);
+        productLl = (LinearLayout) findViewById(R.id.ll_product);
+        reviewsLl = (LinearLayout) findViewById(R.id.ll_reviews);
+        detailLl = (LinearLayout) findViewById(R.id.ll_detail);
+        reviewTitleLl = (LinearLayout) findViewById(R.id.ll_review_title);
+        reviewsRv = (RecyclerView) findViewById(R.id.recy_reviews);
+
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);
         changeTitleView(mTitleProductTv.getId());
     }
 
+    private void getReviews(String goodId) {
+        OkHttpUtils
+                .get()
+                .url(ApiManager.URL_PRODUCT_REVIEWS)
+                .addParams("goods_id", goodId)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response != null) {
+                            Log.e(TAG, "onResponse: response is " + response);
+                            ReviewsEntity entity = new Gson().fromJson(response, ReviewsEntity.class);
+                            if (entity != null && entity.getResult().equals("0")) {
+
+                            }
+                        }
+                    }
+                });
+
+    }
 
     private void getProperty() {
         String categoryId = "7";

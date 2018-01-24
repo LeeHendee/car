@@ -436,6 +436,11 @@ public class ApiManager {
      */
     public static final String URL_CREATE_PRE_ORDER = BaseUrl + "order/tobuy";
 
+    /**
+     * 电商获取商品的评论
+     */
+    public static final String URL_PRODUCT_REVIEWS = BaseUrl + "open/comment/list";
+
 
 
 //    --------------------------------------以上是电商部分---------------------------------------
