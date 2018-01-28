@@ -142,7 +142,6 @@ public class OrderDetailActivity extends BaseActivity {
         mCreateTimeTv.setText(bean.getOrder_time() + "");
     }
 
-
     private void initListener() {
         mCopyTv.setOnClickListener(mListener);
     }

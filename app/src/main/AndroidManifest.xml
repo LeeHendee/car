@@ -224,11 +224,11 @@
         <provider
             android:name=".db.FourServiceContentProvider"
             android:authorities="com.example.gtercn.car.provider.four"
-            android:exported="false"></provider>
+            android:exported="false" />
         <provider
             android:name=".db.RescueServiceContentProvider"
             android:authorities="com.example.gtercn.car.provider.rescue"
-            android:exported="false"></provider>
+            android:exported="false" />
 
         <activity android:name=".activity.PeopleRollActivity" />
 

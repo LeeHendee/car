@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,48 +17,40 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.ProductDetailPagerAdapter;
-import com.example.gtercn.car.mall.adapter.ReviewTitleAdapter;
+import com.example.gtercn.car.mall.adapter.ReviewsAdapter;
 import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
-import com.example.gtercn.car.mall.entity.ProductListEntity;
 import com.example.gtercn.car.mall.entity.PropertyListEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.entity.ReviewsEntity;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
+import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.Call;
 import okhttp3.MediaType;
-
 
 /**
  * Author ：LeeHang
  * CreateTime ：2017/12/29.
  * Used to : 产品展示页
  */
-
 public class ProductDetailActivity extends BaseActivity {
 
     private static final String TAG = "ProductDetailActivity";
@@ -124,14 +116,41 @@ public class ProductDetailActivity extends BaseActivity {
     private CreatePreOrderEntity params;
 
     private LinearLayout productLl;
+
     private LinearLayout reviewsLl;
+
     private LinearLayout detailLl;
 
     private LinearLayout reviewTitleLl;
 
     private RecyclerView reviewsRv;
 
-    private ReviewTitleAdapter titleAdapter;
+    private ReviewsAdapter reviewsAdapter;
+    private LinearLayout allLl;
+    private LinearLayout goodLl;
+    private LinearLayout midLl;
+    private LinearLayout badLl;
+    private LinearLayout addLl;
+    private LinearLayout picLl;
+
+    private TextView allReviewTv;
+    private TextView allNumberTv;
+    private TextView allLineTv;
+    private TextView goodReviewTv;
+    private TextView goodNumberTv;
+    private TextView goodLineTv;
+    private TextView midReviewTv;
+    private TextView midNumberTv;
+    private TextView midLineTv;
+    private TextView badReviewTv;
+    private TextView badNumberTv;
+    private TextView badLineTv;
+    private TextView addReviewTv;
+    private TextView addNumberTv;
+    private TextView addLineTv;
+    private TextView picReviewTv;
+    private TextView picNumberTv;
+    private TextView picLineTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -151,6 +170,12 @@ public class ProductDetailActivity extends BaseActivity {
         mBuyTv.setOnClickListener(mListener);
         mAddCartTv.setOnClickListener(mListener);
         mCartIv.setOnClickListener(mListener);
+        allLl.setOnClickListener(mListener);
+        goodLl.setOnClickListener(mListener);
+        midLl.setOnClickListener(mListener);
+        badLl.setOnClickListener(mListener);
+        addLl.setOnClickListener(mListener);
+        picLl.setOnClickListener(mListener);
         mSelectPropertyLayout.setOnClickListener(mListener);
         mImagePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -229,6 +254,162 @@ public class ProductDetailActivity extends BaseActivity {
                     //跳转到购物车
                     Intent goToCart = new Intent(ProductDetailActivity.this, CartActivity.class);
                     startActivity(goToCart);
+                    break;
+                case R.id.ll_all:
+                    allReviewTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    allNumberTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    allReviewTv.setTextSize(14);
+                    allLineTv.setVisibility(View.VISIBLE);
+                    goodReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodReviewTv.setTextSize(12);
+                    goodLineTv.setVisibility(View.GONE);
+                    midReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midReviewTv.setTextSize(12);
+                    midLineTv.setVisibility(View.GONE);
+                    badReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badReviewTv.setTextSize(12);
+                    badLineTv.setVisibility(View.GONE);
+                    addReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addReviewTv.setTextSize(12);
+                    addLineTv.setVisibility(View.GONE);
+                    picReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picReviewTv.setTextSize(12);
+                    picLineTv.setVisibility(View.GONE);
+                    break;
+                case R.id.ll_good:
+                    allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allReviewTv.setTextSize(12);
+                    allLineTv.setVisibility(View.GONE);
+                    goodReviewTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    goodNumberTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    goodReviewTv.setTextSize(14);
+                    goodLineTv.setVisibility(View.VISIBLE);
+                    midReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midReviewTv.setTextSize(12);
+                    midLineTv.setVisibility(View.GONE);
+                    badReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badReviewTv.setTextSize(12);
+                    badLineTv.setVisibility(View.GONE);
+                    addReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addReviewTv.setTextSize(12);
+                    addLineTv.setVisibility(View.GONE);
+                    picReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picReviewTv.setTextSize(12);
+                    picLineTv.setVisibility(View.GONE);
+                    break;
+                case R.id.ll_mid:
+                    allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allReviewTv.setTextSize(12);
+                    allLineTv.setVisibility(View.GONE);
+                    goodReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodReviewTv.setTextSize(12);
+                    goodLineTv.setVisibility(View.GONE);
+                    midReviewTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    midNumberTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    midReviewTv.setTextSize(14);
+                    midLineTv.setVisibility(View.VISIBLE);
+                    badReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badReviewTv.setTextSize(12);
+                    badLineTv.setVisibility(View.GONE);
+                    addReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addReviewTv.setTextSize(12);
+                    addLineTv.setVisibility(View.GONE);
+                    picReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picReviewTv.setTextSize(12);
+                    picLineTv.setVisibility(View.GONE);
+                    break;
+                case R.id.ll_bad:
+                    allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allReviewTv.setTextSize(12);
+                    allLineTv.setVisibility(View.GONE);
+                    goodReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodReviewTv.setTextSize(12);
+                    goodLineTv.setVisibility(View.GONE);
+                    midReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midReviewTv.setTextSize(12);
+                    midLineTv.setVisibility(View.GONE);
+                    badReviewTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    badNumberTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    badReviewTv.setTextSize(14);
+                    badLineTv.setVisibility(View.VISIBLE);
+                    addReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addReviewTv.setTextSize(12);
+                    addLineTv.setVisibility(View.GONE);
+                    picReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picReviewTv.setTextSize(12);
+                    picLineTv.setVisibility(View.GONE);
+                    break;
+                case R.id.ll_add:
+                    allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allReviewTv.setTextSize(12);
+                    allLineTv.setVisibility(View.GONE);
+                    goodReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodReviewTv.setTextSize(12);
+                    goodLineTv.setVisibility(View.GONE);
+                    midReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midReviewTv.setTextSize(12);
+                    midLineTv.setVisibility(View.GONE);
+                    badReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badReviewTv.setTextSize(12);
+                    badLineTv.setVisibility(View.GONE);
+                    addReviewTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    addNumberTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    addReviewTv.setTextSize(14);
+                    addLineTv.setVisibility(View.VISIBLE);
+                    picReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    picReviewTv.setTextSize(12);
+                    picLineTv.setVisibility(View.GONE);
+                    break;
+                case R.id.ll_pic:
+                    allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    allReviewTv.setTextSize(12);
+                    allLineTv.setVisibility(View.GONE);
+                    goodReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    goodReviewTv.setTextSize(12);
+                    goodLineTv.setVisibility(View.GONE);
+                    midReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    midReviewTv.setTextSize(12);
+                    midLineTv.setVisibility(View.GONE);
+                    badReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    badReviewTv.setTextSize(12);
+                    badLineTv.setVisibility(View.GONE);
+                    addReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
+                    addReviewTv.setTextSize(12);
+                    addLineTv.setVisibility(View.GONE);
+                    picReviewTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    picNumberTv.setTextColor(getResources().getColor(R.color.orange_txt));
+                    picReviewTv.setTextSize(14);
+                    picLineTv.setVisibility(View.VISIBLE);
                     break;
 
             }
@@ -320,7 +501,9 @@ public class ProductDetailActivity extends BaseActivity {
                             return;
                         }
                         setUI();
-                        getReviews(mEntity.getId());
+//                        getReviews(mEntity.getId());
+                        getReviews("" +
+                                "1");
                     }
                 }
             }
@@ -388,13 +571,47 @@ public class ProductDetailActivity extends BaseActivity {
         productLl = (LinearLayout) findViewById(R.id.ll_product);
         reviewsLl = (LinearLayout) findViewById(R.id.ll_reviews);
         detailLl = (LinearLayout) findViewById(R.id.ll_detail);
-        reviewTitleLl = (LinearLayout) findViewById(R.id.ll_review_title);
-        reviewsRv = (RecyclerView) findViewById(R.id.recy_reviews);
 
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);
+
+        initReviewsUi();
+
         changeTitleView(mTitleProductTv.getId());
+    }
+
+    private void initReviewsUi() {
+        allLl = (LinearLayout) findViewById(R.id.ll_all);
+        goodLl = (LinearLayout) findViewById(R.id.ll_good);
+        midLl = (LinearLayout) findViewById(R.id.ll_mid);
+        badLl = (LinearLayout) findViewById(R.id.ll_bad);
+        addLl = (LinearLayout) findViewById(R.id.ll_add);
+        picLl = (LinearLayout) findViewById(R.id.ll_pic);
+
+        reviewTitleLl = (LinearLayout) findViewById(R.id.ll_review_title);
+        reviewsRv = (RecyclerView) findViewById(R.id.recy_reviews);
+        reviewsRv.addItemDecoration(new RecyItemSpace(25));
+        allReviewTv = (TextView) findViewById(R.id.tv_all);
+        allNumberTv = (TextView) findViewById(R.id.tv_all_number);
+        allLineTv = (TextView) findViewById(R.id.tv_all_line);
+        goodReviewTv = (TextView) findViewById(R.id.tv_good);
+        goodNumberTv = (TextView) findViewById(R.id.tv_good_number);
+        goodLineTv = (TextView) findViewById(R.id.tv_good_line);
+        midReviewTv = (TextView) findViewById(R.id.tv_mid);
+        midNumberTv = (TextView) findViewById(R.id.tv_mid_number);
+        midLineTv = (TextView) findViewById(R.id.tv_mid_line);
+        badReviewTv = (TextView) findViewById(R.id.tv_bad);
+        badNumberTv = (TextView) findViewById(R.id.tv_bad_number);
+        badLineTv = (TextView) findViewById(R.id.tv_bad_line);
+        addReviewTv = (TextView) findViewById(R.id.tv_add);
+        addNumberTv = (TextView) findViewById(R.id.tv_add_number);
+        addLineTv = (TextView) findViewById(R.id.tv_add_line);
+        picReviewTv = (TextView) findViewById(R.id.tv_pic);
+        picNumberTv = (TextView) findViewById(R.id.tv_pic_number);
+        picLineTv = (TextView) findViewById(R.id.tv_pic_line);
+
+        reviewsRv.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void getReviews(String goodId) {
@@ -414,13 +631,23 @@ public class ProductDetailActivity extends BaseActivity {
                         if (response != null) {
                             Log.e(TAG, "onResponse: response is " + response);
                             ReviewsEntity entity = new Gson().fromJson(response, ReviewsEntity.class);
-                            if (entity != null && entity.getResult().equals("0")) {
-
+                            if (entity != null && entity.getErr_code().equals("0")) {
+                                reviewsAdapter = new ReviewsAdapter(ProductDetailActivity.this, entity.getResult().getComment_list());
+                                reviewsRv.setAdapter(reviewsAdapter);
+                                setReviewUI(entity.getResult());
                             }
                         }
                     }
                 });
+    }
 
+    private void setReviewUI(ReviewsEntity.ResultBean bean) {
+        allNumberTv.setText(bean.getTotal_count() + "");
+        goodNumberTv.setText(bean.getGood_count() + "");
+        midNumberTv.setText(bean.getMiddle_count() + "");
+        badNumberTv.setText(bean.getTotal_count() + "");
+        addNumberTv.setText(bean.getTotal_count() + "");
+        picNumberTv.setText(bean.getTotal_count() + "");
     }
 
     private void getProperty() {
