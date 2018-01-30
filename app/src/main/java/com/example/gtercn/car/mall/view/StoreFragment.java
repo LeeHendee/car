@@ -173,7 +173,7 @@ public class StoreFragment extends BaseFragment {
                     break;
                 case R.id.iv_home_search:
                     showToastMsg("去搜索");
-                    Intent addressIntent = new Intent(getActivity(), ChooseAddressActivity.class);
+                    Intent addressIntent = new Intent(getActivity(), ReviewPostActivity.class);
                     startActivity(addressIntent);
                     break;
             }

@@ -1,5 +1,6 @@
 package com.example.gtercn.car.mall.view;
 
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class ChoosePayActivity extends BaseActivity {
                 mAliPayIv.setImageResource(R.drawable.cart1_checkbox_check);
                 mWechatPayIv.setImageResource(R.drawable.cart1_checkbox_unable);
                 mGoToPayTv.setText("使用支付宝支付￥" + "00.00");
+                goToAliPay();
                 break;
             case R.id.iv_select_wechat:
                 mWechatPayIv.setImageResource(R.drawable.cart1_checkbox_check);
@@ -59,5 +61,27 @@ public class ChoosePayActivity extends BaseActivity {
                 break;
 
         }
+    }
+
+    private void goToAliPay() {
+//        final String orderInfo = info;   // 订单信息
+//
+//        Runnable payRunnable = new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                PayTask alipay = new PayTask(ChoosePayActivity.this);
+//                String result = alipay.payV2(orderInfo,true);
+//
+//                Message msg = new Message();
+//                msg.what = SDK_PAY_FLAG;
+//                msg.obj = result;
+//                mHandler.sendMessage(msg);
+//            }
+//        };
+//        // 必须异步调用
+//        Thread payThread = new Thread(payRunnable);
+//        payThread.start();
+
     }
 }

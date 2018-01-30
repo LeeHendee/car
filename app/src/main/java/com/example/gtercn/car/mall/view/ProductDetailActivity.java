@@ -256,6 +256,8 @@ public class ProductDetailActivity extends BaseActivity {
                     startActivity(goToCart);
                     break;
                 case R.id.ll_all:
+                    mLoadingRl.setVisibility(View.VISIBLE);
+                    getReviews("1", 0);
                     allReviewTv.setTextColor(getResources().getColor(R.color.orange_txt));
                     allNumberTv.setTextColor(getResources().getColor(R.color.orange_txt));
                     allReviewTv.setTextSize(14);
@@ -282,6 +284,8 @@ public class ProductDetailActivity extends BaseActivity {
                     picLineTv.setVisibility(View.GONE);
                     break;
                 case R.id.ll_good:
+                    mLoadingRl.setVisibility(View.VISIBLE);
+                    getReviews("1", 1);
                     allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allReviewTv.setTextSize(12);
@@ -308,6 +312,8 @@ public class ProductDetailActivity extends BaseActivity {
                     picLineTv.setVisibility(View.GONE);
                     break;
                 case R.id.ll_mid:
+                    mLoadingRl.setVisibility(View.VISIBLE);
+                    getReviews("1", 2);
                     allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allReviewTv.setTextSize(12);
@@ -334,6 +340,8 @@ public class ProductDetailActivity extends BaseActivity {
                     picLineTv.setVisibility(View.GONE);
                     break;
                 case R.id.ll_bad:
+                    mLoadingRl.setVisibility(View.VISIBLE);
+                    getReviews("1", 3);
                     allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allReviewTv.setTextSize(12);
@@ -360,6 +368,8 @@ public class ProductDetailActivity extends BaseActivity {
                     picLineTv.setVisibility(View.GONE);
                     break;
                 case R.id.ll_add:
+                    mLoadingRl.setVisibility(View.VISIBLE);
+                    getReviews("1", 5);
                     allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allReviewTv.setTextSize(12);
@@ -386,6 +396,8 @@ public class ProductDetailActivity extends BaseActivity {
                     picLineTv.setVisibility(View.GONE);
                     break;
                 case R.id.ll_pic:
+                    mLoadingRl.setVisibility(View.VISIBLE);
+                    getReviews("1", 4);
                     allReviewTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allNumberTv.setTextColor(getResources().getColor(R.color.text_note_color));
                     allReviewTv.setTextSize(12);
@@ -502,8 +514,7 @@ public class ProductDetailActivity extends BaseActivity {
                         }
                         setUI();
 //                        getReviews(mEntity.getId());
-                        getReviews("" +
-                                "1");
+                        getReviews("1", 0);
                     }
                 }
             }
@@ -614,20 +625,28 @@ public class ProductDetailActivity extends BaseActivity {
         reviewsRv.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void getReviews(String goodId) {
+    /**
+     * 0全部1好评2中评3差评4有图5追评
+     *
+     * @param status
+     */
+    private void getReviews(String goodId, int status) {
         OkHttpUtils
                 .get()
                 .url(ApiManager.URL_PRODUCT_REVIEWS)
                 .addParams("goods_id", goodId)
+                .addParams("status", status+"")
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Log.e(TAG, "onError: e is " + e.toString());
+                        mLoadingRl.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        mLoadingRl.setVisibility(View.GONE);
                         if (response != null) {
                             Log.e(TAG, "onResponse: response is " + response);
                             ReviewsEntity entity = new Gson().fromJson(response, ReviewsEntity.class);

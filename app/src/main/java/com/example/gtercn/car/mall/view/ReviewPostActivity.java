@@ -1,7 +1,11 @@
 package com.example.gtercn.car.mall.view;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -13,11 +17,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
+import com.example.gtercn.car.utils.Constants;
+import com.example.gtercn.car.utils.GetPath;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import okhttp3.Call;
 
 /**
  * Author ：LeeHang
@@ -57,6 +71,14 @@ public class ReviewPostActivity extends BaseActivity {
 
     private boolean isOn = true;
 
+    private List<String> imageList = new ArrayList<>();
+
+    private String path;
+
+    private String orderId = "6c51b7f7c1d1485db3f6c3ee14c58da2";
+
+    private String goodId = "1";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,10 +111,23 @@ public class ReviewPostActivity extends BaseActivity {
 
                 case R.id.iv_photo:
                     Toast.makeText(ReviewPostActivity.this, "选择图片逻辑待续。。。", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, 100);
                     break;
             }
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            Uri imageUri = data.getData();
+            path = GetPath.getImageAbsolutePath(this, imageUri);
+            imageList.add(path);
+        }
+    }
 
     private RatingBar.OnRatingBarChangeListener mRBListener = new RatingBar.OnRatingBarChangeListener() {
         @Override
@@ -131,14 +166,14 @@ public class ReviewPostActivity extends BaseActivity {
 
     private void initData() {
         mTagsTv = new ArrayList<>();
-        String [] tags = {"质量不错，很满意！","物超所值","质量过关","值得推荐","不是很满意"};
+        String[] tags = {"质量不错，很满意！", "物超所值", "质量过关", "值得推荐", "不是很满意"};
         for (int i = 0; i < tags.length; i++) {
             final TextView tv = new TextView(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(10,10,10,10);
+            lp.setMargins(10, 10, 10, 10);
             tv.setLayoutParams(lp);
             tv.setText(tags[i]);
-            tv.setPadding(20,20,20,20);
+            tv.setPadding(20, 20, 20, 20);
             tv.setGravity(Gravity.CENTER);
             tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.tag_bg_gray));
             tv.setTextColor(getResources().getColor(R.color.text_blue));
@@ -181,8 +216,77 @@ public class ReviewPostActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ReviewPostActivity.this, "发布", Toast.LENGTH_SHORT).show();
+                submitReview();
             }
         });
+    }
+
+
+    /**
+     * OkHttpUtils.post()//
+     * .addFile("mFile", "messenger_01.png", file)//
+     * .addFile("mFile", "test1.txt", file2)//
+     * .url(url)
+     * .params(params)//
+     * .headers(headers)//
+     * .build()//
+     * .execute(new MyStringCallback());
+     * <p>
+     * 评价状态：G好评，M中评，B差评
+     */
+    private void submitReview() {
+        String content = null;
+        if (TextUtils.isEmpty(mReviewEt.getText())) {
+            Toast.makeText(this, "请填写评论内容！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        content = mReviewEt.getText().toString().trim();
+        Map<String, String> params = new HashMap<>();
+        params.put("order_id", orderId);
+        params.put("goods_id", goodId);
+        params.put("status", getRate());
+        params.put("describe_status", mProductRb.getRating() + "");//描述相符(1到5)
+        params.put("service_attitude", mServiceRb.getRating() + "");
+        params.put("service_logistics", mDeliveryRb.getRating() + "");
+        params.put("anonymous", isOn ? "Y" : "N");//是否匿名：Y是，N否
+        params.put("content", content);
+
+        String sign = "sign";
+        String time = "time";
+        String url = ApiManager.URL_POST_REVIEW + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
+        OkHttpUtils
+                .post()
+                .addFile("pics1", "p1.png", new File(path))
+//                .addFile("pics2", "p2.png", new File("file2"))
+//                .addFile("pics3", "p3.png", new File("file3"))
+                .url(url)
+                .params(params)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "onResponse: response is " + response);
+                    }
+                });
+    }
+
+    private String getRate() {
+        float descRating = mProductRb.getRating();
+        float serviceRating = mServiceRb.getRating();
+        float deliveryRating = mDeliveryRb.getRating();
+        float sum = descRating + serviceRating + deliveryRating;
+        if (sum >= 12.0) {
+            return "G";
+        } else if (sum >= 9.0 && sum < 12) {
+            return "M";
+        } else {
+            return "B";
+        }
     }
 
     @Override
