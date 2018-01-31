@@ -16,4 +16,18 @@
         <item>汽车贷款</item>
         <item>汽车保险</item>
     </string-array>
+
+    <string-array name="hot_search">
+        <item>取暖器</item>
+        <item>黄金满599减100</item>
+        <item>跑鞋199减60</item>
+        <item>手机</item>
+        <item>牛奶</item>
+        <item>电视直降千元</item>
+        <item>手表</item>
+        <item>苹果笔记本</item>
+        <item>正太插座</item>
+        <item>MacBook Pro</item>
+        <item>多芬沐浴露</item>
+    </string-array>
 </resources>

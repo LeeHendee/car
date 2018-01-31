@@ -446,6 +446,11 @@ public class ApiManager {
      */
     public static final String URL_POST_REVIEW = BaseUrl + "comment/add";
 
+    /**
+     * 电商发布评论
+     */
+    public static final String URL_DO_SEARCH = BaseUrl + "open/search/list";
+
 
 //    --------------------------------------以上是电商部分---------------------------------------
     /**

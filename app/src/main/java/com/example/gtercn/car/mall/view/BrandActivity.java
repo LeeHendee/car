@@ -68,7 +68,9 @@ public class BrandActivity extends BaseActivity {
         initRightIvBar(mBrandName, R.drawable.icon_search, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(BrandActivity.this, "搜索", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(BrandActivity.this, "搜索", Toast.LENGTH_SHORT).show();
+                Intent goSearch = new Intent(BrandActivity.this, SearchActivity.class);
+                startActivity(goSearch);
             }
         });
         String cityCode = Constants.CITY_CODE;
