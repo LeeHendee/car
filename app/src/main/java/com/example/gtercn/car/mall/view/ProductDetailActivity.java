@@ -183,7 +183,6 @@ public class ProductDetailActivity extends BaseActivity {
                 curPosition = position + 1;
                 mIndexCurTv.setText(curPosition + "");
                 Log.e(TAG, "onPageScrolled: pos is " + position);
-
             }
 
             @Override
@@ -423,7 +422,6 @@ public class ProductDetailActivity extends BaseActivity {
                     picReviewTv.setTextSize(14);
                     picLineTv.setVisibility(View.VISIBLE);
                     break;
-
             }
         }
     };
@@ -513,7 +511,6 @@ public class ProductDetailActivity extends BaseActivity {
                             return;
                         }
                         setUI();
-//                        getReviews(mEntity.getId());
                         getReviews("1", 0);
                     }
                 }
