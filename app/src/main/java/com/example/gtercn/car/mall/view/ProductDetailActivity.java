@@ -1,9 +1,12 @@
 package com.example.gtercn.car.mall.view;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +45,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+
 import okhttp3.Call;
 import okhttp3.MediaType;
 
@@ -112,19 +119,12 @@ public class ProductDetailActivity extends BaseActivity {
     private View mView;
 
     private List<PropertyListEntity.ResultBean.SpecListBean> propertyList;
-
     private CreatePreOrderEntity params;
-
     private LinearLayout productLl;
-
     private LinearLayout reviewsLl;
-
     private LinearLayout detailLl;
-
     private LinearLayout reviewTitleLl;
-
     private RecyclerView reviewsRv;
-
     private ReviewsAdapter reviewsAdapter;
     private LinearLayout allLl;
     private LinearLayout goodLl;
@@ -132,7 +132,6 @@ public class ProductDetailActivity extends BaseActivity {
     private LinearLayout badLl;
     private LinearLayout addLl;
     private LinearLayout picLl;
-
     private TextView allReviewTv;
     private TextView allNumberTv;
     private TextView allLineTv;
@@ -695,6 +694,7 @@ public class ProductDetailActivity extends BaseActivity {
                 });
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setPropertyUi() {
         View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_view, null);
         final PopupWindow pw = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -706,9 +706,43 @@ public class ProductDetailActivity extends BaseActivity {
         ImageView propertyIv = (ImageView) popView.findViewById(R.id.iv_property);
         LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
         for (int i = 0; i < propertyList.size(); i++) {
+            //单一属性
             View itemView = LayoutInflater.from(this).inflate(R.layout.item_property, null);
             TextView propertyName = (TextView) itemView.findViewById(R.id.tv_property_name);
-            FlowLayout proptertyFlow = (FlowLayout) itemView.findViewById(R.id.flow_property);
+            FlowLayout propertyFlow = (FlowLayout) itemView.findViewById(R.id.flow_property);
+            //单一属性item
+            final List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> items = propertyList.get(i).getItems();
+            for (int j = 0; j < items.size(); j++) {
+                final List<TextView> tvList = new ArrayList<>();
+                final PropertyListEntity.ResultBean.SpecListBean.ItemsBean bean = items.get(j);
+                final TextView tv = new TextView(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(20, 20, 20, 20);
+                tv.setLayoutParams(lp);
+                tv.setTextSize(12);
+                tv.setText(items.get(j).getItem());
+                tv.setGravity(Gravity.CENTER);
+                tv.setTag(bean.isSelected());
+                tv.setTextColor(getResources().getColor(R.color.text_common_color));
+                tv.setBackground(getResources().getDrawable(R.drawable.tag_bg_property));
+                tvList.add(tv);
+                propertyFlow.addView(tv);
+
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bean.setSelected(!bean.isSelected());
+                        changeView();
+                        for (int k = 0; k < tvList.size(); k++) {
+                            if (tvList.get(k).isSelected()) {
+                                tvList.get(k).setTextColor(Color.BLACK);
+                            } else {
+                                tvList.get(k).setTextColor(Color.RED);
+                            }
+                        }
+                    }
+                });
+            }
             propertyName.setText(propertyList.get(i).getName());
             propertiesLayout.addView(itemView);
         }
@@ -723,6 +757,9 @@ public class ProductDetailActivity extends BaseActivity {
         pw.setFocusable(true);
         pw.setOutsideTouchable(true);
         pw.showAtLocation(mView, Gravity.BOTTOM, 0, 0);
+    }
+
+    private void changeView() {
 
     }
 

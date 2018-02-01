@@ -17,8 +17,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/btn_org_bg"
-            android:text="加入购物车"
             android:gravity="center"
+            android:text="加入购物车"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
@@ -27,8 +27,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/bg_orange"
-            android:text="立即购买"
             android:gravity="center"
+            android:text="立即购买"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
@@ -45,40 +45,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
+            android:layout_marginLeft="125dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/rl_close"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="25dp"
                 android:layout_marginTop="10dp">
 
-                <ImageView
+                <TextView
+                    android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="￥"
+                    android:textColor="@color/orange_txt"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="15dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/icon_close" />
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="￥"
-                android:textColor="@color/orange_txt"
-                android:textSize="14sp" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:minHeight="45dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -91,34 +92,34 @@
                     android:id="@+id/tv_property1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="颜色"
                     android:textColor="@color/text_common_color"
-                    android:textSize="14sp"
-                    android:layout_marginRight="5dp"
-                    android:singleLine="true"
-                    android:ellipsize="end" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_property2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="型号"
                     android:textColor="@color/text_common_color"
-                    android:textSize="14sp"
-                    android:layout_marginRight="5dp"
-                    android:singleLine="true"
-                    android:ellipsize="end" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="数量"
                     android:textColor="@color/text_common_color"
-                    android:textSize="14sp"
-                    android:layout_marginRight="5dp"
-                    android:singleLine="true"
-                    android:ellipsize="end" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -128,16 +129,16 @@
             android:id="@+id/iv_line"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/line_common_color"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/line_common_color" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:id="@+id/ll_properties"
@@ -148,13 +149,18 @@
         </ScrollView>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_line"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_above="@+id/ll_white" />
 
     <FrameLayout
         android:id="@+id/fl_iv"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="150dp"
+        android:layout_alignTop="@+id/tv_line"
+        android:layout_marginLeft="15dp"
         android:background="@drawable/property_iv_bg">
 
         <ImageView
@@ -162,8 +168,5 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center" />
-
     </FrameLayout>
-
-
 </RelativeLayout>

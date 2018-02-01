@@ -2,10 +2,10 @@ package com.example.gtercn.car.mall.view;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,18 +14,24 @@ import android.widget.Toast;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
+import com.example.gtercn.car.mall.entity.ResultEntity;
+import com.example.gtercn.car.mall.entity.SearchPageEntity;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
 import com.example.gtercn.car.utils.Constants;
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * Author ：LeeHang
@@ -56,50 +62,36 @@ public class SearchActivity extends BaseActivity {
 
     private List<String> hotList = new ArrayList<>();
 
+    private List<String> historyList = new ArrayList<>();
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_mall_search;
     }
 
     @SuppressLint("NewApi")
-    @Override
-    protected void initView() {
-        super.initView();
-        hotList = Arrays.asList(getResources().getStringArray(R.array.hot_search));
+    private void initLabel(List<String> list, FlowLayout fl) {
         for (int i = 0; i < hotList.size(); i++) {
             TextView tv = new TextView(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(20, 20, 20, 20);
             tv.setLayoutParams(lp);
             tv.setTextSize(12);
-            tv.setText(hotList.get(i));
+            tv.setText(list.get(i));
             tv.setPadding(40, 10, 40, 10);
             tv.setGravity(Gravity.CENTER);
             tv.setTextColor(getResources().getColor(R.color.text_common_color));
             tv.setBackground(getResources().getDrawable(R.drawable.tag_bg_f2));
-            mHotSearchFl.addView(tv);
+            fl.addView(tv);
         }
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_search, R.id.ll_clear_history})
-    void searchClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.tv_search:
-                submitSearch();
-                break;
-            case R.id.ll_clear_history:
-                Toast.makeText(this, "清空历史记录", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
-
-    private void submitSearch() {
+    @Override
+    protected void initData() {
+        super.initData();
         OkHttpUtils
                 .get()
-                .url(ApiManager.URL_DO_SEARCH)
+                .url(ApiManager.URL_SEARCH_PAGE)
                 .addParams("token", Constants.TOKEN)
                 .addParams("device_token", "0")
                 .build()
@@ -112,8 +104,95 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e(TAG, "onResponse: response is " + response);
+                        if (response != null) {
+                            Gson gson = new Gson();
+                            SearchPageEntity entity = gson.fromJson(response, SearchPageEntity.class);
+                            if (entity != null && entity.getErr_code().equals("0")) {
+                                hotList = entity.getResult().getHot_search();
+                                historyList = entity.getResult().getSearch_list();
+                                initLabel(hotList, mHotSearchFl);
+                                initLabel(hotList, mHistorySearchFl);
+                            }
+                        }
                     }
                 });
+    }
 
+    @OnClick({R.id.iv_back, R.id.tv_search, R.id.ll_clear_history})
+    void searchClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.tv_search:
+                goSearch("轮胎");
+                break;
+            case R.id.ll_clear_history:
+                clearHistory();
+                break;
+        }
+    }
+
+    private void clearHistory() {
+        OkHttpUtils
+                .post()
+                .url(ApiManager.URL_HISTORY_CLEAR)
+                .addParams("device_token", "1")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "onResponse: response is " + response);
+                        if (response != null) {
+                            Gson gson = new Gson();
+                            ResultEntity entity = gson.fromJson(response, ResultEntity.class);
+                            if (entity != null && entity.getErr_code().equals("0")) {
+                                Toast.makeText(SearchActivity.this, entity.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void goSearch(String s) {
+        addInHistoryDB(s);
+        Intent intent = new Intent(this, ProductListActivity.class);
+        intent.putExtra("searchContent", s);
+        startActivity(intent);
+    }
+
+    private void addInHistoryDB(String s) {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("search_tag", s);
+            params.put("device_token", "1");
+            params.put("device_type", "0");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = ApiManager.URL_ADD_HISTORY + "?token=" + Constants.TOKEN;
+        String p = params.toString();
+        OkHttpUtils
+                .postString()
+                .url(url)
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
+                .content(p)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "onResponse: response is " + "内容已添加数据库");
+                    }
+                });
     }
 }

@@ -447,9 +447,24 @@ public class ApiManager {
     public static final String URL_POST_REVIEW = BaseUrl + "comment/add";
 
     /**
-     * 电商发布评论
+     * 电商搜索页面
      */
-    public static final String URL_DO_SEARCH = BaseUrl + "open/search/list";
+    public static final String URL_SEARCH_PAGE = BaseUrl + "open/search/list";
+
+    /**
+     * 电商清空搜索记录
+     */
+    public static final String URL_HISTORY_CLEAR = BaseUrl + "open/search/delete";
+
+    /**
+     * 电商搜索商品
+     */
+    public static final String URL_DO_SEARCH = BaseUrl + "open/search/goods";
+
+    /**
+     * 电商增加搜索数据
+     */
+    public static final String URL_ADD_HISTORY = BaseUrl + "open/search/add";
 
 
 //    --------------------------------------以上是电商部分---------------------------------------

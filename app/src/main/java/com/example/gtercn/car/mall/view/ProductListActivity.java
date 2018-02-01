@@ -24,12 +24,16 @@ import com.example.gtercn.car.mall.adapter.ProductListAdapter;
 import com.example.gtercn.car.mall.entity.ProductListEntity;
 import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * Created by Yan on 2017/12/24.
@@ -66,7 +70,10 @@ public class ProductListActivity extends BaseActivity {
     private int priceFlag = 0;
 
     private int sortType = 0;
-    private String mBrandId;
+
+    private String mBrandId = null;
+
+    private String mSearchContent = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +87,13 @@ public class ProductListActivity extends BaseActivity {
         mProductList = new ArrayList<>();
         Intent intent = getIntent();
         mBrandId = intent.getStringExtra("brandId");
-        sortProduct(priceFlag, sortType);
+        mSearchContent = intent.getStringExtra("searchContent");
+        if (mBrandId != null) {
+            sortProduct(priceFlag, sortType);
+        } else {
+            //从搜索页面跳转
+            submitSearch();
+        }
     }
 
     private void setData() {
@@ -143,7 +156,6 @@ public class ProductListActivity extends BaseActivity {
                     } else {
                         priceFlag = 0;
                     }
-
                     sortProduct(priceFlag, sortType);
                     break;
                 case R.id.tv_sort:
@@ -159,6 +171,9 @@ public class ProductListActivity extends BaseActivity {
             @Override
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
+                if (mRefresh.isRefreshing()) {
+                    mRefresh.setRefreshing(false);
+                }
                 if (response != null) {
                     Log.e(TAG, "onSuccessResponse: response is " + response);
                     Gson gson = new Gson();
@@ -181,6 +196,9 @@ public class ProductListActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error, int type) {
                 mLoadingRl.setVisibility(View.GONE);
+                if (mRefresh.isRefreshing()) {
+                    mRefresh.setRefreshing(false);
+                }
             }
         }, 2, TAG);
     }
@@ -209,12 +227,43 @@ public class ProductListActivity extends BaseActivity {
         mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRefresh.setColorSchemeResources(R.color.blue1);
-
         mSortTvList = new ArrayList<>();
         mSortTvList.add(mComprehensiveSortTv);
         mSortTvList.add(mSaleSortTv);
         mSortTvList.add(mPriceSortTv);
         mSortTvList.add(mSortTv);
+    }
+
+
+    private void submitSearch() {
+        mLoadingRl.setVisibility(View.VISIBLE);
+        if (mRefresh.isRefreshing()) {
+            mRefresh.setRefreshing(false);
+        }
+        OkHttpUtils
+                .get()
+                .url(ApiManager.URL_DO_SEARCH)
+                .addParams("city_code", Constants.CITY_CODE)
+                .addParams("search_tag", mSearchContent)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mLoadingRl.setVisibility(View.GONE);
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        mLoadingRl.setVisibility(View.GONE);
+                        Log.e(TAG, "onResponse: response is " + response);
+                        Gson gson = new Gson();
+                        ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
+                        mProductList = entity.getResult();
+                        setData();
+
+                    }
+                });
     }
 
     @Override

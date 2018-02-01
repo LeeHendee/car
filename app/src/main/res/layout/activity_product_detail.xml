@@ -554,7 +554,6 @@
     <!--android:layout_below="@+id/rl_title"-->
     <!--android:orientation="vertical"/>-->
 
-
     <include layout="@layout/layout_loading" />
 
 </RelativeLayout>
