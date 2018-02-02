@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +21,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
@@ -41,14 +41,13 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -234,8 +233,8 @@ public class ProductDetailActivity extends BaseActivity {
                     List<CreatePreOrderEntity.GoodsListBean> listBeen = new ArrayList<>();
                     CreatePreOrderEntity.GoodsListBean bean = new CreatePreOrderEntity.GoodsListBean();
                     bean.setGoods_id(mEntity.getId());
-                    bean.setNumber(count + "");
-                    bean.setSpec_item_ids("1");
+                    bean.setNumber(mCount + "");
+                    bean.setSpec_item_ids(propertyIds);
                     listBeen.add(bean);
                     params.setGoods_list(listBeen);
                     toBuy.putExtra("params", params);
@@ -430,7 +429,7 @@ public class ProductDetailActivity extends BaseActivity {
         try {
             params.put("goods_id", "2");
             params.put("number", "2");
-            params.put("spec_item_ids", "2");
+            params.put("spec_item_ids", properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -463,24 +462,24 @@ public class ProductDetailActivity extends BaseActivity {
     private void changeTitleView(int selectId) {
         for (int i = 0; i < titleTvList.size(); i++) {
             TextView tv = titleTvList.get(i);
-            if (tv.getId() == selectId){
+            if (tv.getId() == selectId) {
                 tv.setTextSize(18);
                 tv.setTextColor(Color.BLUE);
-            }else {
+            } else {
                 tv.setTextSize(16);
                 tv.setTextColor(getResources().getColor(R.color.text_common_color));
             }
-            if (mTitleProductTv.getId() == selectId){
+            if (mTitleProductTv.getId() == selectId) {
                 mTitleIndexOneTv.setVisibility(View.VISIBLE);
                 mTitleIndexTwoTv.setVisibility(View.GONE);
                 mTitleIndexThreeTv.setVisibility(View.GONE);
                 mTitleIndexOneTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
-            }else if (mTitleDetailTv.getId() == selectId){
+            } else if (mTitleDetailTv.getId() == selectId) {
                 mTitleIndexTwoTv.setVisibility(View.VISIBLE);
                 mTitleIndexOneTv.setVisibility(View.GONE);
                 mTitleIndexThreeTv.setVisibility(View.GONE);
                 mTitleIndexTwoTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
-            }else {
+            } else {
                 mTitleIndexThreeTv.setVisibility(View.VISIBLE);
                 mTitleIndexOneTv.setVisibility(View.GONE);
                 mTitleIndexTwoTv.setVisibility(View.GONE);
@@ -505,7 +504,7 @@ public class ProductDetailActivity extends BaseActivity {
                     ProductDetailEntity entity = gson.fromJson(response, ProductDetailEntity.class);
                     if (entity != null) {
                         mEntity = entity.getResult();
-                        if (mEntity == null){
+                        if (mEntity == null) {
                             Toast.makeText(ProductDetailActivity.this, "暂无数据", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -534,8 +533,8 @@ public class ProductDetailActivity extends BaseActivity {
 
     private void setUI() {
         mDescriptionTv.setText(mEntity.getGoods_title());
-        mSalePriceTv.setText("￥" + mEntity.getPromotion_price());
-        mOrgPriceTv.setText("￥" + mEntity.getPrime_price());
+        mSalePriceTv.setText(getResources().getString(R.string.rmb) + mEntity.getPromotion_price());
+        mOrgPriceTv.setText(getResources().getString(R.string.rmb) + mEntity.getPrime_price());
         mOrgPriceTv.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 //        mGoodReviewsRateTv.setText(mEntity.);
         mSoldCountTv.setText("已售：" + mEntity.getSold_number() + "");
@@ -617,6 +616,7 @@ public class ProductDetailActivity extends BaseActivity {
         picReviewTv = (TextView) findViewById(R.id.tv_pic);
         picNumberTv = (TextView) findViewById(R.id.tv_pic_number);
         picLineTv = (TextView) findViewById(R.id.tv_pic_line);
+        displayArrTv = (TextView) findViewById(R.id.tv_display_property);
 
         reviewsRv.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -631,7 +631,7 @@ public class ProductDetailActivity extends BaseActivity {
                 .get()
                 .url(ApiManager.URL_PRODUCT_REVIEWS)
                 .addParams("goods_id", goodId)
-                .addParams("status", status+"")
+                .addParams("status", status + "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -694,17 +694,31 @@ public class ProductDetailActivity extends BaseActivity {
                 });
     }
 
+    private int mCount = 1;
+
+    private String properties = null;
+
+    private String propertyIds = null;
+
+    private TextView displayArrTv;
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setPropertyUi() {
         View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_view, null);
         final PopupWindow pw = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         RelativeLayout closeRl = (RelativeLayout) popView.findViewById(R.id.rl_close);
         TextView priceTv = (TextView) popView.findViewById(R.id.tv_price);
-        TextView property1Tv = (TextView) popView.findViewById(R.id.tv_property1);
-        TextView property2Tv = (TextView) popView.findViewById(R.id.tv_property2);
-        TextView countTv = (TextView) popView.findViewById(R.id.tv_count);
+        final TextView property1Tv = (TextView) popView.findViewById(R.id.tv_property1);
+        TextView minusTv = (TextView) popView.findViewById(R.id.tv_minus);
+        final TextView countTv = (TextView) popView.findViewById(R.id.tv_count);
+        TextView plusTv = (TextView) popView.findViewById(R.id.tv_plus);
+        countTv.setText(mCount + "");
         ImageView propertyIv = (ImageView) popView.findViewById(R.id.iv_property);
         LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
+        if (propertyList == null) {
+            Toast.makeText(this, "propertyList == null ", Toast.LENGTH_SHORT).show();
+            return;
+        }
         for (int i = 0; i < propertyList.size(); i++) {
             //单一属性
             View itemView = LayoutInflater.from(this).inflate(R.layout.item_property, null);
@@ -712,17 +726,22 @@ public class ProductDetailActivity extends BaseActivity {
             FlowLayout propertyFlow = (FlowLayout) itemView.findViewById(R.id.flow_property);
             //单一属性item
             final List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> items = propertyList.get(i).getItems();
+            final List<TextView> tvList = new ArrayList<>();
+            if (items == null) {
+                Toast.makeText(this, "items == null ", Toast.LENGTH_SHORT).show();
+                return;
+            }
             for (int j = 0; j < items.size(); j++) {
-                final List<TextView> tvList = new ArrayList<>();
-                final PropertyListEntity.ResultBean.SpecListBean.ItemsBean bean = items.get(j);
-                final TextView tv = new TextView(this);
+                PropertyListEntity.ResultBean.SpecListBean.ItemsBean bean = items.get(j);
+                TextView tv = new TextView(this);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 lp.setMargins(20, 20, 20, 20);
                 tv.setLayoutParams(lp);
                 tv.setTextSize(12);
                 tv.setText(items.get(j).getItem());
                 tv.setGravity(Gravity.CENTER);
-                tv.setTag(bean.isSelected());
+                tv.setTag(bean);
+                tv.setId(j);
                 tv.setTextColor(getResources().getColor(R.color.text_common_color));
                 tv.setBackground(getResources().getDrawable(R.drawable.tag_bg_property));
                 tvList.add(tv);
@@ -731,15 +750,18 @@ public class ProductDetailActivity extends BaseActivity {
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bean.setSelected(!bean.isSelected());
-                        changeView();
                         for (int k = 0; k < tvList.size(); k++) {
-                            if (tvList.get(k).isSelected()) {
-                                tvList.get(k).setTextColor(Color.BLACK);
+                            TextView t = tvList.get(k);
+                            PropertyListEntity.ResultBean.SpecListBean.ItemsBean b = (PropertyListEntity.ResultBean.SpecListBean.ItemsBean) t.getTag();
+                            if (k == v.getId()) {
+                                b.setSelected(true);
+                                t.setTextColor(getResources().getColor(R.color.orange_txt));
                             } else {
-                                tvList.get(k).setTextColor(Color.RED);
+                                b.setSelected(false);
+                                t.setTextColor(Color.BLACK);
                             }
                         }
+                        changeUi(property1Tv);
                     }
                 });
             }
@@ -752,15 +774,65 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 pw.dismiss();
+                //设置属性字段的tv；
+                displayArrTv.setText(properties);
             }
         });
         pw.setFocusable(true);
         pw.setOutsideTouchable(true);
         pw.showAtLocation(mView, Gravity.BOTTOM, 0, 0);
+        clearAllSelected();
+
+        minusTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCount > 1) {
+                    --mCount;
+                    countTv.setText(mCount + "");
+                    changeUi(property1Tv);
+                } else {
+                    Toast.makeText(ProductDetailActivity.this, "数量不能小于1", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        plusTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ++mCount;
+                countTv.setText(mCount + "");
+                changeUi(property1Tv);
+            }
+        });
+
     }
 
-    private void changeView() {
+    private void clearAllSelected() {
+        for (int i = 0; i < propertyList.size(); i++) {
+            List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> list = propertyList.get(i).getItems();
+            for (int j = 0; j < list.size(); j++) {
+                list.get(j).setSelected(false);
+            }
+        }
+    }
 
+    private void changeUi(TextView tv) {
+        String ids = null;
+        StringBuffer sb1 = new StringBuffer();
+        StringBuffer sb2 = new StringBuffer();
+        for (int i = 0; i < propertyList.size(); i++) {
+            List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> list = propertyList.get(i).getItems();
+            for (int j = 0; j < list.size(); j++) {
+                if (list.get(j).isSelected()) {
+                    sb1.append(list.get(j).getItem() + " ");
+                    sb2.append(list.get(j).getSpec_id() + ",");
+                }
+            }
+        }
+        ids = sb2.toString();
+        // TODO: 2018/2/2 属性id
+        propertyIds = ids.substring(0, ids.length() - 1);
+        properties = sb1.toString() + " X" + mCount;
+        tv.setText(properties);
     }
 
     @Override
@@ -777,6 +849,5 @@ public class ProductDetailActivity extends BaseActivity {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
     }
-
 
 }

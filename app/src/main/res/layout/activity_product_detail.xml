@@ -261,7 +261,7 @@
                         android:layout_weight="5"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="速热增容简约系列X1 60升 1件 可选增值服务"
+                        android:text="请选择产品属性"
                         android:textColor="@color/text_common_color"
                         android:textSize="14sp" />
 

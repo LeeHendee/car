@@ -1,5 +1,7 @@
 package com.example.gtercn.car.mall.entity;
 
+import android.widget.TextView;
+
 import java.util.List;
 
 /**
