@@ -13,22 +13,24 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/btn_org_bg"
-            android:gravity="center"
-            android:text="加入购物车"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-
-        <TextView
+            android:id="@+id/tv_pop_buy_now"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/bg_orange"
             android:gravity="center"
             android:text="立即购买"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_pop_add_cart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/btn_org_bg"
+            android:gravity="center"
+            android:text="加入购物车"
             android:textColor="@color/white"
             android:textSize="14sp" />
 

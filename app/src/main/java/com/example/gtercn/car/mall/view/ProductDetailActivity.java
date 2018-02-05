@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -226,19 +227,7 @@ public class ProductDetailActivity extends BaseActivity {
                     reviewsLl.setVisibility(View.VISIBLE);
                     break;
                 case R.id.tv_buy:
-                    params = new CreatePreOrderEntity();
-                    Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
-                    //传递过去数量，总价，
-                    count = count == 0 ? 1 : count;
-                    List<CreatePreOrderEntity.GoodsListBean> listBeen = new ArrayList<>();
-                    CreatePreOrderEntity.GoodsListBean bean = new CreatePreOrderEntity.GoodsListBean();
-                    bean.setGoods_id(mEntity.getId());
-                    bean.setNumber(mCount + "");
-                    bean.setSpec_item_ids(propertyIds);
-                    listBeen.add(bean);
-                    params.setGoods_list(listBeen);
-                    toBuy.putExtra("params", params);
-                    startActivity(toBuy);
+                    toBuyNow();
                     break;
                 case R.id.ll_select_property:
                     setPropertyUi();
@@ -424,12 +413,36 @@ public class ProductDetailActivity extends BaseActivity {
         }
     };
 
+    private void toBuyNow() {
+        if (TextUtils.isEmpty(propertyIds)){
+            Toast.makeText(ProductDetailActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        params = new CreatePreOrderEntity();
+        Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
+        //传递过去数量，总价，
+        count = count == 0 ? 1 : count;
+        List<CreatePreOrderEntity.GoodsListBean> listBeen = new ArrayList<>();
+        CreatePreOrderEntity.GoodsListBean bean = new CreatePreOrderEntity.GoodsListBean();
+        bean.setGoods_id(mEntity.getId());
+        bean.setNumber(mCount + "");
+        bean.setSpec_item_ids(propertyIds);
+        listBeen.add(bean);
+        params.setGoods_list(listBeen);
+        toBuy.putExtra("params", params);
+        startActivity(toBuy);
+    }
+
     private void addToCart() {
+        if (TextUtils.isEmpty(propertyIds)){
+            Toast.makeText(this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
+            return;
+        }
         JSONObject params = new JSONObject();
         try {
             params.put("goods_id", "2");
-            params.put("number", "2");
-            params.put("spec_item_ids", properties);
+            params.put("number", mCount+"");
+            params.put("spec_item_ids", propertyIds);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -715,6 +728,21 @@ public class ProductDetailActivity extends BaseActivity {
         countTv.setText(mCount + "");
         ImageView propertyIv = (ImageView) popView.findViewById(R.id.iv_property);
         LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
+        TextView addToCartTv = (TextView) popView.findViewById(R.id.tv_pop_add_cart);
+        TextView buyNowTv = (TextView) popView.findViewById(R.id.tv_pop_buy_now);
+        addToCartTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToCart();
+            }
+        });
+        buyNowTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toBuyNow();
+            }
+        });
+
         if (propertyList == null) {
             Toast.makeText(this, "propertyList == null ", Toast.LENGTH_SHORT).show();
             return;
