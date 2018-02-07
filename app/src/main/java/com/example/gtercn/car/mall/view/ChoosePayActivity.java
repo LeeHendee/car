@@ -1,11 +1,18 @@
 package com.example.gtercn.car.mall.view;
 
+import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.alipay.sdk.app.PayTask;
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.utils.Constants;
+
+import javax.xml.transform.Result;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -64,24 +71,34 @@ public class ChoosePayActivity extends BaseActivity {
     }
 
     private void goToAliPay() {
-//        final String orderInfo = info;   // 订单信息
-//
-//        Runnable payRunnable = new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                PayTask alipay = new PayTask(ChoosePayActivity.this);
-//                String result = alipay.payV2(orderInfo,true);
-//
+        //需要支付的常量封装在constants
+
+        final String orderInfo = "info";   // 订单信息
+
+        Runnable payRunnable = new Runnable() {
+
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(ChoosePayActivity.this);
+                String result = alipay.pay(orderInfo,true);
+
 //                Message msg = new Message();
 //                msg.what = SDK_PAY_FLAG;
 //                msg.obj = result;
 //                mHandler.sendMessage(msg);
-//            }
-//        };
-//        // 必须异步调用
-//        Thread payThread = new Thread(payRunnable);
-//        payThread.start();
+            }
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
 
     }
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+
+            Toast.makeText(ChoosePayActivity.this, "----查看结果----",
+                    Toast.LENGTH_LONG).show();
+        }
+    };
 }
