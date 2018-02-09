@@ -237,6 +237,8 @@ public class OrderConfirmActivity extends BaseActivity {
                             CommitOrderResultEntity entity = gson.fromJson(response, CommitOrderResultEntity.class);
                             if (entity != null && entity.getErr_code().equals("0")) {
                                 Intent intent = new Intent(OrderConfirmActivity.this, ChoosePayActivity.class);
+                                intent.putExtra("orderId",entity.getResult().getOrderId());
+                                intent.putExtra("sum",mEntity.getResult().getTotal_price());
                                 startActivity(intent);
                             }
                         }

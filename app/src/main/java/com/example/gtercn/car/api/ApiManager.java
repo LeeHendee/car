@@ -466,6 +466,10 @@ public class ApiManager {
      */
     public static final String URL_ADD_HISTORY = BaseUrl + "open/search/add";
 
+    /**
+     * 电商调用支付宝前获取签名接口
+     */
+    public static final String URL_GET_ALIPAY_SIGN= BaseUrl + "ali/pay";
 
 //    --------------------------------------以上是电商部分---------------------------------------
     /**
@@ -803,4 +807,6 @@ public class ApiManager {
         String url = ApiManager.URL_DEL_ADDRESS + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + t;
         ApiHttp.delAddress(url, map, handler, type, tag);
     }
+
+
 }
