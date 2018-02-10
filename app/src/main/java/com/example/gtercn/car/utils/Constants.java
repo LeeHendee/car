@@ -49,32 +49,32 @@ public class Constants {
     /**
      * 工具地址：https://doc.open.alipay.com/docs/doc.htm?treeId=291&articleId=106097&docType=1
      */
-    public static final String RSA2_PRIVATE = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC2/pgsPEnoC+AO\n" +
-            "gT5wuTGUY8yldQQ4xFH8JQ8QwaIz5gIM91qX8VOLVOOR3EnWRE0lWv14V5hwfIxE\n" +
-            "OT24OS3yc13SVkARGSJdSlAaE8jzIXVIXqEtH5CKUoOIJiIIe6ZKkb233WDSQOUm\n" +
-            "dP8nfP5x7AApNFcJ0g0GwtD1Wb4aMH8k2viip/hR7tJq2zWyf8ua5Vpye3vDZQJw\n" +
-            "UJBQYCeg9KzK8o/bO1e6/HlIjzHfSfHZQKUYaAmZF6yB8boFgKgWEj7S/v4tMF8q\n" +
-            "9FHfOlMJOLt7f4W3J1nU7Vr9Kqs1N5MZyv8Jxk3/p+T/cR94POlyiBEx1EQSmcdV\n" +
-            "WlmAmCWnAgMBAAECggEACQKyRYNWdEmZZ71vcKd9zHu5iPAhHBZ2nv7IJiASt5F8\n" +
-            "ylynplGotnSgm/8H17gXQF6hmnpdtDQ9x+I1qsuN+qE5nnDGyNC/A270UMRmoaol\n" +
-            "F0Ipl4o1WMpFVb/i7x3/iy5v9Ay/hrrRTbp3Ed+yu7NOMrk0C/S+1XVkSqB3ntxt\n" +
-            "HErIDGUVmFTF/aYPheAjGhKJ47iPOcUmAnLnC1arHg65nu3HwbxTxQcP3fT/FMfV\n" +
-            "gpK9KQivSXZLX+bYZIPCOmaQRfHA388oKeTCijZoNaJG8lxZJR4gec/CydJWmtTN\n" +
-            "8rez6xmAzqRsx6kN+okx0R1ozr9/NIp9IUcE/LU0gQKBgQDldr9pWFKXnRhNlS/Z\n" +
-            "sYJWOf+1X8I6P6C9wVh1cB/+r0AQ9aTJoNOU3Ilzh1NZ1q+n26+POKo6K9sJs/cF\n" +
-            "EoaAWaCKFz1MA+IDVyuEGA0CdLIy9si4DDPoAPtEt62p0Jkw0HBapKTjjzmXpD3K\n" +
-            "5bI5m2/38rFujNYido8GZ9rt5wKBgQDMKCBzgrog5D+bQHHAcQgrgUrfrYqdHY8i\n" +
-            "XYDpRnOHr8tSo3PMdE9d2lZkeV77/PKj600Kd+jw0DIEwyxD39iytfSgn1qo6hO8\n" +
-            "ShKMA96BhiDJCv9Zzt29g6TuFXuzy1HEnXjlYeyCdv80rXrBrz7l6041UTMFb2rR\n" +
-            "3otc9IySQQKBgDw0YtZV+R2Udyrr6KkaXNMY1pGU9VXpGdiPoRD3AT4GZy3L9Zd9\n" +
-            "XeYh0uJ/8AuTO3U0O6S9PlSS6x5pnHc1PBry6R8yJ8AJCMTNmzpGQSuSyKp8e39m\n" +
-            "nDvT/hkyhBsZAwh+t+vgZO7bxkWWLyxMBe39bWxFve3+f7R9HNuWZiejAoGATXuZ\n" +
-            "PV3LGHqoLVsbEQeVKzXJ3fS2XAUA8vD74Q0tAb1VdIq2g01NZfhcu4tY4lhRGqdO\n" +
-            "OP/jd6n8odQVM7l8O+9U5bU1KlCUpuyR93PsecoXHVZALayWebvB195tcYJkCTQe\n" +
-            "0ygEJEvXdf21TlcdjxNsPk4QCCsOJpLI38GsrEECgYARXrOpmmi9pRdRKvsMkloM\n" +
-            "GgXHZsqW0oZvVDV3hGMIF+uAWTmEepBQdHiL5p/DzWgRQHL/kAVqv76o9JKZnmSU\n" +
-            "1PLZfPFuK3bxbwU+IExEYrIuxcTNBIGFqFCsTTYipE7zvOHeXFQXdpjQ0cogjkYQ\n" +
-            "9AMG+o4hs9CXfKwTwq+ZCQ==";
+    public static final String RSA2_PRIVATE = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCc59utM4eme+D+\n" +
+            "dr0jrmW8Mo4jgh3cp6rarcsBbTcyEjZM6/DC/zcPmIzaPz3N27PEs7Nc5peZGWSN\n" +
+            "dalRfiHUiyo5CatmzzberIB4RJm0uJl+SQ6litUfRUhamguC2VTamweiI9MI2LjH\n" +
+            "sO2XVuclXmopi6o6H7rQxv5xOEklM8XQl1et1+oDODWgipKsbHSPwxcQA+olRU5c\n" +
+            "P/MxG/BNSMkPapYQ0Rdca52Aaw/mXv4Ka/QMK2jWQr+QDfGbn499iyOnISHZebYL\n" +
+            "Cfouwc33T/37LtLYlO2A9RuuCVCBvUGOfeJIPdHuu14xAt7oAJVc4/ELi9Pp1THy\n" +
+            "quW9/GNvAgMBAAECggEAKb35EDPkQ6MzMR8vpD1yLUYZ0FJ+VUR5zKFtn1yJ0ZVM\n" +
+            "wtwF+iphYJHJ7wniDFEFmy/faLij3gQGXyfNOrPelifLvM7YvYok48pqhxRg+9Yc\n" +
+            "Z59R+TJdDmulGw1eQJpG271go376VqEpT16/ZoKlDaj3f0P7rmjgj0hRSpeZxf58\n" +
+            "TFh5e5uzFkhJ5kVOHfaATATE0+FNSBLWXajzi3c+D9TJqtq91/riirP2WyYfeqXN\n" +
+            "M2N6Bs1ObLskjs9VCCx0HUm6wtTAaEhLHzdOby++16pOefMaXHbkTSA87yhOMt9Y\n" +
+            "qovSAaqoUbR3OlVoqPoKOLL8EECFAznrGGxyI2TjiQKBgQDQEXyHOQNqch4L3pXp\n" +
+            "6Azhenk3m8NdRKXlO0xAU3uS77y9I5UCFgKKdSL0vmkABoL3QB/N9QM8AzK633XO\n" +
+            "h5ExG4TaKMe7nonYJZed9vPfIWEABvxupTGogpyYWnCSksAw2XH3+/Zs9fHTpAQB\n" +
+            "2s6MHpAq2+elDFm2t3jJ+XThvQKBgQDBDSJVpUgaV3rsENDP5MUW+VD3kaVVMY3j\n" +
+            "I1cz/18PqUym+uhn/kLoCGqMBXhLvaiMvc6O3XKKragHPtEFjtCBKAOOKIEVk03n\n" +
+            "+eEa+UQ0eLzY3FBIGoaKsami47FyyGSw0/3L8NojOvAV2jRl777b4GG2QF8cHlp0\n" +
+            "T3rXIGLumwKBgQCJ8V3m5HSQSLIE2n/3QEHx5tmgdWMTXaTCkgqehvphUxGFL6bl\n" +
+            "aCQtGTWgnvBL9QU02M19JRgM3G3wmJ+o2hX3QbBVVj389EGdDGc1cfkCkEWX2AnZ\n" +
+            "bSm790PMegEyG5rRiAfYCbK5UGEQGCgT9rWDDew0jfBIayS7T24EMZ883QKBgHWV\n" +
+            "N11s/z60G7WfBGArmfPFRRCVUFtUhHRdOSb9mvviBUMLPfThRAUp4yOHzV5slTWs\n" +
+            "Ahy4OqTG4roPA6bb9plEMu4qM31drCzn4LjaLDW9eGCpx+gy59GgJo+FGbas4c9m\n" +
+            "P4YxG9wrcMIOlq2j2d74iutDx+pLfpKrOkm/eyKTAoGAVsXS6xc/2dnrUWwv8uq7\n" +
+            "dqs7xyUJSRTiBwIn75uWgwbqgGFtEEg62UIZ8r3gwYoLov6UjwIJ5uQvuMJIQkrE\n" +
+            "U4hKh8nQuPP6YLGcfGeYRws/qsKj7lReC5xd3yab6WDhVdogpstzvJu07g9OwMpU\n" +
+            "lBIdI8UJBVpoHmmruD7F8wQ=";
 
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_AUTH_FLAG = 2;
