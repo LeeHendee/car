@@ -57,7 +57,8 @@ public class ApiManager {
 
     private static final String YIZHAN_HTTP = "http://114.215.71.170/car_home/app/v1";
 
-    private static final String BaseUrl = "http://114.215.71.170/car_inn/v1/";
+    //    private static final String BaseUrl = "http://114.215.71.170/car_inn/v1/";
+    private static final String BaseUrl = "http://inn.ngrok.xiaomiqiu.cn/car_inn/v1/";
 
     public static final String URL_RESCUE = HTTP + "/open/service/rescuelist";
 
