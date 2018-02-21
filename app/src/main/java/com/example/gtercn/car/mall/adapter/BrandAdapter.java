@@ -60,6 +60,9 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         holder.mDescriptionTv.setText(bean.getDescrption());
         if (bean.getPicture_list() != null && bean.getPicture_list().size() > 0) {
             for (int i = 0; i < bean.getPicture_list().size(); i++) {
+                if (bean.getPicture_list().get(i).getPicture_url().isEmpty()) {
+                    continue;
+                }
                 if (i == 0) {
                     Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductOne);
                     final int finalI1 = i;
