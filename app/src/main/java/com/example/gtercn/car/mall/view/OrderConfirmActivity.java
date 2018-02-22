@@ -192,6 +192,8 @@ public class OrderConfirmActivity extends BaseActivity {
 
     private void orderConfirm() {
         PreOrderEntity entity = new PreOrderEntity();
+        if (list == null)
+            return;
         List<PreOrderEntity.GoodsAttrListBean> goodsList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             PreOrderEntity.GoodsAttrListBean bean = new PreOrderEntity.GoodsAttrListBean();

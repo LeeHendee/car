@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -42,8 +41,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.transform.Transformer;
 
 
 public class StoreFragment extends BaseFragment {
@@ -145,7 +142,6 @@ public class StoreFragment extends BaseFragment {
     public void setBanner() {
 
         mBannerVp.startTurning(3000);
-
         mBannerVp.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {

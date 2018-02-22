@@ -104,12 +104,12 @@ public class ChoosePayActivity extends BaseActivity {
 
     private void goToAliPay(final String sign) {
         //需要支付的常量封装在constants
-        // 订单信息
+        //订单信息
         Runnable payRunnable = new Runnable() {//要在子线程
             @Override
             public void run() {
                 PayTask aliPay = new PayTask(ChoosePayActivity.this);
-                Map<String, String> result = aliPay.payV2(sign, true);//这里的orderInfo就是上面说的orderInfo
+                String result = aliPay.pay(sign, true);
                 Log.e(TAG, "ali_return :" + result.toString());
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;
@@ -254,7 +254,6 @@ public class ChoosePayActivity extends BaseActivity {
                             AliPaySignEntity result = gson.fromJson(response, AliPaySignEntity.class);
                             if (result != null && result.getErr_code().equals("0")) {
                                 Log.e(TAG, "onResponse: aliPaySign = " + result.getResult().getKey());
-                                Toast.makeText(ChoosePayActivity.this, "接下来该调用支付宝支付", Toast.LENGTH_SHORT).show();
                                 goToAliPay(result.getResult().getKey());
                             }
 
