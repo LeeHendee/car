@@ -71,8 +71,8 @@ public class SearchActivity extends BaseActivity {
 
     @SuppressLint("NewApi")
     private void initLabel(List<String> list, FlowLayout fl) {
-        for (int i = 0; i < hotList.size(); i++) {
-            TextView tv = new TextView(this);
+        for (int i = 0; i < list.size(); i++) {
+            final TextView tv = new TextView(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(20, 20, 20, 20);
             tv.setLayoutParams(lp);
@@ -83,6 +83,13 @@ public class SearchActivity extends BaseActivity {
             tv.setTextColor(getResources().getColor(R.color.text_common_color));
             tv.setBackground(getResources().getDrawable(R.drawable.tag_bg_f2));
             fl.addView(tv);
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSearchEt.setText(tv.getText());
+                    mSearchEt.setSelection(tv.length());
+                }
+            });
         }
     }
 
@@ -111,7 +118,7 @@ public class SearchActivity extends BaseActivity {
                                 hotList = entity.getResult().getHot_search();
                                 historyList = entity.getResult().getSearch_list();
                                 initLabel(hotList, mHotSearchFl);
-                                initLabel(hotList, mHistorySearchFl);
+                                initLabel(historyList, mHistorySearchFl);
                             }
                         }
                     }
@@ -125,7 +132,7 @@ public class SearchActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_search:
-                goSearch("轮胎");
+                goSearch("行车记录仪");
                 break;
             case R.id.ll_clear_history:
                 clearHistory();

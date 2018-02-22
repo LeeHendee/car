@@ -8,9 +8,8 @@ import java.util.List;
 
 public class BannerEntity {
 
-
     /**
-     * result : [{"id":"1","title":"车驿站促销活动","picture_path":"http://114.215.71.170:81/inn/advertisement/9c93.jpg","url":"www.baidu.com","city_code":"0411","delete_flag":"0","insert_time":1506043936000,"update_time":1513862122000},{"id":"2","title":"米其林新品活动","picture_path":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","url":"www.baidu.com","city_code":"0411","delete_flag":"0","insert_time":1506043936000,"update_time":1513862406000},{"id":"3","title":"途虎汽车","picture_path":"http://114.215.71.170:81/inn/advertisement/bb12.jpg","url":"www.baidu.com","city_code":"0411","delete_flag":"0","insert_time":1506043936000,"update_time":1513862423000},{"id":"4","title":"赛轮促销","picture_path":"http://114.215.71.170:81/inn/advertisement/d875.jpg","url":"www.baidu.com","city_code":"0411","delete_flag":"0","insert_time":1506043936000,"update_time":1513862456000},{"id":"5","title":"促销活动","picture_path":"http://114.215.71.170:81/inn/advertisement/31da.jpg","url":"www.baidu.com","city_code":"0411","delete_flag":"0","insert_time":1506043936000,"update_time":1513862469000}]
+     * result : [{"id":"1","title":"车驿站促销活动","picture_path":"http://114.215.71.170:81/inn/advertisement/9c93.jpg","goods_id":"4a408beb9d784b89ad9b34a5d1dbb255","city_code":"0411","delete_flag":"0","insert_time":1506043936000,"update_time":1519282056000},{"id":"2","title":"米其林新品活动","picture_path":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","goods_id":"1","city_code":"0411","delete_flag":"0","insert_time":1506043936000,"update_time":1519282065000},{"id":"3","title":"途虎汽车","picture_path":"http://114.215.71.170:81/inn/advertisement/bb12.jpg","goods_id":"2","city_code":"0411","delete_flag":"0","insert_time":1506043936000,"update_time":1519282073000}]
      * err_code : 0
      * err_message : OK
      */
@@ -57,17 +56,17 @@ public class BannerEntity {
          * id : 1
          * title : 车驿站促销活动
          * picture_path : http://114.215.71.170:81/inn/advertisement/9c93.jpg
-         * url : www.baidu.com
+         * goods_id : 4a408beb9d784b89ad9b34a5d1dbb255
          * city_code : 0411
          * delete_flag : 0
          * insert_time : 1506043936000
-         * update_time : 1513862122000
+         * update_time : 1519282056000
          */
 
         private String id;
         private String title;
         private String picture_path;
-        private String url;
+        private String goods_id;
         private String city_code;
         private String delete_flag;
         private long insert_time;
@@ -79,7 +78,7 @@ public class BannerEntity {
                     "id='" + id + '\'' +
                     ", title='" + title + '\'' +
                     ", picture_path='" + picture_path + '\'' +
-                    ", url='" + url + '\'' +
+                    ", goods_id='" + goods_id + '\'' +
                     ", city_code='" + city_code + '\'' +
                     ", delete_flag='" + delete_flag + '\'' +
                     ", insert_time=" + insert_time +
@@ -111,12 +110,12 @@ public class BannerEntity {
             this.picture_path = picture_path;
         }
 
-        public String getUrl() {
-            return url;
+        public String getGoods_id() {
+            return goods_id;
         }
 
-        public void setUrl(String url) {
-            this.url = url;
+        public void setGoods_id(String goods_id) {
+            this.goods_id = goods_id;
         }
 
         public String getCity_code() {

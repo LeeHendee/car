@@ -1,5 +1,6 @@
 package com.example.gtercn.car.mall.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.android.volley.VolleyError;
+import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
+import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
@@ -31,17 +36,22 @@ import com.example.gtercn.car.mall.adapter.ClassifyAdapter;
 import com.example.gtercn.car.mall.entity.SecKillEntity;
 import com.example.gtercn.car.widget.DividerItemDecoration;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.Transformer;
 
 
 public class StoreFragment extends BaseFragment {
 
     private static final String TAG = "StoreFragment";
 
-    private ViewPager mBannerVp;
+    //    private ViewPager mBannerVp;
+    private ConvenientBanner mBannerVp;
 
     private GridView mClassifyGv;
 
@@ -81,10 +91,10 @@ public class StoreFragment extends BaseFragment {
         public boolean handleMessage(Message message) {
             if (message.what == 100) {
                 mAdapter = new MallBannerAdapter(mBannerList, getActivity());
-                mBannerVp.setAdapter(mAdapter);
-                autoPlayView();
+//                mBannerVp.setAdapter(mAdapter);
+//                autoPlayView();
             } else if (message.what == 101) {
-                mBannerVp.setCurrentItem(mBannerVp.getCurrentItem() + 1);
+//                mBannerVp.setCurrentItem(mBannerVp.getCurrentItem() + 1);
             } else if (message.what == 102) {
                 mClassifyAdapter = new ClassifyAdapter(getActivity(), mClassifyList);
                 mClassifyGv.setAdapter(mClassifyAdapter);
@@ -124,13 +134,65 @@ public class StoreFragment extends BaseFragment {
         mCartIv = (ImageView) mView.findViewById(R.id.iv_home_cart);
         mSearchIv = (ImageView) mView.findViewById(R.id.iv_home_search);
         mTitleRightIv = (ImageView) mView.findViewById(R.id.iv_title_right);
-        mBannerVp = (ViewPager) mView.findViewById(R.id.vp_banner);
+        mBannerVp = (ConvenientBanner) mView.findViewById(R.id.vp_banner);
         mClassifyGv = (GridView) mView.findViewById(R.id.gv_classify);
         mSecKillRecLv = (RecyclerView) mView.findViewById(R.id.rec_qiang);
         mSecKillRecLv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         mSecKillRecLv.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
         mLoadingRl = (RelativeLayout) mView.findViewById(R.id.rl_loading);
     }
+
+    public void setBanner() {
+
+        mBannerVp.startTurning(3000);
+
+        mBannerVp.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String url = mBannerList.get(position).getPicture_path();
+                Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+                intent.putExtra("goodId", mBannerList.get(position).getGoods_id());
+                intent.putExtra("cityCode", mBannerList.get(position).getCity_code());
+                startActivity(intent);
+
+                Log.e(TAG, "onItemClick: current path is " + url);
+            }
+        });
+        mBannerVp.setPages(
+                new CBViewHolderCreator<LocalImageHolderView>() {
+                    @Override
+                    public LocalImageHolderView createHolder() {
+                        return new LocalImageHolderView();
+                    }
+                }, mBannerList)
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{R.drawable.guide_u_indicator1, R.drawable.guide_s_indicator1})
+                //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT);
+        //设置翻页的效果，不需要翻页效果可用不设
+//        .setPageTransformer(Transformer);    集成特效之后会有白屏现象，新版已经分离，如果要集成特效的例子可以看Demo的点击响应。
+//        mBannerVp.setManualPageable(false);//设置不能手动影响
+
+    }
+
+
+    public class LocalImageHolderView implements Holder<BannerEntity.ResultBean> {
+        private ImageView imageView;
+
+        @Override
+        public View createView(Context context) {
+            imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            return imageView;
+        }
+
+        @Override
+        public void UpdateUI(Context context, int position, BannerEntity.ResultBean data) {
+            String url = mBannerList.get(position).getPicture_path();
+            Picasso.with(context).load(url).into(imageView);
+        }
+    }
+
 
     @Override
     public void onStop() {
@@ -162,19 +224,16 @@ public class StoreFragment extends BaseFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.iv_home_cart:
-                    showToastMsg("购物车");
                     Intent intent = new Intent(getActivity(),CartActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.iv_title_right:
-                    showToastMsg("右按键");
                     Intent orderManageActivity = new Intent(getActivity(), OrderListActivity.class);
                     startActivity(orderManageActivity);
                     break;
                 case R.id.iv_home_search:
-                    showToastMsg("去搜索");
-                    Intent addressIntent = new Intent(getActivity(), ReviewPostActivity.class);
-                    startActivity(addressIntent);
+                    Intent searchIntent = new Intent(getActivity(), SearchActivity.class);
+                    startActivity(searchIntent);
                     break;
             }
         }
@@ -185,26 +244,6 @@ public class StoreFragment extends BaseFragment {
         initBanner();
         initClassify();
         initSecKill();
-    }
-
-    private void autoPlayView() {
-        isContinue = true;
-        mThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isContinue) {
-                    try {
-                        Thread.sleep(2000);
-                        mHandler.sendEmptyMessage(101);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        if (!mThread.isAlive()) {
-            mThread.start();
-        }
     }
 
     private void initSecKill() {
@@ -256,7 +295,8 @@ public class StoreFragment extends BaseFragment {
                     if (bannerEntity != null) {
                         if (TextUtils.equals(bannerEntity.getErr_code(), "0")) {
                             mBannerList = bannerEntity.getResult();
-                            mHandler.sendEmptyMessage(100);
+//                            mHandler.sendEmptyMessage(100);
+                            setBanner();
                         }
                     }
                 }

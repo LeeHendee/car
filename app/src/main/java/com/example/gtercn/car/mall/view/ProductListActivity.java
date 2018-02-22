@@ -136,7 +136,8 @@ public class ProductListActivity extends BaseActivity {
                     finish();
                     break;
                 case R.id.tv_search:
-
+                    Intent searchIntent = new Intent(ProductListActivity.this, SearchActivity.class);
+                    startActivity(searchIntent);
                     break;
                 case R.id.tv_comprehensive_sort:
                     changeSortStatus(v.getId());

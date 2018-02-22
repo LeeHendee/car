@@ -591,13 +591,10 @@ public class ProductDetailActivity extends BaseActivity {
         productLl = (LinearLayout) findViewById(R.id.ll_product);
         reviewsLl = (LinearLayout) findViewById(R.id.ll_reviews);
         detailLl = (LinearLayout) findViewById(R.id.ll_detail);
-
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);
-
         initReviewsUi();
-
         changeTitleView(mTitleProductTv.getId());
     }
 
@@ -608,7 +605,6 @@ public class ProductDetailActivity extends BaseActivity {
         badLl = (LinearLayout) findViewById(R.id.ll_bad);
         addLl = (LinearLayout) findViewById(R.id.ll_add);
         picLl = (LinearLayout) findViewById(R.id.ll_pic);
-
         reviewTitleLl = (LinearLayout) findViewById(R.id.ll_review_title);
         reviewsRv = (RecyclerView) findViewById(R.id.recy_reviews);
         reviewsRv.addItemDecoration(new RecyItemSpace(25));
@@ -631,7 +627,6 @@ public class ProductDetailActivity extends BaseActivity {
         picNumberTv = (TextView) findViewById(R.id.tv_pic_number);
         picLineTv = (TextView) findViewById(R.id.tv_pic_line);
         displayArrTv = (TextView) findViewById(R.id.tv_display_property);
-
         reviewsRv.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -757,7 +752,6 @@ public class ProductDetailActivity extends BaseActivity {
             final List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> items = propertyList.get(i).getItems();
             final List<TextView> tvList = new ArrayList<>();
             if (items == null) {
-                Toast.makeText(this, "items == null ", Toast.LENGTH_SHORT).show();
                 return;
             }
             for (int j = 0; j < items.size(); j++) {

@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:scaleType="center"
             android:src="@drawable/tm_actionbar_btn_back" />
@@ -24,7 +24,8 @@
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="5"
             android:background="@drawable/search_bar_bg_gray"
             android:drawableLeft="@drawable/icon_search"
@@ -40,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
+            android:padding="10dp"
             android:text="搜索" />
 
     </LinearLayout>

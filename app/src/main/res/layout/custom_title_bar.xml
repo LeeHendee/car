@@ -10,6 +10,7 @@
         android:id="@+id/iv_title_left"
         android:layout_width="50dp"
         android:layout_height="match_parent"
+        android:scaleType="center"
         android:src="@drawable/tm_actionbar_btn_back" />
 
     <TextView

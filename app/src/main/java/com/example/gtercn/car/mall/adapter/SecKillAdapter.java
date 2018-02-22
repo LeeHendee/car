@@ -15,6 +15,7 @@ import com.example.gtercn.car.R;
 import com.example.gtercn.car.mall.entity.SecKillEntity;
 import com.example.gtercn.car.mall.view.ProductDetailActivity;
 import com.example.gtercn.car.mall.view.ProductListActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,24 +44,25 @@ public class SecKillAdapter extends RecyclerView.Adapter<SecKillAdapter.SecKillV
     @Override
     public void onBindViewHolder(SecKillViewHolder holder, int position) {
         final SecKillEntity.ResultBean bean = secList.get(position);
-        holder.secIv.setImageResource(R.drawable.ic_launcher);
-        holder.salePrice.setText("￥" + bean.getPromotion_price());
-        holder.orgPrice.setText("￥" + bean.getPrime_price());
+        if (bean.getSmall_picture_list() != null && bean.getSmall_picture_list().size() > 0) {
+            Picasso.with(context).load(bean.getSmall_picture_list().get(0)).into(holder.secIv);
+        }
+
+        holder.salePrice.setText(context.getResources().getString(R.string.rmb) + bean.getPromotion_price());
+        holder.orgPrice.setText(context.getResources().getString(R.string.rmb) + bean.getPrime_price());
         holder.orgPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProductDetailActivity.class);
-                String goodId = bean.getProduct_id();
+                String goodId = bean.getId();
                 String cityCode = bean.getCity_code();
                 intent.putExtra("goodId", goodId);
                 intent.putExtra("cityCode", cityCode);
                 context.startActivity(intent);
-
             }
         });
     }
-
 
     @Override
     public int getItemCount() {

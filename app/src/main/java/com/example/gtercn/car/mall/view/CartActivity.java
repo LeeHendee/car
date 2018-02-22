@@ -145,7 +145,6 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
                 case R.id.ll_to_checkout:
                     if (isDel) {
                         //调用删除接口
-                        Toast.makeText(CartActivity.this, "去删除", Toast.LENGTH_SHORT).show();
                         delCart();
                     } else {
                         Intent intent = new Intent(CartActivity.this, OrderConfirmActivity.class);
@@ -268,7 +267,7 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
             initRightTvBar("购物车", "编辑", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(CartActivity.this, "编辑", Toast.LENGTH_SHORT).show();
+
                     setTitle(true);
                     setDelUI(true);
                 }
@@ -277,7 +276,6 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
             initRightTvBar("购物车", "完成", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(CartActivity.this, "删除完成", Toast.LENGTH_SHORT).show();
                     setTitle(false);
                     setDelUI(false);
                 }
@@ -382,7 +380,8 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
                 count += bean.getNumber();
             }
         }
-        mCostTv.setText(allCost + "");
+        mCostTv.setText(getResources().getString(R.string.rmb) + allCost);
+        mTotalTv.setText(getResources().getString(R.string.rmb) + allCost);
         mCheckoutCountTv.setText("(" + count + ")");
     }
 }
