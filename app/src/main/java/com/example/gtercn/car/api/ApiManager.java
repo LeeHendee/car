@@ -57,8 +57,8 @@ public class ApiManager {
 
     private static final String YIZHAN_HTTP = "http://114.215.71.170/car_home/app/v1";
 
-    //    private static final String BaseUrl = "http://114.215.71.170/car_inn/v1/";
-    private static final String BaseUrl = "http://inn.ngrok.xiaomiqiu.cn/car_inn/v1/";
+    private static final String BaseUrl = "http://114.215.71.170/car_inn/v1/";
+//    private static final String BaseUrl = "http://inn.ngrok.xiaomiqiu.cn/car_inn/v1/";
 
     public static final String URL_RESCUE = HTTP + "/open/service/rescuelist";
 
@@ -471,6 +471,11 @@ public class ApiManager {
      * 电商调用支付宝前获取签名接口
      */
     public static final String URL_GET_ALIPAY_SIGN= BaseUrl + "ali/pay";
+
+    /**
+     * 过滤属性
+     */
+    public static final String URL_FILTER_PROPERTY = BaseUrl + "open/goods/search";
 
 //    --------------------------------------以上是电商部分---------------------------------------
     /**

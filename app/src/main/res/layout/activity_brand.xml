@@ -9,6 +9,11 @@
 
     <include layout="@layout/layout_loading" />
 
+    <include
+        layout="@layout/custom_empty_view"
+        android:id="@+id/empty_rl"
+        android:visibility="gone" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

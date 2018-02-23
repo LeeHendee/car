@@ -82,9 +82,9 @@ public class ProductListEntity {
         private String id;
         private String product_id;
         private String sku_code;
-        private int prime_price;
-        private int promotion_price;
-        private int cost_price;
+        private double prime_price;
+        private double promotion_price;
+        private double cost_price;
         private String product_area;
         private String goods_title;
         private String goods_synopsis;
@@ -156,15 +156,15 @@ public class ProductListEntity {
             this.sku_code = sku_code;
         }
 
-        public int getPrime_price() {
+        public double getPrime_price() {
             return prime_price;
         }
 
-        public void setPrime_price(int prime_price) {
+        public void setPrime_price(double prime_price) {
             this.prime_price = prime_price;
         }
 
-        public int getPromotion_price() {
+        public double getPromotion_price() {
             return promotion_price;
         }
 
@@ -172,11 +172,11 @@ public class ProductListEntity {
             this.promotion_price = promotion_price;
         }
 
-        public int getCost_price() {
+        public double getCost_price() {
             return cost_price;
         }
 
-        public void setCost_price(int cost_price) {
+        public void setCost_price(double cost_price) {
             this.cost_price = cost_price;
         }
 

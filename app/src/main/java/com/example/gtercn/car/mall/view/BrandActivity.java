@@ -52,6 +52,8 @@ public class BrandActivity extends BaseActivity {
 
     private String mBrandName;
 
+    private RelativeLayout mEmptyRl;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,6 @@ public class BrandActivity extends BaseActivity {
         initRightIvBar(mBrandName, R.drawable.icon_search, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(BrandActivity.this, "搜索", Toast.LENGTH_SHORT).show();
                 Intent goSearch = new Intent(BrandActivity.this, SearchActivity.class);
                 startActivity(goSearch);
             }
@@ -89,9 +90,14 @@ public class BrandActivity extends BaseActivity {
                     if (brandList != null) {
                         if (TextUtils.equals(brandList.getErr_code(), "0")) {
                             mList = brandList.getResult();
-                            mAdapter = new BrandAdapter(BrandActivity.this, mList);
-                            mBrandRv.setLayoutManager(new LinearLayoutManager(BrandActivity.this));
-                            mBrandRv.setAdapter(mAdapter);
+                            if (mList != null && mList.size() > 0) {
+                                mEmptyRl.setVisibility(View.GONE);
+                                mAdapter = new BrandAdapter(BrandActivity.this, mList);
+                                mBrandRv.setLayoutManager(new LinearLayoutManager(BrandActivity.this));
+                                mBrandRv.setAdapter(mAdapter);
+                            } else {
+                                mEmptyRl.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }
@@ -126,6 +132,7 @@ public class BrandActivity extends BaseActivity {
             }
         });
         mSwipe.setColorSchemeResources(R.color.blue1);
+        mEmptyRl = (RelativeLayout) findViewById(R.id.empty_rl);
     }
 
 

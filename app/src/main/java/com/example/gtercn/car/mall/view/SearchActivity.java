@@ -110,7 +110,7 @@ public class SearchActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e(TAG, "onResponse: response is " + response);
+                        Log.e(TAG, "initData: response is " + response);
                         if (response != null) {
                             Gson gson = new Gson();
                             SearchPageEntity entity = gson.fromJson(response, SearchPageEntity.class);
@@ -132,7 +132,7 @@ public class SearchActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_search:
-                goSearch("行车记录仪");
+                goSearch(mSearchEt.getText().toString().trim());
                 break;
             case R.id.ll_clear_history:
                 clearHistory();
@@ -154,7 +154,7 @@ public class SearchActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e(TAG, "onResponse: response is " + response);
+                        Log.e(TAG, "clearHistory: response is " + response);
                         if (response != null) {
                             Gson gson = new Gson();
                             ResultEntity entity = gson.fromJson(response, ResultEntity.class);
@@ -198,7 +198,7 @@ public class SearchActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e(TAG, "onResponse: response is " + "内容已添加数据库");
+                        Log.e(TAG, "addToHistory: response is " + response);
                     }
                 });
     }

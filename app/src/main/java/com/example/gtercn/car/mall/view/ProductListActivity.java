@@ -1,15 +1,22 @@
 package com.example.gtercn.car.mall.view;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,18 +29,24 @@ import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.IListener;
 import com.example.gtercn.car.mall.adapter.ProductListAdapter;
 import com.example.gtercn.car.mall.entity.ProductListEntity;
+import com.example.gtercn.car.mall.entity.PropertyListEntity;
+import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
+import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * Created by Yan on 2017/12/24.
@@ -74,6 +87,7 @@ public class ProductListActivity extends BaseActivity {
     private String mBrandId = null;
 
     private String mSearchContent = null;
+    private View mView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,6 +108,7 @@ public class ProductListActivity extends BaseActivity {
             //从搜索页面跳转
             submitSearch();
         }
+        getProperty();
     }
 
     private void setData() {
@@ -160,7 +175,8 @@ public class ProductListActivity extends BaseActivity {
                     sortProduct(priceFlag, sortType);
                     break;
                 case R.id.tv_sort:
-                    changeSortStatus(v.getId());
+//                    changeSortStatus(v.getId());
+                    setPropertyUi();
                     break;
             }
         }
@@ -216,7 +232,8 @@ public class ProductListActivity extends BaseActivity {
     }
 
     private void initView() {
-        setContentView(R.layout.activity_production_list);
+        mView = LayoutInflater.from(this).inflate(R.layout.activity_production_list, null);
+        setContentView(mView);
         mComprehensiveSortTv = (TextView) findViewById(R.id.tv_comprehensive_sort);
         mSaleSortTv = (TextView) findViewById(R.id.tv_sale_sort);
         mPriceSortTv = (TextView) findViewById(R.id.tv_price_sort);
@@ -226,7 +243,8 @@ public class ProductListActivity extends BaseActivity {
         mBackIv = (ImageView) findViewById(R.id.iv_back);
         mSearchTv = (TextView) findViewById(R.id.tv_search);
         mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new RecyItemSpace(1));
         mRefresh.setColorSchemeResources(R.color.blue1);
         mSortTvList = new ArrayList<>();
         mSortTvList.add(mComprehensiveSortTv);
@@ -266,6 +284,168 @@ public class ProductListActivity extends BaseActivity {
                     }
                 });
     }
+
+    private List<PropertyListEntity.ResultBean.SpecListBean> propertyList;
+
+    private void getProperty() {
+        String categoryId = "7";
+        String isSearch = "0";
+        OkHttpUtils
+                .get()
+                .url(ApiManager.URL_PROPERTY_LIST)
+                .addParams("category_id", categoryId)
+                .addParams("is_search", isSearch)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response != null) {
+                            Log.e(TAG, "onResponse: response is " + response);
+                            Gson gson = new Gson();
+                            PropertyListEntity entity = gson.fromJson(response, PropertyListEntity.class);
+                            if (entity != null && entity.getErr_code().equals("0")) {
+                                propertyList = entity.getResult().getSpec_list();
+                            }
+                        }
+                    }
+                });
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void setPropertyUi() {
+        View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_list, null);
+        final PopupWindow pw = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+        LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
+        TextView confirmTv = (TextView) popView.findViewById(R.id.tv_pop_add_cart);
+        TextView resetTv = (TextView) popView.findViewById(R.id.tv_pop_buy_now);
+        resetTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProductListActivity.this, "重置逻辑", Toast.LENGTH_SHORT).show();
+            }
+        });
+        confirmTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //调用属性过滤接口
+                filterProperty("0", "10000", null, getPropertyIds());
+            }
+        });
+
+        if (propertyList == null) {
+            Toast.makeText(this, "propertyList == null ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        for (int i = 0; i < propertyList.size(); i++) {
+            //单一属性
+            View itemView = LayoutInflater.from(this).inflate(R.layout.item_property, null);
+            TextView propertyName = (TextView) itemView.findViewById(R.id.tv_property_name);
+            FlowLayout propertyFlow = (FlowLayout) itemView.findViewById(R.id.flow_property);
+            //单一属性item
+            final List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> items = propertyList.get(i).getItems();
+            final List<TextView> tvList = new ArrayList<>();
+            if (items == null) {
+                return;
+            }
+            for (int j = 0; j < items.size(); j++) {
+                PropertyListEntity.ResultBean.SpecListBean.ItemsBean bean = items.get(j);
+                TextView tv = new TextView(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(20, 20, 20, 20);
+                tv.setLayoutParams(lp);
+                tv.setTextSize(12);
+                tv.setText(items.get(j).getItem());
+                tv.setGravity(Gravity.CENTER);
+                tv.setTag(bean);
+                tv.setId(j);
+                tv.setTextColor(getResources().getColor(R.color.text_common_color));
+                tv.setBackground(getResources().getDrawable(R.drawable.tag_bg_property));
+                tvList.add(tv);
+                propertyFlow.addView(tv);
+
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for (int k = 0; k < tvList.size(); k++) {
+                            TextView t = tvList.get(k);
+                            PropertyListEntity.ResultBean.SpecListBean.ItemsBean b = (PropertyListEntity.ResultBean.SpecListBean.ItemsBean) t.getTag();
+                            if (k == v.getId()) {
+                                b.setSelected(true);
+                                t.setTextColor(getResources().getColor(R.color.orange_txt));
+                            } else {
+                                b.setSelected(false);
+                                t.setTextColor(Color.BLACK);
+                            }
+                        }
+                    }
+                });
+            }
+            propertyName.setText(propertyList.get(i).getName());
+            propertiesLayout.addView(itemView);
+        }
+        pw.setFocusable(true);
+        pw.setOutsideTouchable(true);
+        pw.showAtLocation(mView, Gravity.BOTTOM, 0, 0);
+
+    }
+
+    private void filterProperty(String fromPrice, String toPrice, String brandIds, String propertyIds) {
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("from_price", fromPrice);
+            params.put("to_price", toPrice);
+            params.put("brand_ids", brandIds);
+            params.put("spec_ids", propertyIds);
+            params.put("city_code", Constants.CITY_CODE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String p = params.toString();
+        OkHttpUtils
+                .postString()
+                .url(ApiManager.URL_FILTER_PROPERTY)
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
+                .content(p)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "filterProperty : response is " + response);
+                    }
+                });
+
+    }
+
+    private String getPropertyIds() {
+        String propertyIds = null;
+        String ids = null;
+        StringBuffer sb2 = new StringBuffer();
+        for (int i = 0; i < propertyList.size(); i++) {
+            List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> list = propertyList.get(i).getItems();
+            for (int j = 0; j < list.size(); j++) {
+                if (list.get(j).isSelected()) {
+                    sb2.append(list.get(j).getSpec_id() + ",");
+                }
+            }
+        }
+        ids = sb2.toString();
+        // TODO: 2018/2/2 属性id
+        propertyIds = ids.substring(0, ids.length() - 1);
+        return propertyIds;
+    }
+
 
     @Override
     protected void onExecuteSuccess(String result, int type) {

@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +19,10 @@ import com.example.gtercn.car.mall.view.ProductListActivity;
 import com.example.gtercn.car.utils.Constants;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Yan on 2017/12/24.
@@ -58,13 +63,17 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         });
 
         holder.mDescriptionTv.setText(bean.getDescrption());
+
         if (bean.getPicture_list() != null && bean.getPicture_list().size() > 0) {
             for (int i = 0; i < bean.getPicture_list().size(); i++) {
                 if (bean.getPicture_list().get(i).getPicture_url().isEmpty()) {
                     continue;
                 }
                 if (i == 0) {
-                    Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductOne);
+                    holder.mProductOne.setTag(bean.getPicture_list().get(i).getPicture_url());
+                    if (holder.mProductOne.getTag() == bean.getPicture_list().get(i).getPicture_url()) {
+                        Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductOne);
+                    }
                     final int finalI1 = i;
                     holder.mProductOne.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -76,7 +85,10 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
                         }
                     });
                 } else if (i == 1) {
-                    Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductTwo);
+                    holder.mProductTwo.setTag(bean.getPicture_list().get(i).getPicture_url());
+                    if (holder.mProductTwo.getTag() == bean.getPicture_list().get(i).getPicture_url()) {
+                        Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductTwo);
+                    }
                     final int finalI = i;
                     holder.mProductTwo.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -88,7 +100,10 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
                         }
                     });
                 } else if (i == 2) {
-                    Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductThree);
+                    holder.mProductThree.setTag(bean.getPicture_list().get(i).getPicture_url());
+                    if (holder.mProductThree.getTag() == bean.getPicture_list().get(i).getPicture_url()) {
+                        Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductThree);
+                    }
                     final int finalI2 = i;
                     holder.mProductThree.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -116,12 +131,14 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         ImageView mProductOne;
         ImageView mProductTwo;
         ImageView mProductThree;
+        GridView gridView;
 
         public BrandViewHolder(View itemView) {
             super(itemView);
             mBrandNameTv = (TextView) itemView.findViewById(R.id.tv_brand_name);
             mGoBuyTv = (TextView) itemView.findViewById(R.id.tv_go_buy);
             mDescriptionTv = (TextView) itemView.findViewById(R.id.tv_description);
+//            gridView = (GridView) itemView.findViewById(R.id.gv_item);
             mProductOne = (ImageView) itemView.findViewById(R.id.iv_product_one);
             mProductTwo = (ImageView) itemView.findViewById(R.id.iv_product_two);
             mProductThree = (ImageView) itemView.findViewById(R.id.iv_product_three);

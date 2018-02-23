@@ -89,9 +89,9 @@ public class SecKillEntity {
         private String id;
         private String brand_id;
         private String sku_code;
-        private int prime_price;
-        private int promotion_price;
-        private int cost_price;
+        private double prime_price;
+        private double promotion_price;
+        private double cost_price;
         private String product_area;
         private String goods_title;
         private String goods_synopsis;
@@ -177,23 +177,23 @@ public class SecKillEntity {
             this.sku_code = sku_code;
         }
 
-        public int getPrime_price() {
+        public double getPrime_price() {
             return prime_price;
         }
 
-        public void setPrime_price(int prime_price) {
+        public void setPrime_price(double prime_price) {
             this.prime_price = prime_price;
         }
 
-        public int getPromotion_price() {
+        public double getPromotion_price() {
             return promotion_price;
         }
 
-        public void setPromotion_price(int promotion_price) {
+        public void setPromotion_price(double promotion_price) {
             this.promotion_price = promotion_price;
         }
 
-        public int getCost_price() {
+        public double getCost_price() {
             return cost_price;
         }
 

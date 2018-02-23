@@ -43,7 +43,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public ProductionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_production, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_product_new, parent, false);
         ProductionViewHolder holder = new ProductionViewHolder(view);
         return holder;
     }
@@ -54,9 +54,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.titleTv.setText(bean.getGoods_title());
         holder.priceTv.setText(context.getResources().getString(R.string.rmb)+bean.getPromotion_price());
         holder.soldTv.setText(bean.getSold_number() + "");
-        holder.reviewsTv.setText(bean.getGoods_synopsis());
+        holder.reviewsTv.setText(bean.getStock() + "");
         holder.reviewsRateTv.setText(bean.getGoods_title());
-        Picasso.with(context).load(bean.getSmall_picture()).into(holder.productIv);
+        holder.productIv.setTag(bean.getSmall_picture());
+
+        if (holder.productIv.getTag() == bean.getSmall_picture()) {
+            Picasso.with(context).load(bean.getSmall_picture()).into(holder.productIv);
+        }
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
