@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -140,7 +141,6 @@ public class ProductListActivity extends BaseActivity {
                 initData();
             }
         });
-
     }
 
     private View.OnClickListener mListener = new View.OnClickListener() {
@@ -316,14 +316,21 @@ public class ProductListActivity extends BaseActivity {
                 });
     }
 
+    private String hp;
+    private String lp;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setPropertyUi() {
+//        String hp = null;
+//        String lp = null;
+
         View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_list, null);
         final PopupWindow pw = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
         TextView confirmTv = (TextView) popView.findViewById(R.id.tv_pop_add_cart);
         TextView resetTv = (TextView) popView.findViewById(R.id.tv_pop_buy_now);
+        final EditText lowEt = (EditText) popView.findViewById(R.id.et_low_price);
+        final EditText highEt = (EditText) popView.findViewById(R.id.et_high_price);
         resetTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -334,6 +341,14 @@ public class ProductListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //调用属性过滤接口
+                String lowPrice = lowEt.getText().toString().trim();
+                String highPrice = highEt.getText().toString().trim();
+                if (!lowPrice.isEmpty() && lowPrice.equals("最低价")) {
+                    lp = lowPrice;
+                } else {
+                    lp = "0";
+                }
+
                 filterProperty("0", "10000", null, getPropertyIds());
             }
         });
