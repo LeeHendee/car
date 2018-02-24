@@ -178,6 +178,7 @@ public class RescureShopDetailActivity extends BaseActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rescue_shop_share:
+                //// TODO: 2018/2/24  分享逻辑。。。
                 UMImage image;
                 String name;
                 String address;
