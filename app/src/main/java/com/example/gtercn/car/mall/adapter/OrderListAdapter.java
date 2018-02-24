@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,13 +46,18 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         return holder;
     }
 
+    /**
+     * 订单状态，0查询全部,1待付款,4已发货(待收货),5已签收(待评价),6已评价(订单完成),
+     */
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         final OrderListEntity.ResultBean entity = list.get(position);
         holder.countTv.setText("共" + entity.getItem_count() + "件商品 实付款: ");
         holder.totalTv.setText("￥" + entity.getTotal_amount());
         List<OrderListEntity.ResultBean.OrderDetailsBean> itemList = entity.getOrder_details();
+
         for (int i = 0; i < itemList.size(); i++) {
+            holder.wrapperLayout.removeAllViews();
             OrderListEntity.ResultBean.OrderDetailsBean single = itemList.get(i);
             View view = LayoutInflater.from(context).inflate(R.layout.item_single_product, null, false);
             TextView title = (TextView) view.findViewById(R.id.tv_title);
@@ -83,7 +89,41 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 context.startActivity(intent);
             }
         });
+        //根据订单状态，设置按钮的显示隐藏；
+        switch (entity.getOrder_status()) {
+            case 0:
+                //全部订单；
 
+                break;
+            case 1:
+                //待付款；
+                holder.cancelBtn.setVisibility(View.VISIBLE);
+                holder.toPayBtn.setVisibility(View.VISIBLE);
+                holder.checkDeliveryBtn.setVisibility(View.GONE);
+                holder.confirmBtn.setVisibility(View.GONE);
+                holder.reviewBtn.setVisibility(View.GONE);
+                break;
+            case 4:
+                //待收货；
+                holder.cancelBtn.setVisibility(View.GONE);
+                holder.toPayBtn.setVisibility(View.GONE);
+                holder.checkDeliveryBtn.setVisibility(View.VISIBLE);
+                holder.confirmBtn.setVisibility(View.VISIBLE);
+                holder.reviewBtn.setVisibility(View.GONE);
+                break;
+            case 5:
+                //待评价；
+                holder.cancelBtn.setVisibility(View.GONE);
+                holder.toPayBtn.setVisibility(View.GONE);
+                holder.checkDeliveryBtn.setVisibility(View.VISIBLE);
+                holder.confirmBtn.setVisibility(View.GONE);
+                holder.reviewBtn.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                //已评价（完成）；
+
+                break;
+        }
     }
 
     @Override
@@ -105,6 +145,16 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
         TextView countTv;
 
+        Button confirmBtn;
+
+        Button checkDeliveryBtn;
+
+        Button cancelBtn;
+
+        Button reviewBtn;
+
+        Button toPayBtn;
+
         public OrderViewHolder(View itemView) {
             super(itemView);
             orderNumberTv = (TextView) itemView.findViewById(R.id.tv_order_number);
@@ -113,6 +163,11 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             delIv = (ImageView) itemView.findViewById(R.id.iv_del);
             wrapperLayout = (LinearLayout) itemView.findViewById(R.id.ll_wrapper);
             itemLayout = (LinearLayout) itemView.findViewById(R.id.ll_item);
+            confirmBtn = (Button) itemView.findViewById(R.id.btn_confirm);
+            checkDeliveryBtn = (Button) itemView.findViewById(R.id.btn_see_delivery);
+            cancelBtn = (Button) itemView.findViewById(R.id.btn_cancel_del);
+            reviewBtn = (Button) itemView.findViewById(R.id.btn_review);
+            toPayBtn = (Button) itemView.findViewById(R.id.btn_pay);
         }
     }
 }

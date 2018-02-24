@@ -10,9 +10,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -51,6 +53,12 @@ import okhttp3.MediaType;
 
 /**
  * Created by Yan on 2017/12/24.
+ *
+ * 1.属性筛选产品接口问题；
+ * 2.少一个收藏商品的功能；
+ * 3.选择服务站；
+ * 4.助销列表；
+ * 5.分享功能；
  */
 
 public class ProductListActivity extends BaseActivity {
@@ -323,18 +331,20 @@ public class ProductListActivity extends BaseActivity {
 //        String hp = null;
 //        String lp = null;
 
-        View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_list, null);
+        final View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_list, null);
         final PopupWindow pw = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
         LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
         TextView confirmTv = (TextView) popView.findViewById(R.id.tv_pop_add_cart);
         TextView resetTv = (TextView) popView.findViewById(R.id.tv_pop_buy_now);
+        final LinearLayout ll = (LinearLayout) popView.findViewById(R.id.ll_white);
         final EditText lowEt = (EditText) popView.findViewById(R.id.et_low_price);
         final EditText highEt = (EditText) popView.findViewById(R.id.et_high_price);
         resetTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ProductListActivity.this, "重置逻辑", Toast.LENGTH_SHORT).show();
+                resetProperty();
             }
         });
         confirmTv.setOnClickListener(new View.OnClickListener() {
@@ -348,8 +358,12 @@ public class ProductListActivity extends BaseActivity {
                 } else {
                     lp = "0";
                 }
-
-                filterProperty("0", "10000", null, getPropertyIds());
+                String ids = getPropertyIds();
+                if (TextUtils.isEmpty(ids)) {
+                    Toast.makeText(ProductListActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                filterProperty("0", "10000", null, ids);
             }
         });
 
@@ -407,7 +421,28 @@ public class ProductListActivity extends BaseActivity {
         pw.setFocusable(true);
         pw.setOutsideTouchable(true);
         pw.showAtLocation(mView, Gravity.BOTTOM, 0, 0);
+        popView.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                int height = ll.getTop();
+                int y = (int) event.getY();
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (y < height) {
+                        pw.dismiss();
+                    }
+                }
+                return true;
+            }
+        });
+    }
 
+    private void resetProperty() {
+        for (int i = 0; i < propertyList.size(); i++) {
+            List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> list = propertyList.get(i).getItems();
+            for (int j = 0; j < list.size(); j++) {
+                list.get(j).setSelected(false);
+            }
+        }
+        setPropertyUi();
     }
 
     private void filterProperty(String fromPrice, String toPrice, String brandIds, String propertyIds) {
@@ -456,7 +491,9 @@ public class ProductListActivity extends BaseActivity {
             }
         }
         ids = sb2.toString();
-        // TODO: 2018/2/2 属性id
+        if (ids.isEmpty()) {
+            return null;
+        }
         propertyIds = ids.substring(0, ids.length() - 1);
         return propertyIds;
     }

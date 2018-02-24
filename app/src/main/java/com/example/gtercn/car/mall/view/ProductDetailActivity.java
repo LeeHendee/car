@@ -721,6 +721,8 @@ public class ProductDetailActivity extends BaseActivity {
         TextView minusTv = (TextView) popView.findViewById(R.id.tv_minus);
         final TextView countTv = (TextView) popView.findViewById(R.id.tv_count);
         TextView plusTv = (TextView) popView.findViewById(R.id.tv_plus);
+        final LinearLayout ll = (LinearLayout) popView.findViewById(R.id.ll_white);
+
         countTv.setText(mCount + "");
         ImageView propertyIv = (ImageView) popView.findViewById(R.id.iv_property);
         LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
@@ -736,6 +738,19 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 toBuyNow();
+            }
+        });
+
+        popView.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                int height = ll.getTop();
+                int y = (int) event.getY();
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (y < height) {
+                        pw.dismiss();
+                    }
+                }
+                return true;
             }
         });
 

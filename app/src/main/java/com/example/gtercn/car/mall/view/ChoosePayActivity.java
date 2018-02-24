@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alipay.sdk.app.EnvUtils;
 import com.alipay.sdk.app.PayTask;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
@@ -78,7 +79,7 @@ public class ChoosePayActivity extends BaseActivity {
         mSum = intent.getDoubleExtra("sum",0);
         mNeedPayTv.setText(getResources().getString(R.string.rmb)+ mSum);
         mAliPayIv.setImageResource(R.drawable.cart1_checkbox_check);
-        mGoToPayTv.setText("使用支付宝支付￥" + mSum);
+        mGoToPayTv.setText("使用支付宝支付" + getResources().getString(R.string.rmb) + mSum);
     }
 
     @OnClick({R.id.tv_go_pay, R.id.iv_select_alipay, R.id.iv_select_wechat})
@@ -87,14 +88,14 @@ public class ChoosePayActivity extends BaseActivity {
             case R.id.iv_select_alipay:
                 mAliPayIv.setImageResource(R.drawable.cart1_checkbox_check);
                 mWechatPayIv.setImageResource(R.drawable.cart1_checkbox_unable);
-                mGoToPayTv.setText("使用支付宝支付￥" + mSum);
+                mGoToPayTv.setText("使用支付宝支付" + getResources().getString(R.string.rmb) + mSum);
                 getAliPaySign();
 //                payV2();
                 break;
             case R.id.iv_select_wechat:
                 mWechatPayIv.setImageResource(R.drawable.cart1_checkbox_check);
                 mAliPayIv.setImageResource(R.drawable.cart1_checkbox_unable);
-                mGoToPayTv.setText("使用微信支付￥" + mSum);
+                mGoToPayTv.setText("使用微信支付" + getResources().getString(R.string.rmb) + mSum);
                 break;
             case R.id.tv_go_pay:
                 Toast.makeText(this, "跳转到相应的支付页面", Toast.LENGTH_SHORT).show();
@@ -102,7 +103,31 @@ public class ChoosePayActivity extends BaseActivity {
         }
     }
 
+    //沙箱环境下公钥
+    /**
+     *MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsKWqi73
+     * TxV6qg54gB86XzPigCn0BdZcsS8UkkAo6Y5yF17h38r+aW2CJZG
+     * wZE+eBGVjj0AvrWkh/eTjbzQ1AvtGJs7smOkox63bIAbCh2uwRZ
+     * KiicIahSInz42m1DmijPnTsN63Y+hwLrkYSBxtKm/BPSiJE5r1efezqkd
+     * /wzOtrB9j36yvQcfLyBUbwapxI72GVTeNPM+Jxa5BWdvF/rueniniGak
+     * R5XLkIfqw6iq4AkJDx9s0IYD+NiiPaScZC+K9IK49Kw3yMgDqELqGVgylf55atw
+     * EXLbYw3hbShbVLVEIduriaZDUcNTyli8I65sH7pjOMVaht3X+TaigXSywIDAQAB
+     */
+
+    /**
+     * MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9SGGhk4
+     * snjbQ97mNw9ep6uHPwjgKSj2Udxeh+EhPUG1UlRYm857q4exh
+     * PdulJdkbUxuhYVfAOKHZ68s8SKz0ob+61SvFECJXkg5VbTSHS
+     * lieaoedmpFm+nvLr1YIX/hMNEHPpq+CLY9kjU659g0vHcDB3o
+     * JAmYPDkNj/7ZyykFjjyN14EQR99VsFd/owLIYtkqBeeBgvJok
+     * FMVs1ektQ/WvVAVMnWT8lX+P5m25fUH+ZPBaGnM/9KB9zl0RL
+     * BpcelfHzI8biC9aIzLvwYXA9HcisV+9Ra3C+sCWpH/7boPW5Q
+     * xME0ij/BGG9/AyyDynWCGp95+2Sg5gf2wMWfkHjCwIDAQAB
+     */
+
+
     private void goToAliPay(final String sign) {
+        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
         //需要支付的常量封装在constants
         //订单信息
         Runnable payRunnable = new Runnable() {//要在子线程

@@ -86,8 +86,8 @@ public class OrderDetailEntity {
         private int order_status;
         private long order_time;
         private int item_count;
-        private int total_amount;
-        private int payment;
+        private double total_amount;
+        private double payment;
         private String address_id;
         private String logistics_id;
         private String customer_mark;
@@ -179,19 +179,19 @@ public class OrderDetailEntity {
             this.item_count = item_count;
         }
 
-        public int getTotal_amount() {
+        public double getTotal_amount() {
             return total_amount;
         }
 
-        public void setTotal_amount(int total_amount) {
+        public void setTotal_amount(double total_amount) {
             this.total_amount = total_amount;
         }
 
-        public int getPayment() {
+        public double getPayment() {
             return payment;
         }
 
-        public void setPayment(int payment) {
+        public void setPayment(double payment) {
             this.payment = payment;
         }
 

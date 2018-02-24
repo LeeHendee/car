@@ -64,12 +64,18 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
 
         holder.mDescriptionTv.setText(bean.getDescrption());
 
+        holder.mProductThree.setVisibility(View.INVISIBLE);
+        holder.mProductOne.setVisibility(View.INVISIBLE);
+        holder.mProductTwo.setVisibility(View.INVISIBLE);
+
+
         if (bean.getPicture_list() != null && bean.getPicture_list().size() > 0) {
             for (int i = 0; i < bean.getPicture_list().size(); i++) {
                 if (bean.getPicture_list().get(i).getPicture_url().isEmpty()) {
                     continue;
                 }
                 if (i == 0) {
+                    holder.mProductOne.setVisibility(View.VISIBLE);
                     holder.mProductOne.setTag(bean.getPicture_list().get(i).getPicture_url());
                     if (holder.mProductOne.getTag() == bean.getPicture_list().get(i).getPicture_url()) {
                         Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductOne);
@@ -85,6 +91,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
                         }
                     });
                 } else if (i == 1) {
+                    holder.mProductTwo.setVisibility(View.VISIBLE);
                     holder.mProductTwo.setTag(bean.getPicture_list().get(i).getPicture_url());
                     if (holder.mProductTwo.getTag() == bean.getPicture_list().get(i).getPicture_url()) {
                         Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductTwo);
@@ -100,6 +107,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
                         }
                     });
                 } else if (i == 2) {
+                    holder.mProductThree.setVisibility(View.VISIBLE);
                     holder.mProductThree.setTag(bean.getPicture_list().get(i).getPicture_url());
                     if (holder.mProductThree.getTag() == bean.getPicture_list().get(i).getPicture_url()) {
                         Picasso.with(context).load(bean.getPicture_list().get(i).getPicture_url()).into(holder.mProductThree);

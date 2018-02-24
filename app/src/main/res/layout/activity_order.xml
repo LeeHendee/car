@@ -154,6 +154,11 @@
 
     <include layout="@layout/layout_loading" />
 
+    <include
+        android:id="@+id/empty_rl"
+        layout="@layout/custom_empty_view"
+        android:visibility="gone" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_order"
         android:layout_width="match_parent"

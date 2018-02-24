@@ -165,11 +165,9 @@ public class OrderConfirmActivity extends BaseActivity {
     void myClick(View view) {
         switch (view.getId()) {
             case R.id.tv_submit_order:
-                Toast.makeText(this, "提交", Toast.LENGTH_SHORT).show();
                 orderConfirm();
                 break;
             case R.id.rl_address:
-                Toast.makeText(this, "跳转的选择地址", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(OrderConfirmActivity.this, ChooseAddressActivity.class);
                 startActivityForResult(intent, 100);
                 break;

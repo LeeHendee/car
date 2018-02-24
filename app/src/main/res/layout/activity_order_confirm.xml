@@ -3,18 +3,69 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <include
+        layout="@layout/custom_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/pager_bg"
-        android:orientation="vertical">
+        android:layout_height="50dp" />
 
-        <include layout="@layout/custom_title_bar" />
+    <ImageView
+        android:id="@+id/iv_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/rl_title"
+        android:background="@color/line_common_color" />
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/line_common_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_total_pay"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/white"
+                android:gravity="right|center_vertical"
+                android:paddingRight="10dp"
+                android:text="实付款：￥999.00"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_submit_order"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@color/red"
+                android:gravity="center"
+                android:text="提交订单"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_bottom"
+        android:layout_below="@+id/iv_line"
+        android:background="@color/pager_bg"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -76,26 +127,26 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:orientation="horizontal"
-                            android:minHeight="20dp">
+                            android:minHeight="20dp"
+                            android:orientation="horizontal">
 
                             <ImageView
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
-                                android:src="@drawable/icon_relief_location"
-                                android:layout_gravity="center_vertical" />
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/icon_relief_location" />
 
                             <TextView
                                 android:id="@+id/tv_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="10dp"
                                 android:ellipsize="end"
                                 android:singleLine="true"
                                 android:text="辽宁省大连市开发区安盛购物广场"
                                 android:textColor="@color/text_note_color"
-                                android:textSize="14sp"
-                                android:layout_gravity="center_vertical" />
+                                android:textSize="14sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
@@ -109,9 +160,9 @@
                     android:id="@+id/ll_product_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:background="@color/white"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp" />
+                    android:orientation="vertical" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -175,51 +226,5 @@
         </ScrollView>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/line_common_color" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_total_pay"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:background="@color/white"
-                android:gravity="right|center_vertical"
-                android:paddingRight="10dp"
-                android:text="实付款：￥999.00"
-                android:textColor="@color/red"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_submit_order"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="@color/red"
-                android:gravity="center"
-                android:text="提交订单"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
     <include layout="@layout/layout_loading" />
-
 </RelativeLayout>

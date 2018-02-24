@@ -73,6 +73,9 @@ public class OrderListActivity extends BaseActivity {
     @BindView(R.id.rl_loading)
     RelativeLayout mLoadingRl;
 
+    @BindView(R.id.empty_rl)
+    RelativeLayout mEmptyRl;
+
     private OrderListAdapter mAdapter;
 
     private List<OrderListEntity.ResultBean> orderList;
@@ -96,6 +99,7 @@ public class OrderListActivity extends BaseActivity {
     }
 
     private void initData(String status) {
+        mLoadingRl.setVisibility(View.VISIBLE);
         orderList = new ArrayList<>();
         String sign = "sign";
         String time = "time";
@@ -124,7 +128,12 @@ public class OrderListActivity extends BaseActivity {
                             OrderListEntity entity = gson.fromJson(response, OrderListEntity.class);
                             if (entity != null) {
                                 orderList = entity.getResult();
-                                setUi();
+                                if (orderList != null && orderList.size() > 0) {
+                                    mEmptyRl.setVisibility(View.GONE);
+                                    setUi();
+                                } else {
+                                    mEmptyRl.setVisibility(View.VISIBLE);
+                                }
                             }
                         }
                     }
