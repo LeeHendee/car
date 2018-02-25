@@ -18,13 +18,20 @@ import com.alipay.sdk.app.PayTask;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.mall.entity.AliPaySignEntity;
+import com.example.gtercn.car.mall.entity.AliResultEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.entity.ReviewsEntity;
+import com.example.gtercn.car.mall.pay.PayResult;
 import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.OrderInfoUtil2_0;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -134,12 +141,20 @@ public class ChoosePayActivity extends BaseActivity {
             @Override
             public void run() {
                 PayTask aliPay = new PayTask(ChoosePayActivity.this);
-                String result = aliPay.pay(sign, true);
-                Log.e(TAG, "ali_return :" + result.toString());
+                Map<String, String> result = aliPay.payV2(sign, true);
+                Log.e(TAG, "ali_return :" + result);
+                PayResult payResult = new PayResult(result);
+//                PayResult pr = new Gson().fromJson(result,PayResult.class);
+                Log.e(TAG, "pr :" + payResult.toString());
+
+
+//                JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+//                Log.e(TAG, "ali_return :" + jsonObject.toString());
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;
                 msg.obj = result;
                 mHandler.sendMessage(msg);
+
             }
         };
         Thread payThread = new Thread(payRunnable);
