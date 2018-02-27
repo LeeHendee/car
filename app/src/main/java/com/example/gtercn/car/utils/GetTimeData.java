@@ -119,4 +119,9 @@ public class GetTimeData {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
         return format.format(date);
     }
+
+    public static String formatTime(long time) {
+        SimpleDateFormat temp = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return temp.format(new Date(time));
+    }
 }

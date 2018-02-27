@@ -47,7 +47,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     }
 
     /**
-     * 订单状态，0查询全部,1待付款,4已发货(待收货),5已签收(待评价),6已评价(订单完成),
+     * 订单状态，0查询全部,1待付款,2待收货,5已签收(待评价),6已评价(订单完成),
      */
     @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
@@ -103,7 +103,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 holder.confirmBtn.setVisibility(View.GONE);
                 holder.reviewBtn.setVisibility(View.GONE);
                 break;
-            case 4:
+            case 2:
                 //待收货；
                 holder.cancelBtn.setVisibility(View.GONE);
                 holder.toPayBtn.setVisibility(View.GONE);

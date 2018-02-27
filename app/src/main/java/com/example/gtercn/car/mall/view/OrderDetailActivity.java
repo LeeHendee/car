@@ -2,20 +2,31 @@ package com.example.gtercn.car.mall.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
+import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
+import com.example.gtercn.car.mall.entity.AddressEntity;
 import com.example.gtercn.car.mall.entity.OrderDetailEntity;
 import com.example.gtercn.car.mall.entity.OrderListEntity;
 import com.example.gtercn.car.utils.Constants;
+import com.example.gtercn.car.utils.GetTimeData;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import okhttp3.Call;
@@ -119,6 +130,7 @@ public class OrderDetailActivity extends BaseActivity {
                             Gson gson = new Gson();
                             OrderDetailEntity entity = gson.fromJson(response, OrderDetailEntity.class);
                             if (entity != null && entity.getErr_code().equals("0")) {
+//                                getAddress(entity.getResult().getAddress_id());
                                 setUi(entity.getResult());
                             }
                         }
@@ -139,7 +151,7 @@ public class OrderDetailActivity extends BaseActivity {
 //        mPayMethodTv.setText(bean.get);
         mOrderTotalTv.setText(getResources().getString(R.string.rmb) + bean.getTotal_amount());
         mActualPayTv.setText(getResources().getString(R.string.rmb) + bean.getPayment());
-        mCreateTimeTv.setText(bean.getOrder_time() + "");
+        mCreateTimeTv.setText(GetTimeData.formatTime(bean.getOrder_time()));
     }
 
     private void initListener() {

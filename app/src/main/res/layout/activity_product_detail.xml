@@ -554,6 +554,10 @@
     <!--android:layout_below="@+id/rl_title"-->
     <!--android:orientation="vertical"/>-->
 
-    <include layout="@layout/layout_loading" />
+    <include
+        layout="@layout/layout_loading"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

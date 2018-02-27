@@ -38,6 +38,7 @@ import com.example.gtercn.car.mall.entity.ReviewsEntity;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
+import com.example.gtercn.car.utils.ShareUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -205,9 +206,7 @@ public class ProductDetailActivity extends BaseActivity {
                     finish();
                     break;
                 case R.id.iv_title_right:
-                    Toast.makeText(ProductDetailActivity.this, "分享", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
-                    startActivity(intent);
+                    ShareUtil.GeneralizeShare(ProductDetailActivity.this, "开得车驿站", "txt", null);
                     break;
                 case R.id.tv_product:
                     changeTitleView(view.getId());
@@ -732,12 +731,14 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 addToCart();
+                pw.dismiss();
             }
         });
         buyNowTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toBuyNow();
+                pw.dismiss();
             }
         });
 
@@ -867,7 +868,6 @@ public class ProductDetailActivity extends BaseActivity {
             }
         }
         ids = sb2.toString();
-        // TODO: 2018/2/2 属性id
         propertyIds = ids.substring(0, ids.length() - 1);
         properties = sb1.toString() + " X" + mCount;
         tv.setText(properties);

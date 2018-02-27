@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.mall.entity.ReviewsEntity;
+import com.example.gtercn.car.utils.GetTimeData;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
@@ -46,7 +47,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
         ReviewsEntity.ResultBean.CommentListBean bean = list.get(position);
         Picasso.with(context).load(bean.getPicture()).into(holder.riv);
         holder.nameTv.setText(bean.getNickname());
-        holder.dateTv.setText(bean.getCreate_time() + "");
+        holder.dateTv.setText(GetTimeData.formatTime(bean.getCreate_time()));
         holder.contentTv.setText(bean.getContent());
         //动态显示图片
     }

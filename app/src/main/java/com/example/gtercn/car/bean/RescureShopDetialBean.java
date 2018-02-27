@@ -8,8 +8,6 @@ import java.util.List;
  */
 
 public class RescureShopDetialBean {
-
-
     /**
      * err_code : 0
      * err_message : OK
@@ -21,7 +19,6 @@ public class RescureShopDetialBean {
     private String err_message;
     private ResultBean result;
     private String message;
-
 
     public String getErr_code() {
         return err_code;

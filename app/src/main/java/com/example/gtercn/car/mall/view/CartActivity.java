@@ -159,6 +159,10 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
                                 listBeen.add(bean);
                             }
                         }
+                        if (listBeen == null || listBeen.size() == 0) {
+                            Toast.makeText(CartActivity.this, "请选择需要结算的商品", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         params.setGoods_list(listBeen);
                         intent.putExtra("params", params);
                         startActivity(intent);
@@ -259,7 +263,6 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
         mCartRv.setLayoutManager(new LinearLayoutManager(CartActivity.this));
         mCartRv.addItemDecoration(new RecyItemSpace(30));
         setTitle(false);
-
     }
 
     private void setTitle(boolean flag) {

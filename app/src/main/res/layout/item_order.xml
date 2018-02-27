@@ -103,8 +103,8 @@
             android:textSize="12sp"
             android:textColor="@color/text_common_color"
             android:background="@drawable/order_button_bg"
-            android:layout_toLeftOf="@id/btn_pay"
-            android:layout_marginLeft="5dp" />
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentRight="true" />
 
         <Button
             android:id="@+id/btn_see_delivery"
@@ -115,7 +115,7 @@
             android:textColor="@color/text_common_color"
             android:background="@drawable/order_button_bg"
             android:layout_toLeftOf="@id/btn_confirm"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp" />
 
         <Button
             android:id="@+id/btn_cancel_del"

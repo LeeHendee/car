@@ -175,7 +175,7 @@ public class OrderListActivity extends BaseActivity {
                 mIndexDone.setVisibility(View.GONE);
                 break;
             case R.id.rl_wait_accept:
-                mStatus = "4";
+                mStatus = "2";
                 initData(mStatus);
                 mIndexAll.setVisibility(View.GONE);
                 mIndexWaitPay.setVisibility(View.GONE);

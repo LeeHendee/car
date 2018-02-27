@@ -96,7 +96,9 @@ public class ProductListActivity extends BaseActivity {
     private String mBrandId = null;
 
     private String mSearchContent = null;
+
     private View mView;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
