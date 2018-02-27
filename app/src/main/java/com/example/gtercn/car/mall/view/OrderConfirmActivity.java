@@ -133,6 +133,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 ConfirmOrderEntity.ResultBean.GoodsListBean bean = list.get(i);
                 View view = LayoutInflater.from(this).inflate(R.layout.item_single_product, null);
                 ImageView itemIv = (ImageView) view.findViewById(R.id.iv_item);
+                ImageView lineIv = (ImageView) view.findViewById(R.id.iv_line);
                 TextView titleTv = (TextView) view.findViewById(R.id.tv_title);
                 TextView priceTv = (TextView) view.findViewById(R.id.tv_price);
                 TextView countTv = (TextView) view.findViewById(R.id.tv_count);
@@ -140,8 +141,12 @@ public class OrderConfirmActivity extends BaseActivity {
                 titleTv.setText(bean.getGoods_title());
                 priceTv.setText(getResources().getString(R.string.rmb) + bean.getPromotion_price());
                 countTv.setText("x" + bean.getNumber());
+                if (i == list.size() - 1) {
+                    lineIv.setVisibility(View.GONE);
+                }
 
                 mProductLayout.addView(view);
+
             }
             mOrgTotalTv.setText(getResources().getString(R.string.rmb) + mEntity.getResult().getTotal_price());
             mDeliveryFeeTv.setText(getResources().getString(R.string.rmb) + 0);
@@ -153,6 +158,7 @@ public class OrderConfirmActivity extends BaseActivity {
         mNameTv.setText(mEntity.getResult().getName());
         mTelTv.setText(mEntity.getResult().getPhone());
         mAddressTv.setText(mEntity.getResult().getAddress());
+        mAddressId = mEntity.getResult().getAddres_id();
     }
 
     private void initView() {
@@ -204,7 +210,7 @@ public class OrderConfirmActivity extends BaseActivity {
         entity.setGoods_attr_list(goodsList);
         //总价格：
         entity.setTotal_price(mEntity.getResult().getTotal_price() + "");
-        entity.setAddress_id(mEntity.getResult().getAddres_id());
+        entity.setAddress_id(mAddressId);
         entity.setCustomer_mark("生成订单1");
         entity.setInvoice("N");
         entity.setItem_count(list.size() + "");
@@ -263,37 +269,6 @@ public class OrderConfirmActivity extends BaseActivity {
         }
     }
 
-    //    private void getDefaultAddress() {
-//        String sign = "sign";
-//        String time = "time";
-//        OkHttpUtils
-//                .get()
-//                .url(ApiManager.URL_GET_DEFAULT_ADDRESS)
-//                .addParams("token", Constants.TOKEN)
-//                .addParams("sign", sign)
-//                .addParams("t", time)
-//                .build()
-//                .execute(new StringCallback() {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                        mLoadingRl.setVisibility(View.GONE);
-//                        Log.e(TAG, "onError: e is " + e.toString());
-//                    }
-//
-//                    @Override
-//                    public void onResponse(String response, int id) {
-//                        mLoadingRl.setVisibility(View.GONE);
-//                        if (response != null) {
-//                            Log.e(TAG, "onResponse: response is " + response);
-//                            Gson gson = new Gson();
-//                            DefaultEntity entity = gson.fromJson(response, DefaultEntity.class);
-//                            if (entity != null) {
-//                                setAddressUi(entity);
-//                            }
-//                        }
-//                    }
-//                });
-//    }
 
     @Override
     protected void onExecuteSuccess(String result, int type) {

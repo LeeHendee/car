@@ -1,10 +1,14 @@
 package com.example.gtercn.car.mall.view;
 
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +89,10 @@ public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.tv_create_time)
     TextView mCreateTimeTv;
 
+    @BindView(R.id.iv_title_left)
+    ImageView mBackIv;
+
+    private boolean isPayBack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,6 +115,7 @@ public class OrderDetailActivity extends BaseActivity {
     protected void initData() {
         super.initData();
         mOrderId = getIntent().getStringExtra("orderId");
+        isPayBack = getIntent().getBooleanExtra("isPayBack", false);
         String sign = "sign";
         String time = "time";
         OkHttpUtils
@@ -147,7 +156,8 @@ public class OrderDetailActivity extends BaseActivity {
         mTelTv.setText(bean.getTelphone());
         mAddressTv.setText(bean.getAddress());
         mInvoiceTitleTv.setText(bean.getInvoice_title());
-        mInvoiceTypeTv.setText(bean.getInvoice_type());
+//        mInvoiceTypeTv.setText(bean.getInvoice_type());
+        mInvoiceTypeTv.setText("个人发票");
 //        mPayMethodTv.setText(bean.get);
         mOrderTotalTv.setText(getResources().getString(R.string.rmb) + bean.getTotal_amount());
         mActualPayTv.setText(getResources().getString(R.string.rmb) + bean.getPayment());
@@ -156,6 +166,7 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void initListener() {
         mCopyTv.setOnClickListener(mListener);
+        mBackIv.setOnClickListener(mListener);
     }
 
     private View.OnClickListener mListener = new View.OnClickListener() {
@@ -163,10 +174,26 @@ public class OrderDetailActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.tv_copy:
+                    copyStr();
                     break;
+                case R.id.iv_title_left:
+                    Log.e(TAG, "onClick: isPayback is" + isPayBack);
+                    if (isPayBack) {
+                        Intent intent = new Intent(OrderDetailActivity.this, OrderListActivity.class);
+                        startActivity(intent);
+                    } else {
+                        finish();
+                    }
             }
         }
     };
+
+    private void copyStr() {
+        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        // 将文本内容放到系统剪贴板里。
+        cm.setText(mOrderNumberTv.getText().toString().trim());
+        Toast.makeText(this, "复制成功", Toast.LENGTH_LONG).show();
+    }
 
     private String getOrderStatus(OrderDetailEntity.ResultBean bean) {
         if (bean == null)

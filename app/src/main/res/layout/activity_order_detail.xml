@@ -283,7 +283,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="10"
+                        android:text="0"
                         android:textColor="@color/text_common_color"
                         android:textSize="14dp" />
 

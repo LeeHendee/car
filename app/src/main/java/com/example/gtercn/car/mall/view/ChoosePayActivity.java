@@ -156,11 +156,16 @@ public class ChoosePayActivity extends BaseActivity {
                         showToast("支付成功");
                         Intent intent = new Intent(ChoosePayActivity.this, OrderDetailActivity.class);
                         intent.putExtra("orderId", mOrderId);
+                        intent.putExtra("isPayBack", true);
                         startActivity(intent);
 //                        Toast.makeText(ChoosePayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
                         Toast.makeText(ChoosePayActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ChoosePayActivity.this, OrderDetailActivity.class);
+                        intent.putExtra("orderId", mOrderId);
+                        intent.putExtra("isPayBack", true);
+                        startActivity(intent);
                     }
                     break;
                 default:

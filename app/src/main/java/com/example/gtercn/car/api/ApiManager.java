@@ -477,6 +477,11 @@ public class ApiManager {
      */
     public static final String URL_FILTER_PROPERTY = BaseUrl + "open/goods/search";
 
+    /**
+     * 取消订单
+     */
+    public static final String URL_ORDER_CANCEL = BaseUrl + "order/cancel";
+
 //    --------------------------------------以上是电商部分---------------------------------------
     /**
      * 自驾游列表

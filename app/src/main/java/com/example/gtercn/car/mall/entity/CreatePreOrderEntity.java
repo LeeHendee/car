@@ -11,7 +11,6 @@ import java.util.List;
 
 public class CreatePreOrderEntity implements Serializable {
 
-
     private List<GoodsListBean> goods_list;
 
     @Override
