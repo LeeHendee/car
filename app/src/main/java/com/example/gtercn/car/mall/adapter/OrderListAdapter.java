@@ -183,7 +183,6 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     }
 
     private void cancelOrder(OrderListEntity.ResultBean entity) {
-
         JSONObject json = new JSONObject();
         try {
             json.put("order_id", entity.getId());
@@ -195,7 +194,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
         String sign = "sign";
         String time = "time";
-        String url = ApiManager.URL_ORDER_CANCEL + "&token=" + Constants.TOKEN + "?sign=" + sign + "?t=" + time;
+        String url = ApiManager.URL_ORDER_CANCEL + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
+        Log.e(TAG, "cancelOrder: url is " + url);
         OkHttpUtils
                 .postString()
                 .url(url)
