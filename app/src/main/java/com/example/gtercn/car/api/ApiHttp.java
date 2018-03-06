@@ -295,7 +295,7 @@ public class ApiHttp {
     }
 
     /**
-     * 电商品牌介绍列表
+     * 电商商品列表
      */
     public static void getProductList(String url, ResponseCallbackHandler handler, int type, String tag) {
         THttpOpenHelper tHttpOpenHelper = THttpOpenHelper.newInstance();

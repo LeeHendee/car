@@ -368,7 +368,7 @@ public class ApiManager {
     public static final String URL_CHANGE_COUNT = BaseUrl + "/cart/number";
 
     /**
-     * 电商商品列表排序
+     * 电商商品列表(排序)
      */
     public static final String URL_SORT_PRODUCT = BaseUrl + "open/goods/sort";
 
@@ -769,11 +769,11 @@ public class ApiManager {
     }
 
     /**
-     * 电商购物车
+     * 电商产品列表
      */
     public static void sortProduct(String brandId, String cityCode, String priceFlag, String sortType, ResponseCallbackHandler handler, int type, String tag) {
-        String url = ApiManager.URL_SORT_PRODUCT + "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" + sortType + "&brandId=" + brandId;
-        ApiHttp.getCartInfo(url, handler, type, tag);
+        String url = ApiManager.URL_SORT_PRODUCT + "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" + sortType + "&brand_id=" + brandId;
+        ApiHttp.getProductList(url, handler, type, tag);
     }
 
     /**

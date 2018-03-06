@@ -85,6 +85,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
                             Intent i1 = new Intent(context, ProductDetailActivity.class);
                             i1.putExtra("goodId", bean.getPicture_list().get(finalI1).getGoods_id());
                             i1.putExtra("cityCode", Constants.CITY_CODE);
+
                             context.startActivity(i1);
                         }
                     });

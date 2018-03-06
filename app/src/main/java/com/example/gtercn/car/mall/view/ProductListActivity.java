@@ -99,7 +99,8 @@ public class ProductListActivity extends BaseActivity {
 
     private View mView;
 
-    private RelativeLayout mEmptyRl;
+    private RelativeLayout mEmptyView;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -208,16 +209,17 @@ public class ProductListActivity extends BaseActivity {
                     ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
                     if (entity!=null&&TextUtils.equals(entity.getErr_code(),"0")){
                         if (entity.getResult()!=null&&entity.getResult().size()>0){
-                            mEmptyRl.setVisibility(View.GONE);
+                            mEmptyView.setVisibility(View.GONE);
                             mProductList = entity.getResult();
                             setData();
-                        }else
-                            mEmptyRl.setVisibility(View.VISIBLE);
-
+                        } else {
+                            mEmptyView.setVisibility(View.VISIBLE);
+                        }
                     }else {
                         Toast.makeText(ProductListActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                     }
                 }
+
             }
 
             @Override
@@ -262,8 +264,8 @@ public class ProductListActivity extends BaseActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recy_production);
         mBackIv = (ImageView) findViewById(R.id.iv_back);
         mSearchTv = (TextView) findViewById(R.id.tv_search);
-        mEmptyRl = (RelativeLayout) findViewById(R.id.empty_view);
         mLoadingRl = (RelativeLayout) findViewById(R.id.rl_loading);
+        mEmptyView = (RelativeLayout) findViewById(R.id.empty_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new RecyItemSpace(1));
         mRefresh.setColorSchemeResources(R.color.blue1);
@@ -273,6 +275,7 @@ public class ProductListActivity extends BaseActivity {
         mSortTvList.add(mPriceSortTv);
         mSortTvList.add(mSortTv);
     }
+
 
     private void submitSearch() {
         mLoadingRl.setVisibility(View.VISIBLE);
@@ -295,18 +298,21 @@ public class ProductListActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         mLoadingRl.setVisibility(View.GONE);
-                        Log.e(TAG, "onResponse: response is " + response);
-                        Gson gson = new Gson();
-                        ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
-                        if (entity!=null&&TextUtils.equals(entity.getErr_code(),"0")){
-                            if (entity.getResult()!=null&&entity.getResult().size()>0){
-                                mEmptyRl.setVisibility(View.GONE);
-                                mProductList = entity.getResult();
-                                setData();
-                            }else
-                                mEmptyRl.setVisibility(View.VISIBLE);
-                        }else {
-                            Toast.makeText(ProductListActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        if (response != null) {
+                            Log.e(TAG, "onSuccessResponse: response is " + response);
+                            Gson gson = new Gson();
+                            ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
+                            if (entity != null && TextUtils.equals(entity.getErr_code(), "0")) {
+                                if (entity.getResult() != null && entity.getResult().size() > 0) {
+                                    mEmptyView.setVisibility(View.GONE);
+                                    mProductList = entity.getResult();
+                                    setData();
+                                } else {
+                                    mEmptyView.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                Toast.makeText(ProductListActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
@@ -347,6 +353,9 @@ public class ProductListActivity extends BaseActivity {
     private String lp;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setPropertyUi() {
+//        String hp = null;
+//        String lp = null;
+
         final View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_list, null);
         final PopupWindow pw = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
