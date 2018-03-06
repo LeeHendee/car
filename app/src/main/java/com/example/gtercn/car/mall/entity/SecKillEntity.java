@@ -108,7 +108,7 @@ public class SecKillEntity {
         private String city_code;
         private long update_time;
         private long create_time;
-        private int weight;
+        private String weight;
         private String category_id;
         private int comment_count;
         private int percentage;
@@ -329,11 +329,11 @@ public class SecKillEntity {
             this.create_time = create_time;
         }
 
-        public int getWeight() {
+        public String getWeight() {
             return weight;
         }
 
-        public void setWeight(int weight) {
+        public void setWeight(String weight) {
             this.weight = weight;
         }
 

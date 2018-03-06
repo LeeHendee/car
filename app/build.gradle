@@ -96,6 +96,5 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile files('libs/alipaySdk-20170922.jar')
 //    compile 'com.github.vondear:RxTools:v1.7.6.8'//请替换成上方 JitPack 最新的版本号
-
     compile 'com.bigkoo:convenientbanner:2.0.5'
 }

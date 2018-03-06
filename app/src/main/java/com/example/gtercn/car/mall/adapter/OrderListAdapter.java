@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
+import com.example.gtercn.car.mall.IListenerTwo;
 import com.example.gtercn.car.mall.entity.OrderListEntity;
 import com.example.gtercn.car.mall.view.ChoosePayActivity;
 import com.example.gtercn.car.mall.view.OrderDetailActivity;
+import com.example.gtercn.car.mall.view.ReviewPostActivity;
 import com.example.gtercn.car.utils.Constants;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -44,9 +46,25 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
     private static final String TAG = "OrderListAdapter";
 
+    public static final int CANCEL = 101;
+
+    public static final int DEL = 102;
+
     private Context context;
 
     private List<OrderListEntity.ResultBean> list;
+
+    private IListenerTwo cancelListener;
+
+    private IListenerTwo delListener;
+
+    public void setCancelListener(IListenerTwo cancelListener) {
+        this.cancelListener = cancelListener;
+    }
+
+    public void setDelListener(IListenerTwo delListener) {
+        this.delListener = delListener;
+    }
 
     public OrderListAdapter(Context context, List<OrderListEntity.ResultBean> list) {
         this.context = context;
@@ -61,10 +79,11 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     }
 
     /**
-     * 订单状态，0查询全部,1待付款,2待收货,5已签收(待评价),6已评价(订单完成),
+     * 订单状态：0:全部订单，1待付款, 2已付款(待发货), 3关闭订单(超时未付款), 4已发货(待收货),
+     * 5确认收货(待评价), 6已评价(订单完成),7退货申请, 8退货中, 9已退货, 10用户取消订单
      */
     @Override
-    public void onBindViewHolder(OrderViewHolder holder, int position) {
+    public void onBindViewHolder(OrderViewHolder holder, final int position) {
         final OrderListEntity.ResultBean entity = list.get(position);
         holder.countTv.setText("共" + entity.getItem_count() + "件商品 实付款: ");
         holder.totalTv.setText("￥" + entity.getTotal_amount());
@@ -81,9 +100,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 //            title.setText(single.getTitle());
 //            price.setText(single.getPrice());
             count.setText(single.getNumber() + "");
-            Picasso.with(context).load(single.getSmall_picture_list().get(0)).into(itemIv);
+            if (single.getSmall_picture_list() != null)
+                Picasso.with(context).load(single.getSmall_picture_list().get(0)).into(itemIv);
             TextView line = new TextView(context);
-            line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,3));
+            line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 3));
             line.setBackgroundColor(Color.WHITE);
 
             holder.wrapperLayout.addView(view);
@@ -103,18 +123,18 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 context.startActivity(intent);
             }
         });
+
         holder.delIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "删除", Toast.LENGTH_SHORT).show();
+                delListener.listener(position, DEL);
             }
         });
 
         holder.cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "取消", Toast.LENGTH_SHORT).show();
-                cancelOrder(entity);
+                cancelListener.listener(position, CANCEL);
             }
         });
         holder.toPayBtn.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +162,9 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "评价", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ReviewPostActivity.class);
+                intent.putExtra("orderId",entity.getId());
+//                intent.putExtra("goodsId",entity.get)
             }
         });
 
@@ -149,7 +172,6 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         switch (entity.getOrder_status()) {
             case 0:
                 //全部订单；
-
                 break;
             case 1:
                 //待付款；
@@ -167,6 +189,15 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 holder.confirmBtn.setVisibility(View.VISIBLE);
                 holder.reviewBtn.setVisibility(View.GONE);
                 break;
+            case 3:
+                holder.cancelBtn.setVisibility(View.GONE);
+                holder.toPayBtn.setVisibility(View.VISIBLE);
+                holder.toPayBtn.setText("订单关闭" + "");
+                holder.toPayBtn.setClickable(false);
+                holder.checkDeliveryBtn.setVisibility(View.GONE);
+                holder.confirmBtn.setVisibility(View.GONE);
+                holder.reviewBtn.setVisibility(View.GONE);
+                break;
             case 5:
                 //待评价；
                 holder.cancelBtn.setVisibility(View.GONE);
@@ -177,44 +208,43 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 break;
             case 6:
                 //已评价（完成）；
-
+            default:
+                holder.cancelBtn.setVisibility(View.GONE);
+                holder.toPayBtn.setVisibility(View.GONE);
+                holder.checkDeliveryBtn.setVisibility(View.GONE);
+                holder.confirmBtn.setVisibility(View.GONE);
+                holder.reviewBtn.setVisibility(View.GONE);
+                break;
+            case 8:
+                holder.cancelBtn.setVisibility(View.GONE);
+                holder.toPayBtn.setVisibility(View.VISIBLE);
+                holder.toPayBtn.setText("退货中" + "");
+                holder.toPayBtn.setClickable(false);
+                holder.checkDeliveryBtn.setVisibility(View.GONE);
+                holder.confirmBtn.setVisibility(View.GONE);
+                holder.reviewBtn.setVisibility(View.GONE);
+                break;
+            case 9:
+                holder.cancelBtn.setVisibility(View.GONE);
+                holder.toPayBtn.setVisibility(View.VISIBLE);
+                holder.toPayBtn.setText("已退货" + "");
+                holder.toPayBtn.setClickable(false);
+                holder.checkDeliveryBtn.setVisibility(View.GONE);
+                holder.confirmBtn.setVisibility(View.GONE);
+                holder.reviewBtn.setVisibility(View.GONE);
+                break;
+            case 10:
+                holder.cancelBtn.setVisibility(View.GONE);
+                holder.toPayBtn.setVisibility(View.VISIBLE);
+                holder.toPayBtn.setText("已取消" + "");
+                holder.toPayBtn.setClickable(false);
+                holder.checkDeliveryBtn.setVisibility(View.GONE);
+                holder.confirmBtn.setVisibility(View.GONE);
+                holder.reviewBtn.setVisibility(View.GONE);
                 break;
         }
     }
 
-    private void cancelOrder(OrderListEntity.ResultBean entity) {
-        JSONObject json = new JSONObject();
-        try {
-            json.put("order_id", entity.getId());
-            json.put("cancel_type", "1");
-            json.put("cancel_reason", "重复提交");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String sign = "sign";
-        String time = "time";
-        String url = ApiManager.URL_ORDER_CANCEL + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
-        Log.e(TAG, "cancelOrder: url is " + url);
-        OkHttpUtils
-                .postString()
-                .url(url)
-                .mediaType(MediaType.parse("application/json;charset=utf8"))
-                .content(json.toString())
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Log.e(TAG, "onError: e is " + e.toString());
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        Log.e(TAG, "onResponse: response is " + response);
-                    }
-                });
-
-    }
 
     @Override
     public int getItemCount() {

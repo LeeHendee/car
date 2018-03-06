@@ -36,7 +36,6 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
 
     private List<BrandListEntity.ResultBean> list;
 
-
     public BrandAdapter(Context context, List<BrandListEntity.ResultBean> list) {
         this.context = context;
         this.list = list;
@@ -67,7 +66,6 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         holder.mProductThree.setVisibility(View.INVISIBLE);
         holder.mProductOne.setVisibility(View.INVISIBLE);
         holder.mProductTwo.setVisibility(View.INVISIBLE);
-
 
         if (bean.getPicture_list() != null && bean.getPicture_list().size() > 0) {
             for (int i = 0; i < bean.getPicture_list().size(); i++) {
@@ -139,14 +137,12 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
         ImageView mProductOne;
         ImageView mProductTwo;
         ImageView mProductThree;
-        GridView gridView;
 
         public BrandViewHolder(View itemView) {
             super(itemView);
             mBrandNameTv = (TextView) itemView.findViewById(R.id.tv_brand_name);
             mGoBuyTv = (TextView) itemView.findViewById(R.id.tv_go_buy);
             mDescriptionTv = (TextView) itemView.findViewById(R.id.tv_description);
-//            gridView = (GridView) itemView.findViewById(R.id.gv_item);
             mProductOne = (ImageView) itemView.findViewById(R.id.iv_product_one);
             mProductTwo = (ImageView) itemView.findViewById(R.id.iv_product_two);
             mProductThree = (ImageView) itemView.findViewById(R.id.iv_product_three);

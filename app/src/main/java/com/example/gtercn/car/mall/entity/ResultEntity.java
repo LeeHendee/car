@@ -17,12 +17,23 @@ public class ResultEntity {
     private String err_message;
     private String message;
 
+    private String result;
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
     @Override
     public String toString() {
         return "ResultEntity{" +
                 "err_code='" + err_code + '\'' +
                 ", err_message='" + err_message + '\'' +
                 ", message='" + message + '\'' +
+                ", result='" + result + '\'' +
                 '}';
     }
 

@@ -482,6 +482,11 @@ public class ApiManager {
      */
     public static final String URL_ORDER_CANCEL = BaseUrl + "order/cancel";
 
+    /**
+     * 删除订单
+     */
+    public static final String URL_ORDER_DEL = BaseUrl + "order/delete";
+
 //    --------------------------------------以上是电商部分---------------------------------------
     /**
      * 自驾游列表

@@ -59,6 +59,11 @@
 
     <include layout="@layout/layout_loading" />
 
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/custom_empty_view"
+        android:visibility="gone"/>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"

@@ -40,7 +40,6 @@ import okhttp3.Call;
  * CreateTime ：2018/1/18.
  * Used to :
  */
-
 public class OrderDetailActivity extends BaseActivity {
 
     private static final String TAG = "OrderDetailActivity";
@@ -212,6 +211,13 @@ public class OrderDetailActivity extends BaseActivity {
                 return "待评价";
             case 6:
                 return "已完成";
+            case 8:
+                return "退货中";
+            case 9:
+                return "已退货";
+            case 10:
+                return "已取消";
+
         }
         return null;
     }

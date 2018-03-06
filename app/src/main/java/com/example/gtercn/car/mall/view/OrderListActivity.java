@@ -4,20 +4,28 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.mall.IListenerTwo;
 import com.example.gtercn.car.mall.adapter.OrderListAdapter;
 import com.example.gtercn.car.mall.entity.OrderListEntity;
+import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * Author ：LeeHang
@@ -143,6 +152,52 @@ public class OrderListActivity extends BaseActivity {
     private void setUi() {
         mAdapter = new OrderListAdapter(this, orderList);
         mOrderRv.setAdapter(mAdapter);
+        mAdapter.setCancelListener(new IListenerTwo() {
+            @Override
+            public void listener(int pos, int doWhat) {
+                cancelOrder(orderList.get(pos));
+            }
+        });
+        
+        mAdapter.setDelListener(new IListenerTwo() {
+            @Override
+            public void listener(int pos, int doWhat) {
+                delOrder(orderList.get(pos));
+            }
+        });
+    }
+
+    private void delOrder(OrderListEntity.ResultBean entity) {
+        String sign = "sign";
+        String time = "time";
+        String url = ApiManager.URL_ORDER_DEL + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
+        Log.e(TAG, "delOrder: url is " + url);
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addParams("order_id",entity.getId())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "onResponse: response is " + response);
+                        if (TextUtils.isEmpty(response)){
+                            return;
+                        }
+                        ResultEntity re = new Gson().fromJson(response,ResultEntity.class);
+                        if (re!=null&&TextUtils.equals(re.getErr_code(),"0")){
+                            Toast.makeText(OrderListActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                            initData(mStatus);
+                        }else {
+                            Toast.makeText(OrderListActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @OnClick({
@@ -213,4 +268,47 @@ public class OrderListActivity extends BaseActivity {
     protected void onExecuteFailure(int type) {
 
     }
+
+    private void cancelOrder(OrderListEntity.ResultBean entity) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("order_id", entity.getId());
+            json.put("cancel_type", "1");
+            json.put("cancel_reason", "重复提交");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String sign = "sign";
+        String time = "time";
+        String url = ApiManager.URL_ORDER_CANCEL + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
+        Log.e(TAG, "cancelOrder: url is " + url);
+        OkHttpUtils
+                .postString()
+                .url(url)
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
+                .content(json.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "onResponse: response is " + response);
+                        if (TextUtils.isEmpty(response)){
+                            return;
+                        }
+                        ResultEntity re = new Gson().fromJson(response,ResultEntity.class);
+                        if (re!=null&&TextUtils.equals(re.getErr_code(),"0")){
+                            Toast.makeText(OrderListActivity.this, "订单已取消", Toast.LENGTH_SHORT).show();
+                            initData(mStatus);
+                        }else {
+                            Toast.makeText(OrderListActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 }
