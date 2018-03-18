@@ -487,6 +487,12 @@ public class ApiManager {
      */
     public static final String URL_ORDER_DEL = BaseUrl + "order/delete";
 
+
+    /**
+     * 获取助销达人列表
+     */
+    public static final String URL_GET_EXPERT_LIST = BaseUrl + "open/expert/list";
+
 //    --------------------------------------以上是电商部分---------------------------------------
     /**
      * 自驾游列表

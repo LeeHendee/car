@@ -1,36 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/pager_bg">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/custom_title_bar" />
-
-    <include layout="@layout/layout_loading" />
-
-    <include
-        layout="@layout/custom_empty_view"
-        android:id="@+id/empty_rl"
-        android:visibility="gone" />
-
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="—— 品牌介绍 ——"
-        android:gravity="center" />
+        android:layout_height="match_parent"
+        android:background="@color/pager_bg"
+        android:orientation="vertical">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <include layout="@layout/custom_title_bar" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rec_brand"
+        <include layout="@layout/layout_loading" />
+
+        <include
+            android:id="@+id/empty_rl"
+            layout="@layout/custom_empty_view"
+            android:visibility="gone" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="—— 品牌介绍 ——" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rec_brand"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp" />
+
+</RelativeLayout>
