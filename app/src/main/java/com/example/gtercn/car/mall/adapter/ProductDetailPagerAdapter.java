@@ -2,6 +2,7 @@ package com.example.gtercn.car.mall.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,13 +29,17 @@ public class ProductDetailPagerAdapter extends PagerAdapter {
     public ProductDetailPagerAdapter(List<String> urls, Context context) {
         this.urls = urls;
         this.context = context;
+
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.item_pager_view, null);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_pager);
-        Picasso.with(context).load(urls.get(position)).into(imageView);
+        if (urls != null && urls.size() > 0) {
+            if (!TextUtils.isEmpty(urls.get(position)))
+                Picasso.with(context).load(urls.get(position)).into(imageView);
+        }
         container.addView(itemView);
         return itemView;
     }

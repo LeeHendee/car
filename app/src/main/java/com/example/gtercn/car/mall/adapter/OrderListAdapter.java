@@ -86,7 +86,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     public void onBindViewHolder(OrderViewHolder holder, final int position) {
         final OrderListEntity.ResultBean entity = list.get(position);
         holder.countTv.setText("共" + entity.getItem_count() + "件商品 实付款: ");
-        holder.totalTv.setText("￥" + entity.getTotal_amount());
+        holder.totalTv.setText(context.getResources().getString(R.string.rmb) + entity.getTotal_amount());
         List<OrderListEntity.ResultBean.OrderDetailsBean> itemList = entity.getOrder_details();
 
         for (int i = 0; i < itemList.size(); i++) {
@@ -97,6 +97,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             TextView price = (TextView) view.findViewById(R.id.tv_price);
             TextView count = (TextView) view.findViewById(R.id.tv_count);
             ImageView itemIv = (ImageView) view.findViewById(R.id.iv_item);
+
 //            title.setText(single.getTitle());
 //            price.setText(single.getPrice());
             count.setText(single.getNumber() + "");
