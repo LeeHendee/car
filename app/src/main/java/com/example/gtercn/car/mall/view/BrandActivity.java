@@ -70,6 +70,7 @@ public class BrandActivity extends BaseActivity {
     private RelativeLayout mEmptyRl;
 
     private FloatingActionButton mFab;
+    private String mClassifyId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,7 +83,7 @@ public class BrandActivity extends BaseActivity {
         mList = new ArrayList<>();
         //需要传入一个分类id
         Intent intent = getIntent();
-        String classifyId = intent.getStringExtra("classifyId");
+        mClassifyId = intent.getStringExtra("classifyId");
         mBrandName = intent.getStringExtra("classifyName");
         initRightIvBar(mBrandName, R.drawable.icon_search, new View.OnClickListener() {
             @Override
@@ -93,8 +94,8 @@ public class BrandActivity extends BaseActivity {
         });
         String cityCode = Constants.CITY_CODE;
         //获取达人列表数据
-        getExpertList(cityCode, classifyId);
-        ApiManager.getBrandList(classifyId, cityCode, new ResponseCallbackHandler() {
+        getExpertList(cityCode, mClassifyId);
+        ApiManager.getBrandList(mClassifyId, cityCode, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
                 if (mSwipe.isRefreshing()) {

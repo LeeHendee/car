@@ -61,6 +61,7 @@ public class CarApplication extends Application {
         SDKInitializer.initialize(getApplicationContext());
         initOkHttpClient();
         // TODO: 2017/1/10 需要替换成自己申请的 appId和secret
+
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wx62824c95622f2f8d", "351092bd91f7bd01363aa374ed39a473");
         PlatformConfig.setSinaWeibo("1923305823", "09c6cb61141e9b423e68398fa5d4937d", "www.shunjiatianxia.com");

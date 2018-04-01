@@ -57,6 +57,7 @@ public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.BrandViewHol
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProductListActivity.class);
                 intent.putExtra("brandId", bean.getId());
+                intent.putExtra("categoryId", bean.getCategory_id());
                 context.startActivity(intent);
             }
         });

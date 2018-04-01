@@ -157,7 +157,6 @@ public class ProductDetailActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        getProperty();
         initData();
         initListener();
     }
@@ -517,6 +516,7 @@ public class ProductDetailActivity extends BaseActivity {
                     ProductDetailEntity entity = gson.fromJson(response, ProductDetailEntity.class);
                     if (entity != null) {
                         mEntity = entity.getResult();
+                        getProperty();
                         if (mEntity == null) {
                             Toast.makeText(ProductDetailActivity.this, "暂无数据", Toast.LENGTH_SHORT).show();
                             return;
@@ -674,7 +674,8 @@ public class ProductDetailActivity extends BaseActivity {
     }
 
     private void getProperty() {
-        String categoryId = "7";
+        if (mEntity == null) return;
+        String categoryId = mEntity.getCategory_id();
         String isSearch = "1";
         OkHttpUtils
                 .get()
@@ -687,7 +688,6 @@ public class ProductDetailActivity extends BaseActivity {
                     public void onError(Call call, Exception e, int id) {
                         Log.e(TAG, "onError: e is " + e.toString());
                     }
-
                     @Override
                     public void onResponse(String response, int id) {
                         if (response != null) {

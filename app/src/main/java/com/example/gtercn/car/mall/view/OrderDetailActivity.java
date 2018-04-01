@@ -46,6 +46,8 @@ public class OrderDetailActivity extends BaseActivity {
 
     private String mOrderId;
 
+    private List<AddressEntity.ResultBean> addressList;
+
     @BindView(R.id.tv_status)
     TextView mOrderStatusTv;
 
@@ -92,6 +94,7 @@ public class OrderDetailActivity extends BaseActivity {
     ImageView mBackIv;
 
     private boolean isPayBack;
+    private OrderDetailEntity mEntity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,13 +139,14 @@ public class OrderDetailActivity extends BaseActivity {
                         Log.e(TAG, "onResponse: response is " + response);
                         if (response != null) {
                             Gson gson = new Gson();
-                            OrderDetailEntity entity = gson.fromJson(response, OrderDetailEntity.class);
-                            if (entity != null && entity.getErr_code().equals("0")) {
-//                                getAddress(entity.getResult().getAddress_id());
-                                setUi(entity.getResult());
+                            mEntity = gson.fromJson(response, OrderDetailEntity.class);
+                            if (mEntity != null && mEntity.getErr_code().equals("0")) {
+                                getAddress();
+                                setUi(mEntity.getResult());
                             }
                         }
                     }
+
                 });
     }
 
@@ -161,6 +165,55 @@ public class OrderDetailActivity extends BaseActivity {
         mOrderTotalTv.setText(getResources().getString(R.string.rmb) + bean.getTotal_amount());
         mActualPayTv.setText(getResources().getString(R.string.rmb) + bean.getPayment());
         mCreateTimeTv.setText(GetTimeData.formatTime(bean.getOrder_time()));
+    }
+
+    private void getAddress() {
+        addressList = new ArrayList<>();
+        String sign = "sign";
+        String time = "time";
+        ApiManager.getAddressList(sign, time, new ResponseCallbackHandler() {
+            @Override
+            public void onSuccessResponse(String response, int type) {
+//                mLoadingRl.setVisibility(View.GONE);
+                if (response != null) {
+                    Log.e(TAG, "onSuccessResponse: " + response);
+                    Gson g = new Gson();
+                    AddressEntity entity = g.fromJson(response, AddressEntity.class);
+                    if (entity != null && entity.getErr_code().equals("0")) {
+                        addressList = entity.getResult();
+                        setAddressUI(entity);
+//                        setUI();
+                    }
+                }
+            }
+
+            @Override
+            public void onSuccessResponse(JSONObject response, int type) {
+
+            }
+
+            @Override
+            public void onSuccessResponse(JSONArray response, int type) {
+
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error, int type) {
+//                .setVisibility(View.GONE);
+            }
+        }, 1, TAG);
+    }
+
+    private void setAddressUI(AddressEntity entity) {
+        if (entity == null) return;
+        for (int i = 0; i < entity.getResult().size(); i++) {
+            AddressEntity.ResultBean bean = entity.getResult().get(i);
+            if (TextUtils.equals(mEntity.getResult().getAddress_id(), bean.getId())) {
+                mNameTv.setText(bean.getName());
+                mTelTv.setText(bean.getPhone());
+                mAddressTv.setText(bean.getAddress());
+            }
+        }
     }
 
     private void initListener() {

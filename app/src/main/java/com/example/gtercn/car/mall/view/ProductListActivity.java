@@ -101,6 +101,8 @@ public class ProductListActivity extends BaseActivity {
 
     private RelativeLayout mEmptyView;
 
+    private String categoryId;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,13 +117,15 @@ public class ProductListActivity extends BaseActivity {
         Intent intent = getIntent();
         mBrandId = intent.getStringExtra("brandId");
         mSearchContent = intent.getStringExtra("searchContent");
+        categoryId = intent.getStringExtra("categoryId");
+
         if (mBrandId != null) {
             sortProduct(priceFlag, sortType);
         } else {
             //从搜索页面跳转
             submitSearch();
         }
-        getProperty();
+        getProperty(categoryId, "0");
     }
 
     private void setData() {
@@ -321,9 +325,7 @@ public class ProductListActivity extends BaseActivity {
 
     private List<PropertyListEntity.ResultBean.SpecListBean> propertyList;
 
-    private void getProperty() {
-        String categoryId = "7";
-        String isSearch = "0";
+    private void getProperty(String categoryId, String isSearch) {
         OkHttpUtils
                 .get()
                 .url(ApiManager.URL_PROPERTY_LIST)
@@ -354,9 +356,6 @@ public class ProductListActivity extends BaseActivity {
     private String lp;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setPropertyUi() {
-//        String hp = null;
-//        String lp = null;
-
         final View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_list, null);
         final PopupWindow pw = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
