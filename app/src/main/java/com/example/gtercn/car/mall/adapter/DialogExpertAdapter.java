@@ -79,35 +79,17 @@ public class DialogExpertAdapter extends BaseAdapter {
             holder = (MyHolder) view.getTag();
         }
         Picasso.with(context).load(list.get(i).getExpert_portrait_url()).into(holder.riv);
-        holder.tv.setText(entity.getExpert_discription_detail());
+        holder.tv.setText(entity.getExpert_name());
         holder.wechatLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 listener.listener(i, WECHAT);
-//                ContactUtil.getWeChatNumber(entity,context);
-
             }
         });
         holder.callLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.listener(i, DOCALL);
-//                String telNumber = entity.getExpert_tel_number();
-//                List<String> telList = null;
-//                if (telNumber != null) {
-//                    String[] sourceStrArray = telNumber.split(",");
-//                    telList = Arrays.asList(sourceStrArray);
-//
-//                }
-//                PopPhoneMenu mPopMenu = new PopPhoneMenu(context.getApplicationContext(), telList);
-//
-//                if (telNumber == null) {
-//                    Toast.makeText(context, "此达人没有留下电话号码!", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    mPopMenu.showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
-//                            0, 0);
-//                }
             }
         });
         return view;

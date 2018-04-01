@@ -81,6 +81,15 @@ public class ClassifyEntity {
         private int delete_flag;
         private String descriptiion;
         private int res = R.drawable.ic_launcher;
+        private String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
         public int getRes() {
             return res;
@@ -98,6 +107,7 @@ public class ClassifyEntity {
                     ", parent_code='" + parent_code + '\'' +
                     ", delete_flag=" + delete_flag +
                     ", descriptiion=" + descriptiion +
+                    ",url = " + url +
                     '}';
         }
 

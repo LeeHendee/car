@@ -38,7 +38,7 @@ public class CarApplication extends Application {
 
     private static final String FILE = "user";
 
-    private static Context mContext;
+    public static Context mContext;
 
     private static Resources mResources;
 

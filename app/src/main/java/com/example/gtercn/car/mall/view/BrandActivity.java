@@ -93,7 +93,7 @@ public class BrandActivity extends BaseActivity {
         });
         String cityCode = Constants.CITY_CODE;
         //获取达人列表数据
-        getExpertList(Constants.CITY_CODE, "7");
+        getExpertList(cityCode, classifyId);
         ApiManager.getBrandList(classifyId, cityCode, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
@@ -134,7 +134,7 @@ public class BrandActivity extends BaseActivity {
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
-
+                Log.e(TAG, "onErrorResponse: e is " + error.toString());
             }
         }, 1, TAG);
     }
@@ -159,8 +159,8 @@ public class BrandActivity extends BaseActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if (expertList == null) {
-                    Toast.makeText(BrandActivity.this, "获取达人失败", Toast.LENGTH_SHORT).show();
+                if (expertList == null || expertList.size() == 0) {
+                    Toast.makeText(BrandActivity.this, "此分类下没有达人", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 //自定义对话框
@@ -187,7 +187,6 @@ public class BrandActivity extends BaseActivity {
                             if (telNumber != null) {
                                 String[] sourceStrArray = telNumber.split(",");
                                 telList = Arrays.asList(sourceStrArray);
-
                             }
                             PopPhoneMenu mPopMenu = new PopPhoneMenu(BrandActivity.this, telList);
 
@@ -225,7 +224,6 @@ public class BrandActivity extends BaseActivity {
                         Log.e(TAG, "onResponse: response is " + response);
                         if (response != null) {
                             Gson gson = new Gson();
-
                             ExpertListEntity entity = gson.fromJson(response, ExpertListEntity.class);
                             if (entity != null && "0".equals(entity.getErr_code())) {
                                 expertList = entity.getResult();

@@ -122,6 +122,7 @@
         <activity android:name=".mall.view.ChoosePayActivity" />
         <activity android:name=".mall.view.OrderDetailActivity" />
         <activity android:name=".mall.view.SearchActivity" />
+        <activity android:name=".mall.view.ShopListActivity"/>
 
 
         <service android:name=".service.AppService" />

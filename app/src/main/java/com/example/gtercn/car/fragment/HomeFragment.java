@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,7 @@ import com.example.gtercn.car.location.CityCodeChangeImpl;
 import com.example.gtercn.car.net.THttpOpenHelper;
 import com.example.gtercn.car.net.THttpsOpenHelper;
 import com.example.gtercn.car.update.UpdateUtils;
+import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.ContextService;
 import com.example.gtercn.car.utils.GetPath;
 import com.example.gtercn.car.utils.MD5;
@@ -192,14 +194,14 @@ public class HomeFragment extends BaseFragment implements
         mLinearLayout = mView.findViewById(R.id.fragment_home_linearlayout);
         mSpecialRelativeLayout = mView.findViewById(R.id.home_special_relief_relativelayout);
         mExpertRelativeLayout = mView.findViewById(R.id.home_expert_relativelayout);
-        mMaintainRelativeLayout =  mView.findViewById(R.id.home_maintain_relativelayout);
+        mMaintainRelativeLayout = mView.findViewById(R.id.home_maintain_relativelayout);
         mWashRelativeLayout = mView.findViewById(R.id.home_car_wash_relativelayout);
         mTyreRelativeLayout = mView.findViewById(R.id.home_tyre_relativelayout);
         mRepairRelativeLayout = mView.findViewById(R.id.home_car_repairing_relativelayout);
         mLogoutRelayout = mView.findViewById(R.id.click_logout);
         mNickname = (TextView) mView.findViewById(R.id.user_nickname_tv);
         mSearchLayout = mView.findViewById(R.id.home_search_ll);
-        mAppUpdate =  mView.findViewById(R.id.app_update_layout);
+        mAppUpdate = mView.findViewById(R.id.app_update_layout);
         mLoginLayout = mView.findViewById(R.id.login_layout);
 
         mChangePwd = mView.findViewById(R.id.change_pwd_layout);
@@ -208,7 +210,7 @@ public class HomeFragment extends BaseFragment implements
         mAboutUsLayout = mView.findViewById(R.id.about_us_layout);
         mSearchEt = (EditText) mView.findViewById(R.id.search_et);
         mPersonalInfoLayout = mView.findViewById(R.id.personal_info_rl);
-        mProgressBar = (ProgressBar)mView.findViewById(R.id.home_ad_progressbar);
+        mProgressBar = (ProgressBar) mView.findViewById(R.id.home_ad_progressbar);
         mHeadPortrait = (RoundedImageView) mView.findViewById(R.id.head_portrait);
         mMyActivityLayout = mView.findViewById(R.id.click_my_activity);
         mFavoriteLayout = mView.findViewById(R.id.click_my_favorite);
@@ -294,7 +296,7 @@ public class HomeFragment extends BaseFragment implements
             mTimer.shutdownNow();
         }
 
-        if(bmp != null){
+        if (bmp != null) {
             bmp.recycle();
         }
     }
@@ -318,15 +320,22 @@ public class HomeFragment extends BaseFragment implements
                 }
             });
         } else {
-            if(isFirst){
+            if (isFirst) {
                 BDLocation bdLocation = AppLocation.newInstance().getBDLocation();
                 if (bdLocation == null) {
                     return;
                 }
                 String city = bdLocation.getCity();
+                String cityCode = bdLocation.getCityCode();
+
+                Log.e(TAG, "initLocationInfo: city is " + city);
+                Log.e(TAG, "initLocationInfo: bdLocation is " + bdLocation.toString());
                 if (TextUtils.isEmpty(city)) {
                     return;
                 }
+                Constants.CITY_CODE = cityCode;
+
+                Log.e(TAG, "initLocationInfo: cityCode is " + Constants.CITY_CODE);
                 final String newCity = city;
                 mLocateCity = newCity;
                 initCityCode(newCity);
@@ -431,7 +440,7 @@ public class HomeFragment extends BaseFragment implements
                 mUser = mApplication.getUser();
                 if (mUser != null) {
                     new LoadHeaderTask().execute(mUser.getResult().getUser_info().getAvatar_url());
-                }else {
+                } else {
                     mHeadPortrait.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.personal_head_portrait));
                 }
                 break;
@@ -533,7 +542,7 @@ public class HomeFragment extends BaseFragment implements
                     if (response.has("err_code")) {
                         try {
                             String code = response.getString("err_code");
-                            TAppUtils.logout(mApplication,code);
+                            TAppUtils.logout(mApplication, code);
                             if (TextUtils.equals(code, "0")) {
                                 String message = response.getString("message");
                                 mApplication.resetUser();
@@ -564,7 +573,8 @@ public class HomeFragment extends BaseFragment implements
                                 JSONArray obj2 = response.getJSONArray("result");
                                 Gson gson = new Gson();
                                 List<HomeAdBean> list = gson.fromJson(obj2.toString(),
-                                        new TypeToken<List<HomeAdBean>>(){}.getType());
+                                        new TypeToken<List<HomeAdBean>>() {
+                                        }.getType());
                                 if (list != null && list.size() > 0) {
                                     mProgressBar.setVisibility(View.GONE);
                                     mAdList.clear();
@@ -623,7 +633,7 @@ public class HomeFragment extends BaseFragment implements
                         if (obj.has("err_code")) {
                             try {
                                 String code = obj.getString("err_code");
-                                TAppUtils.logout(mApplication,code);
+                                TAppUtils.logout(mApplication, code);
                                 String message = obj.getString("message");
                                 showToastMsg(message);
                                 if (TextUtils.equals(code, "0")) {

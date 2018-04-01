@@ -33,6 +33,7 @@ import com.example.gtercn.car.mall.entity.BannerEntity;
 import com.example.gtercn.car.mall.entity.ClassifyEntity;
 import com.example.gtercn.car.mall.adapter.ClassifyAdapter;
 import com.example.gtercn.car.mall.entity.SecKillEntity;
+import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.widget.DividerItemDecoration;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -140,7 +141,6 @@ public class StoreFragment extends BaseFragment {
     }
 
     public void setBanner() {
-
         mBannerVp.startTurning(3000);
         mBannerVp.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -148,9 +148,8 @@ public class StoreFragment extends BaseFragment {
                 String url = mBannerList.get(position).getPicture_path();
                 Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
                 intent.putExtra("goodId", mBannerList.get(position).getGoods_id());
-                intent.putExtra("cityCode", mBannerList.get(position).getCity_code());
+                intent.putExtra("cityCode", Constants.CITY_CODE);
                 startActivity(intent);
-
                 Log.e(TAG, "onItemClick: current path is " + url);
             }
         });

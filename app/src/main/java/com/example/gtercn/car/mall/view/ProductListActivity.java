@@ -131,7 +131,8 @@ public class ProductListActivity extends BaseActivity {
             @Override
             public void itemClickListener(int pos) {
                 String goodId = mProductList.get(pos).getId();
-                String cityCode = mProductList.get(pos).getCity_code();
+//                String cityCode = mProductList.get(pos).getCity_code();
+                String cityCode = Constants.CITY_CODE;
                 Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
                 intent.putExtra("goodId", goodId);
                 intent.putExtra("cityCode", cityCode);

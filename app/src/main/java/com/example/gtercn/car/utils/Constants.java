@@ -19,7 +19,7 @@ public class Constants {
 
 //    --------------  以下是电商部分  ---------------
 
-    public static String CITY_CODE = "0411";
+    public static String CITY_CODE = "";
 
     public static void setCityCode(String cityCode) {
         CITY_CODE = cityCode;

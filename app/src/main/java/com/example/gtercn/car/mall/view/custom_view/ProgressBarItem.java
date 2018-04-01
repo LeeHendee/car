@@ -35,7 +35,7 @@ public class ProgressBarItem extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View progressBarItemView = inflater.inflate(R.layout.progressbar_item, null);
         addView(progressBarItemView);
-        ImageView progressImageView = (ImageView) this.findViewById(R.id.myloading_image_id);
+        ImageView progressImageView = (ImageView) this.findViewById(R.id.iv_loading);
         AnimationDrawable animationDrawable = (AnimationDrawable) progressImageView.getDrawable();
         animationDrawable.start();
     }

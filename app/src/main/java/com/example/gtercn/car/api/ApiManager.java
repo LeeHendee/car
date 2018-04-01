@@ -493,6 +493,11 @@ public class ApiManager {
      */
     public static final String URL_GET_EXPERT_LIST = BaseUrl + "open/expert/list";
 
+    /**
+     * 获取服务站列表
+     */
+    public static final String URL_GET_SHOP_LIST = BaseUrl + "open/shop/list";
+
 //    --------------------------------------以上是电商部分---------------------------------------
     /**
      * 自驾游列表
@@ -713,7 +718,7 @@ public class ApiManager {
      * 首页轮播图
      */
     public static void getBanner(ResponseCallbackHandler handler, int type, String tag) {
-        String url = ApiManager.URL_HOME_BANNER + "?city_code=0411";
+        String url = ApiManager.URL_HOME_BANNER + "?city_code=" + Constants.CITY_CODE;
         ApiHttp.getBanner(url, handler, type, tag);
     }
 
@@ -729,7 +734,7 @@ public class ApiManager {
      * 首页秒杀产品列表
      */
     public static void getSeckill(ResponseCallbackHandler handler, int type, String tag) {
-        String url = ApiManager.URL_HOME_SECKILL + "?city_code=0411";
+        String url = ApiManager.URL_HOME_SECKILL + "?city_code=" + Constants.CITY_CODE;
         ApiHttp.getSeckill(url, handler, type, tag);
     }
 

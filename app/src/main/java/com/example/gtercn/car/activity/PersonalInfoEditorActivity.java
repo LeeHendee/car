@@ -148,15 +148,12 @@ public class PersonalInfoEditorActivity extends BaseActivity implements Response
 
         String nickname = mNickname.getText().toString().trim();
         String realname = mRealname.getText().toString().trim();
-//        String description = mDescription.getText().toString().trim();
+
         if (TextUtils.isEmpty(nickname)) {
             mNickname.setError("请填写昵称!");
             return;
         }
-//        if (TextUtils.isEmpty(realname)) {
-//            mRealname.setError("请填写昵称!");
-//            return;
-//        }
+
         Map params = new HashMap();
         params.put("nickname", nickname);
         params.put("real_name", realname);

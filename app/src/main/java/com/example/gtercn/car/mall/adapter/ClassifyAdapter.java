@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.mall.entity.ClassifyEntity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -54,7 +55,8 @@ public class ClassifyAdapter extends BaseAdapter {
         TextView nameTv = (TextView) convertView.findViewById(R.id.tv_name);
         ImageView classifyIv = (ImageView) convertView.findViewById(R.id.iv_classify);
         nameTv.setText(bean.getTitle());
-        classifyIv.setImageResource(bean.getRes());
+        Picasso.with(mContext).load(bean.getUrl()).into(classifyIv);
+//        classifyIv.setImageResource(bean.getRes());
         convertView.setTag(nameTv);
         return convertView;
     }

@@ -61,6 +61,8 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
 
     private ChooseAddressAdapter mAdapter;
 
+    private String orderId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +121,14 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChooseAddressActivity.this, ManageAddressActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mSelectShopLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChooseAddressActivity.this, ShopListActivity.class);
                 startActivity(intent);
             }
         });

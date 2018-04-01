@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * Created by Yan on 2017/12/29.
  */
-
 public class ProductDetailPagerAdapter extends PagerAdapter {
 
     private static final String TAG = "ProductDetailPagerAdapt";
