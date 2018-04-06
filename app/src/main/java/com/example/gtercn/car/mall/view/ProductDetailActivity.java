@@ -413,10 +413,10 @@ public class ProductDetailActivity extends BaseActivity {
     };
 
     private void toBuyNow() {
-        if (TextUtils.isEmpty(propertyIds)){
-            Toast.makeText(ProductDetailActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (TextUtils.isEmpty(propertyIds)){
+//            Toast.makeText(ProductDetailActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         params = new CreatePreOrderEntity();
         Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
         //传递过去数量，总价，
@@ -425,7 +425,7 @@ public class ProductDetailActivity extends BaseActivity {
         CreatePreOrderEntity.GoodsListBean bean = new CreatePreOrderEntity.GoodsListBean();
         bean.setGoods_id(mEntity.getId());
         bean.setNumber(mCount + "");
-        bean.setSpec_item_ids(propertyIds);
+        bean.setSpec_item_ids(mEntity.getSpec_item_ids());
         listBeen.add(bean);
         params.setGoods_list(listBeen);
         toBuy.putExtra("params", params);
