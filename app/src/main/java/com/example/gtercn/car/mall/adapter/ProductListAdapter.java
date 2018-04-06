@@ -2,6 +2,7 @@ package com.example.gtercn.car.mall.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,14 +53,15 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(ProductionViewHolder holder, final int position) {
         ProductListEntity.ResultBean bean = list.get(position);
         holder.titleTv.setText(bean.getGoods_title());
-        holder.priceTv.setText(context.getResources().getString(R.string.rmb)+bean.getPromotion_price());
+        holder.priceTv.setText(context.getResources().getString(R.string.rmb) + bean.getPromotion_price());
         holder.soldTv.setText(bean.getSold_number() + "");
         holder.reviewsTv.setText(bean.getStock() + "");
         holder.reviewsRateTv.setText(bean.getGoods_title());
         holder.productIv.setTag(bean.getSmall_picture());
 
         if (holder.productIv.getTag() == bean.getSmall_picture()) {
-            Picasso.with(context).load(bean.getSmall_picture()).into(holder.productIv);
+            if (!TextUtils.isEmpty(bean.getSmall_picture()))
+                Picasso.with(context).load(bean.getSmall_picture()).into(holder.productIv);
         }
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override

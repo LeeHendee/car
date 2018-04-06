@@ -102,6 +102,8 @@ public class ProductListEntity {
         private int status;
         private String city_code;
         private long update_time;
+        private String category_id;
+
 
         @Override
         public String toString() {
@@ -129,7 +131,16 @@ public class ProductListEntity {
                     ", status=" + status +
                     ", city_code='" + city_code + '\'' +
                     ", update_time=" + update_time +
+                    ",category_id="+category_id+
                     '}';
+        }
+
+        public String getCategory_id() {
+            return category_id;
+        }
+
+        public void setCategory_id(String category_id) {
+            this.category_id = category_id;
         }
 
         public String getId() {

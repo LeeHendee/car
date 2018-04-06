@@ -53,7 +53,7 @@ import okhttp3.MediaType;
 
 /**
  * Created by Yan on 2017/12/24.
- *
+ * <p>
  * 1.属性筛选产品接口问题；
  * 2.少一个收藏商品的功能；
  * 3.选择服务站；
@@ -102,6 +102,7 @@ public class ProductListActivity extends BaseActivity {
     private RelativeLayout mEmptyView;
 
     private String categoryId;
+    private PropertyListEntity propertyListEntity;
 
 
     @Override
@@ -121,11 +122,12 @@ public class ProductListActivity extends BaseActivity {
 
         if (mBrandId != null) {
             sortProduct(priceFlag, sortType);
+            getProperty(categoryId, "0");
         } else {
             //从搜索页面跳转
             submitSearch();
         }
-        getProperty(categoryId, "0");
+
     }
 
     private void setData() {
@@ -135,7 +137,6 @@ public class ProductListActivity extends BaseActivity {
             @Override
             public void itemClickListener(int pos) {
                 String goodId = mProductList.get(pos).getId();
-//                String cityCode = mProductList.get(pos).getCity_code();
                 String cityCode = Constants.CITY_CODE;
                 Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
                 intent.putExtra("goodId", goodId);
@@ -212,15 +213,15 @@ public class ProductListActivity extends BaseActivity {
                     Log.e(TAG, "onSuccessResponse: response is " + response);
                     Gson gson = new Gson();
                     ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
-                    if (entity!=null&&TextUtils.equals(entity.getErr_code(),"0")){
-                        if (entity.getResult()!=null&&entity.getResult().size()>0){
+                    if (entity != null && TextUtils.equals(entity.getErr_code(), "0")) {
+                        if (entity.getResult() != null && entity.getResult().size() > 0) {
                             mEmptyView.setVisibility(View.GONE);
                             mProductList = entity.getResult();
                             setData();
                         } else {
                             mEmptyView.setVisibility(View.VISIBLE);
                         }
-                    }else {
+                    } else {
                         Toast.makeText(ProductListActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -304,13 +305,15 @@ public class ProductListActivity extends BaseActivity {
                     public void onResponse(String response, int id) {
                         mLoadingRl.setVisibility(View.GONE);
                         if (response != null) {
-                            Log.e(TAG, "onSuccessResponse: response is " + response);
+                            Log.e(TAG, "search: response is " + response);
                             Gson gson = new Gson();
                             ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
                             if (entity != null && TextUtils.equals(entity.getErr_code(), "0")) {
                                 if (entity.getResult() != null && entity.getResult().size() > 0) {
                                     mEmptyView.setVisibility(View.GONE);
                                     mProductList = entity.getResult();
+                                    categoryId = mProductList.get(0).getCategory_id();
+                                    getProperty(categoryId, "0");
                                     setData();
                                 } else {
                                     mEmptyView.setVisibility(View.VISIBLE);
@@ -324,6 +327,7 @@ public class ProductListActivity extends BaseActivity {
     }
 
     private List<PropertyListEntity.ResultBean.SpecListBean> propertyList;
+    private List<PropertyListEntity.ResultBean.BrandListBean> brandList;
 
     private void getProperty(String categoryId, String isSearch) {
         OkHttpUtils
@@ -343,9 +347,9 @@ public class ProductListActivity extends BaseActivity {
                         if (response != null) {
                             Log.e(TAG, "onResponse: response is " + response);
                             Gson gson = new Gson();
-                            PropertyListEntity entity = gson.fromJson(response, PropertyListEntity.class);
-                            if (entity != null && entity.getErr_code().equals("0")) {
-                                propertyList = entity.getResult().getSpec_list();
+                            propertyListEntity = gson.fromJson(response, PropertyListEntity.class);
+                            if (propertyListEntity != null && propertyListEntity.getErr_code().equals("0")) {
+                                propertyList = propertyListEntity.getResult().getSpec_list();
                             }
                         }
                     }
@@ -354,6 +358,7 @@ public class ProductListActivity extends BaseActivity {
 
     private String hp;
     private String lp;
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setPropertyUi() {
         final View popView = LayoutInflater.from(this).inflate(R.layout.custom_property_list, null);
@@ -384,11 +389,14 @@ public class ProductListActivity extends BaseActivity {
                     lp = "0";
                 }
                 String ids = getPropertyIds();
+                String brandIds = "";
+                Log.e(TAG, "onClick: lowp is "+lowPrice+" highP is "+highPrice+" brandIds is "+brandIds +" spec ids is "+ids);
                 if (TextUtils.isEmpty(ids)) {
                     Toast.makeText(ProductListActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                filterProperty("0", "10000", null, ids);
+                filterProperty(lowPrice, highPrice, brandIds, ids);
+                pw.dismiss();
             }
         });
 
@@ -460,6 +468,21 @@ public class ProductListActivity extends BaseActivity {
         });
     }
 
+    private String getBrandIds() {
+        String brandIds = null;
+        StringBuffer sb = new StringBuffer();
+        List<PropertyListEntity.ResultBean.BrandListBean> list = propertyListEntity.getResult().getBrand_list();
+        for (int i = 0; i < list.size(); i++) {
+            if (i!=list.size()-1){
+                sb.append(list.get(i).getId() + ",");
+            }else {
+                sb.append(list.get(i).getId());
+            }
+        }
+        brandIds = sb.toString();
+        return brandIds;
+    }
+
     private void resetProperty() {
         for (int i = 0; i < propertyList.size(); i++) {
             List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> list = propertyList.get(i).getItems();
@@ -471,6 +494,7 @@ public class ProductListActivity extends BaseActivity {
     }
 
     private void filterProperty(String fromPrice, String toPrice, String brandIds, String propertyIds) {
+        mLoadingRl.setVisibility(View.VISIBLE);
 
         JSONObject params = new JSONObject();
         try {
@@ -493,11 +517,13 @@ public class ProductListActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Log.e(TAG, "onError: e is " + e.toString());
+                        mLoadingRl.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e(TAG, "filterProperty : response is " + response);
+                        mLoadingRl.setVisibility(View.VISIBLE);
                     }
                 });
 

@@ -229,7 +229,7 @@ public class ProductDetailActivity extends BaseActivity {
                     toBuyNow();
                     break;
                 case R.id.ll_select_property:
-                    setPropertyUi();
+//                    setPropertyUi();
                     break;
                 case R.id.tv_add_cart:
                     //将此商品加入购物车
@@ -553,6 +553,7 @@ public class ProductDetailActivity extends BaseActivity {
         mSoldCountTv.setText("已售：" + mEntity.getSold_number() + "");
         mIndexCurTv.setText(curPosition + "");
         mIndexTotalTv.setText("5");
+        displayArrTv.setText(mEntity.getSpec_item_content());
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             list.add(mEntity.getBig_picture() + "");
