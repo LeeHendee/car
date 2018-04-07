@@ -413,10 +413,6 @@ public class ProductDetailActivity extends BaseActivity {
     };
 
     private void toBuyNow() {
-//        if (TextUtils.isEmpty(propertyIds)){
-//            Toast.makeText(ProductDetailActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
         params = new CreatePreOrderEntity();
         Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
         //传递过去数量，总价，
@@ -433,13 +429,10 @@ public class ProductDetailActivity extends BaseActivity {
     }
 
     private void addToCart() {
-        if (TextUtils.isEmpty(propertyIds)){
-            Toast.makeText(this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
-            return;
-        }
         JSONObject params = new JSONObject();
+        propertyIds = mEntity.getSpec_item_ids();
         try {
-            params.put("goods_id", "2");
+            params.put("goods_id", mEntity.getId());
             params.put("number", mCount+"");
             params.put("spec_item_ids", propertyIds);
         } catch (JSONException e) {

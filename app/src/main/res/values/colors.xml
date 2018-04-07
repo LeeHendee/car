@@ -188,5 +188,9 @@
 
     <color name="btn_gray_bg">#f1f2f3</color>
 
+    <color name="edit_bg">#f0f2f5</color>
+
+    <color name="edit_bg_hint">#bfbfbf</color>
+
 </resources>
 

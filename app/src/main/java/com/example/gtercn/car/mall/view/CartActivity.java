@@ -159,7 +159,7 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
                                 listBeen.add(bean);
                             }
                         }
-                        if (listBeen == null || listBeen.size() == 0) {
+                        if (listBeen == null) {
                             Toast.makeText(CartActivity.this, "请选择需要结算的商品", Toast.LENGTH_SHORT).show();
                             return;
                         }

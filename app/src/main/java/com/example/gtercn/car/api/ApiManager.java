@@ -1,5 +1,7 @@
 package com.example.gtercn.car.api;
 
+import android.util.Log;
+
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.interfaces.ResponseJSONObjectListener;
 import com.example.gtercn.car.interfaces.ResponseStringListener;
@@ -783,6 +785,7 @@ public class ApiManager {
      * 电商产品列表
      */
     public static void sortProduct(String brandId, String cityCode, String priceFlag, String sortType, ResponseCallbackHandler handler, int type, String tag) {
+        Log.e(TAG, "sortProduct: city_code is " + cityCode + " priceFlag is " + priceFlag + " sortType is " + sortType);
         String url = ApiManager.URL_SORT_PRODUCT + "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" + sortType + "&brand_id=" + brandId;
         ApiHttp.getProductList(url, handler, type, tag);
     }

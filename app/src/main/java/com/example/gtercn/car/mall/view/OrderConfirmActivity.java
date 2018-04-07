@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -77,6 +78,30 @@ public class OrderConfirmActivity extends BaseActivity {
     @BindView(R.id.ll_product_view)
     LinearLayout mProductLayout;
 
+    @BindView(R.id.iv_invoice)
+    ImageView mIsInvoiceIv;
+
+    @BindView(R.id.iv_personal)
+    ImageView mPersonalIv;
+
+    @BindView(R.id.iv_company)
+    ImageView mCompanyIv;
+
+    @BindView(R.id.et_company_name)
+    EditText mCompanyNameEt;
+
+    @BindView(R.id.et_company_tex_number)
+    EditText mTexNoEt;
+
+    @BindView(R.id.et_invoice_content)
+    EditText mContentEt;
+
+    @BindView(R.id.ll_invoice)
+    LinearLayout mShowInvoiceLl;
+
+    @BindView(R.id.ll_invoice_company)
+    LinearLayout mCompanyInvoiceLl;
+
     private CreatePreOrderEntity params;
 
     private ConfirmOrderEntity mEntity;
@@ -84,6 +109,10 @@ public class OrderConfirmActivity extends BaseActivity {
     private List<ConfirmOrderEntity.ResultBean.GoodsListBean> list;
 
     private String mAddressId;
+
+    private boolean isNeedInvoice = false;
+
+    private boolean isPersonalInvoice = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,9 +173,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 if (i == list.size() - 1) {
                     lineIv.setVisibility(View.GONE);
                 }
-
                 mProductLayout.addView(view);
-
             }
             mOrgTotalTv.setText(getResources().getString(R.string.rmb) + mEntity.getResult().getTotal_price());
             mDeliveryFeeTv.setText(getResources().getString(R.string.rmb) + 0);
@@ -167,7 +194,7 @@ public class OrderConfirmActivity extends BaseActivity {
         initRightTvBar("确认订单", null, null);
     }
 
-    @OnClick({R.id.rl_address, R.id.tv_submit_order})
+    @OnClick({R.id.rl_address, R.id.tv_submit_order, R.id.iv_invoice, R.id.iv_personal, R.id.iv_company})
     void myClick(View view) {
         switch (view.getId()) {
             case R.id.tv_submit_order:
@@ -177,6 +204,29 @@ public class OrderConfirmActivity extends BaseActivity {
                 Intent intent = new Intent(OrderConfirmActivity.this, ChooseAddressActivity.class);
                 startActivityForResult(intent, 100);
                 break;
+            case R.id.iv_invoice:
+                if (isNeedInvoice) {
+                    mIsInvoiceIv.setImageResource(R.drawable.switch_off);
+                    isNeedInvoice = false;
+                    mShowInvoiceLl.setVisibility(View.GONE);
+                } else {
+                    mIsInvoiceIv.setImageResource(R.drawable.switch_on);
+                    isNeedInvoice = true;
+                    mShowInvoiceLl.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.iv_personal:
+                isPersonalInvoice = true;
+                mPersonalIv.setImageResource(R.drawable.cart1_checkbox_check);
+                mCompanyIv.setImageResource(R.drawable.cart1_checkbox_normal);
+                mCompanyInvoiceLl.setVisibility(View.GONE);
+                break;
+            case R.id.iv_company:
+                isPersonalInvoice = false;
+                mPersonalIv.setImageResource(R.drawable.cart1_checkbox_normal);
+                mCompanyIv.setImageResource(R.drawable.cart1_checkbox_check);
+                mCompanyInvoiceLl.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
@@ -185,7 +235,6 @@ public class OrderConfirmActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 100) {
-                Log.e(TAG, "onActivityResult ");
                 mNameTv.setText(data.getStringExtra("name"));
                 mTelTv.setText(data.getStringExtra("tel"));
                 mAddressTv.setText(data.getStringExtra("address"));
@@ -211,12 +260,19 @@ public class OrderConfirmActivity extends BaseActivity {
         //总价格：
         entity.setTotal_price(mEntity.getResult().getTotal_price() + "");
         entity.setAddress_id(mAddressId);
-        entity.setCustomer_mark("生成订单1");
-        entity.setInvoice("N");
+        entity.setCustomer_mark("无备注信息");
+        String invoiceTitle = null;
+        if (isPersonalInvoice) {
+            invoiceTitle = mNameTv.getText().toString();
+        } else {
+            invoiceTitle = mCompanyNameEt.getText().toString().trim();
+        }
+        entity.setInvoice_title(invoiceTitle);
+        entity.setInvoice(isNeedInvoice ? "Y" : "N");
         entity.setItem_count(list.size() + "");
         entity.setExpert_id("1");
-        entity.setInvoice_type("e");
-        entity.setInvoice_content("餐费");
+        entity.setInvoice_type(isPersonalInvoice ? "E" : "P");
+        entity.setInvoice_content(mContentEt.getText().toString().trim());
         String sign = "sign";
         String time = "time";
         Log.e(TAG, "initData: entity is " + entity.toString());
@@ -243,8 +299,8 @@ public class OrderConfirmActivity extends BaseActivity {
                             CommitOrderResultEntity entity = gson.fromJson(response, CommitOrderResultEntity.class);
                             if (entity != null && entity.getErr_code().equals("0")) {
                                 Intent intent = new Intent(OrderConfirmActivity.this, ChoosePayActivity.class);
-                                intent.putExtra("orderId",entity.getResult().getOrderId());
-                                intent.putExtra("sum",mEntity.getResult().getTotal_price());
+                                intent.putExtra("orderId", entity.getResult().getOrderId());
+                                intent.putExtra("sum", mEntity.getResult().getTotal_price());
                                 startActivity(intent);
                             }
                         }

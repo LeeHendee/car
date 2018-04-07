@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.titleTv.setText(bean.getGoods_title());
         holder.priceTv.setText(context.getResources().getString(R.string.rmb)+bean.getPromotion_price());
         holder.countTv.setText(bean.getNumber()+"");
-        Picasso.with(context).load(bean.getSmall_picture()).into(holder.productIv);
+        if (!
+                TextUtils.isEmpty(bean.getSmall_picture())) {
+            Picasso.with(context).load(bean.getSmall_picture()).into(holder.productIv);
+        }
         if (bean.isSelected()){
             holder.checkIv.setImageResource(R.drawable.cart1_checkbox_check);
         }else {

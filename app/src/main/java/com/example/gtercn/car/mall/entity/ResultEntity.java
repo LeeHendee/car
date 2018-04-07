@@ -5,35 +5,25 @@ package com.example.gtercn.car.mall.entity;
  */
 
 public class ResultEntity {
-
-
     /**
      * err_code : 0
      * err_message : OK
-     * message : 更改成功
+     * result : {}
+     * message : 添加成功
      */
 
     private String err_code;
     private String err_message;
+    private ResultBean result;
     private String message;
-
-    private String result;
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
 
     @Override
     public String toString() {
         return "ResultEntity{" +
                 "err_code='" + err_code + '\'' +
                 ", err_message='" + err_message + '\'' +
+                ", result=" + result +
                 ", message='" + message + '\'' +
-                ", result='" + result + '\'' +
                 '}';
     }
 
@@ -53,6 +43,14 @@ public class ResultEntity {
         this.err_message = err_message;
     }
 
+    public ResultBean getResult() {
+        return result;
+    }
+
+    public void setResult(ResultBean result) {
+        this.result = result;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -60,4 +58,8 @@ public class ResultEntity {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public static class ResultBean {
+    }
+
 }

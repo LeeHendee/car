@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
-    android:background="@color/white"
-    android:id="@+id/ll_item">
+              android:orientation="horizontal" android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp"
+              android:background="@color/white"
+              android:id="@+id/ll_item">
 
     <ImageView
         android:id="@+id/iv_check"
@@ -17,15 +17,14 @@
         android:layout_gravity="center_vertical"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
-
         />
 
     <ImageView
         android:id="@+id/iv_product"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:src="@drawable/icon_app"
-        android:layout_marginLeft="15dp"/>
+        android:layout_marginLeft="10dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

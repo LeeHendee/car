@@ -103,7 +103,19 @@ public class ProductListEntity {
         private String city_code;
         private long update_time;
         private String category_id;
+        private String brand_id;
 
+        public void setPromotion_price(double promotion_price) {
+            this.promotion_price = promotion_price;
+        }
+
+        public String getBrand_id() {
+            return brand_id;
+        }
+
+        public void setBrand_id(String brand_id) {
+            this.brand_id = brand_id;
+        }
 
         @Override
         public String toString() {
@@ -131,7 +143,8 @@ public class ProductListEntity {
                     ", status=" + status +
                     ", city_code='" + city_code + '\'' +
                     ", update_time=" + update_time +
-                    ",category_id="+category_id+
+                    ", category_id='" + category_id + '\'' +
+                    ", brand_id='" + brand_id + '\'' +
                     '}';
         }
 

@@ -156,7 +156,8 @@ public class ProductListActivity extends BaseActivity {
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                initData();
+//                initData();
+                sortProduct(priceFlag, sortType);
             }
         });
     }
@@ -193,7 +194,6 @@ public class ProductListActivity extends BaseActivity {
                     sortProduct(priceFlag, sortType);
                     break;
                 case R.id.tv_sort:
-//                    changeSortStatus(v.getId());
                     setPropertyUi();
                     break;
             }
@@ -314,6 +314,7 @@ public class ProductListActivity extends BaseActivity {
                                     mProductList = entity.getResult();
                                     categoryId = mProductList.get(0).getCategory_id();
                                     getProperty(categoryId, "0");
+                                    mBrandId = entity.getResult().get(0).getBrand_id();
                                     setData();
                                 } else {
                                     mEmptyView.setVisibility(View.VISIBLE);
@@ -373,7 +374,6 @@ public class ProductListActivity extends BaseActivity {
         resetTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ProductListActivity.this, "重置逻辑", Toast.LENGTH_SHORT).show();
                 resetProperty();
             }
         });
@@ -495,7 +495,6 @@ public class ProductListActivity extends BaseActivity {
 
     private void filterProperty(String fromPrice, String toPrice, String brandIds, String propertyIds) {
         mLoadingRl.setVisibility(View.VISIBLE);
-
         JSONObject params = new JSONObject();
         try {
             params.put("from_price", fromPrice);
@@ -517,16 +516,15 @@ public class ProductListActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Log.e(TAG, "onError: e is " + e.toString());
-                        mLoadingRl.setVisibility(View.VISIBLE);
+                        mLoadingRl.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Log.e(TAG, "filterProperty : response is " + response);
-                        mLoadingRl.setVisibility(View.VISIBLE);
+                        mLoadingRl.setVisibility(View.GONE);
                     }
                 });
-
     }
 
     private String getPropertyIds() {

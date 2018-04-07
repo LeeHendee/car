@@ -10,7 +10,6 @@ import java.util.List;
 
 public class OrderDetailEntity {
 
-
     /**
      * err_code : 0
      * err_message : OK
