@@ -17,12 +17,15 @@ import com.alipay.sdk.app.EnvUtils;
 import com.alipay.sdk.app.PayTask;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.mall.entity.AliPaySignEntity;
 import com.example.gtercn.car.mall.entity.AliResultEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.entity.ReviewsEntity;
 import com.example.gtercn.car.mall.pay.PayResult;
 import com.example.gtercn.car.utils.Constants;
+import com.example.gtercn.car.utils.MD5;
 import com.example.gtercn.car.utils.OrderInfoUtil2_0;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -68,6 +71,8 @@ public class ChoosePayActivity extends BaseActivity {
     private double mSum;
 
     private boolean isAliPay = true;
+    private CarApplication mApp;
+    private User mUser;
 
 
     @Override
@@ -84,6 +89,8 @@ public class ChoosePayActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
         Intent intent = getIntent();
         mOrderId = intent.getStringExtra("orderId");
         mSum = intent.getDoubleExtra("sum", 0);
@@ -178,8 +185,9 @@ public class ChoosePayActivity extends BaseActivity {
      * 起调支付宝支付接口前通过服务器获取订单签名，在成功返回后调用支付宝支付
      */
     private void getAliPaySign() {
-        String time = "t";
-        String sign = "sign";
+
+        String sign = MD5.getSign(ApiManager.URL_GET_ALIPAY_SIGN, mUser);
+        String time = MD5.gettimes();
         String url = ApiManager.URL_GET_ALIPAY_SIGN + "?token=" + Constants.TOKEN + "&t=" + time + "&sign=" + sign;
         OkHttpUtils
                 .post()

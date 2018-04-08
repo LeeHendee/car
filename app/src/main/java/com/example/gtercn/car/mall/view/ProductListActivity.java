@@ -391,10 +391,10 @@ public class ProductListActivity extends BaseActivity {
                 String ids = getPropertyIds();
                 String brandIds = "";
                 Log.e(TAG, "onClick: lowp is "+lowPrice+" highP is "+highPrice+" brandIds is "+brandIds +" spec ids is "+ids);
-                if (TextUtils.isEmpty(ids)) {
-                    Toast.makeText(ProductListActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (TextUtils.isEmpty(ids)) {
+//                    Toast.makeText(ProductListActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                 filterProperty(lowPrice, highPrice, brandIds, ids);
                 pw.dismiss();
             }

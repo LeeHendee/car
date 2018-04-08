@@ -17,12 +17,15 @@ import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.IListenerTwo;
 import com.example.gtercn.car.mall.adapter.AddressAdapter;
 import com.example.gtercn.car.mall.adapter.ChooseAddressAdapter;
 import com.example.gtercn.car.mall.entity.AddressEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
+import com.example.gtercn.car.utils.MD5;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -63,6 +66,10 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
 
     private String orderId;
 
+    private CarApplication mApp;
+
+    private User mUser;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +79,10 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
 
     private void initData() {
         mAddressList = new ArrayList<>();
-        String sign = "sign";
-        String time = "time";
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
+        String sign = MD5.getSign(ApiManager.URL_MANAGE_ADDRESS, mUser);
+        String time = MD5.gettimes();
         ApiManager.getAddressList(sign, time, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {

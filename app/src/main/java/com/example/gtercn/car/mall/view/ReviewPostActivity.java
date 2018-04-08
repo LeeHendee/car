@@ -19,9 +19,12 @@ import android.widget.Toast;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
 import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.GetPath;
+import com.example.gtercn.car.utils.MD5;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -78,6 +81,8 @@ public class ReviewPostActivity extends BaseActivity {
     private String orderId = "6c51b7f7c1d1485db3f6c3ee14c58da2";
 
     private String goodId = "1";
+    private CarApplication mApp;
+    private User mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -200,6 +205,8 @@ public class ReviewPostActivity extends BaseActivity {
 
     private void initView() {
         setContentView(R.layout.activity_review_post);
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
         mProductIv = (ImageView) findViewById(R.id.iv_product);
         mTags = (FlowLayout) findViewById(R.id.fl_reviews);
         mReviewEt = (EditText) findViewById(R.id.et_review_content);
@@ -251,8 +258,8 @@ public class ReviewPostActivity extends BaseActivity {
         params.put("anonymous", isOn ? "Y" : "N");//是否匿名：Y是，N否
         params.put("content", content);
 
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_POST_REVIEW, mUser);
+        String time = MD5.gettimes();
         String url = ApiManager.URL_POST_REVIEW + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
         OkHttpUtils
                 .post()

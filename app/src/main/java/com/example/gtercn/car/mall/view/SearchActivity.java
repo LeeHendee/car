@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
+import com.example.gtercn.car.mall.entity.PostAddressEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.entity.SearchPageEntity;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
@@ -157,7 +158,7 @@ public class SearchActivity extends BaseActivity {
                         Log.e(TAG, "clearHistory: response is " + response);
                         if (response != null) {
                             Gson gson = new Gson();
-                            ResultEntity entity = gson.fromJson(response, ResultEntity.class);
+                            PostAddressEntity entity = gson.fromJson(response, PostAddressEntity.class);
                             if (entity != null && entity.getErr_code().equals("0")) {
                                 Toast.makeText(SearchActivity.this, entity.getMessage(), Toast.LENGTH_SHORT).show();
                             }

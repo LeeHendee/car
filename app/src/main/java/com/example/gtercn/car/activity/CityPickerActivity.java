@@ -23,6 +23,7 @@ import com.example.gtercn.car.bean.CityListBean;
 import com.example.gtercn.car.adapter.CityListAdapter;
 import com.example.gtercn.car.adapter.ResultListAdapter;
 import com.example.gtercn.car.location.CityCodeChangeImpl;
+import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.LocateState;
 import com.example.gtercn.car.widget.SideLetterBar;
 import com.example.gtercn.car.location.AppLocation;
@@ -83,6 +84,8 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         mCityAdapter.setOnCityClickListener(new CityListAdapter.OnCityClickListener() {
             @Override
             public void onCityClick(String name, String cityCode) {
+                Log.e(TAG, "onCityClick: cityCode is "+cityCode  );
+                Constants.CITY_CODE = cityCode;
                 back(name, cityCode);
             }
 
@@ -157,6 +160,7 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String cityCode = mResultAdapter.getItem(position).getCity_code();
                 String city = mResultAdapter.getItem(position).getCity_name();
+                Log.e(TAG, "onItemClick: resultlistview citycode is "+cityCode );
                 back(city, cityCode);
             }
         });

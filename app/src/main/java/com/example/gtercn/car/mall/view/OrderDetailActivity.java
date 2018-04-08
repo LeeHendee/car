@@ -16,12 +16,15 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.entity.AddressEntity;
 import com.example.gtercn.car.mall.entity.OrderDetailEntity;
 import com.example.gtercn.car.mall.entity.OrderListEntity;
 import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.GetTimeData;
+import com.example.gtercn.car.utils.MD5;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -95,6 +98,8 @@ public class OrderDetailActivity extends BaseActivity {
 
     private boolean isPayBack;
     private OrderDetailEntity mEntity;
+    private CarApplication mApp;
+    private User mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,10 +121,12 @@ public class OrderDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
         mOrderId = getIntent().getStringExtra("orderId");
         isPayBack = getIntent().getBooleanExtra("isPayBack", false);
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_ORDER_DETAIL, mUser);
+        String time = MD5.gettimes();
         OkHttpUtils
                 .get()
                 .url(ApiManager.URL_ORDER_DETAIL)
@@ -136,7 +143,7 @@ public class OrderDetailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e(TAG, "onResponse: response is " + response);
+                        Log.e(TAG, "initData: response is " + response);
                         if (response != null) {
                             Gson gson = new Gson();
                             mEntity = gson.fromJson(response, OrderDetailEntity.class);
@@ -169,8 +176,8 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void getAddress() {
         addressList = new ArrayList<>();
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_MANAGE_ADDRESS, mUser);
+        String time = MD5.gettimes();
         ApiManager.getAddressList(sign, time, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
@@ -230,12 +237,12 @@ public class OrderDetailActivity extends BaseActivity {
                     break;
                 case R.id.iv_title_left:
                     Log.e(TAG, "onClick: isPayback is" + isPayBack);
-                    if (isPayBack) {
-                        Intent intent = new Intent(OrderDetailActivity.this, OrderListActivity.class);
-                        startActivity(intent);
-                    } else {
-                        finish();
-                    }
+//                    if (isPayBack) {
+//                        Intent intent = new Intent(OrderDetailActivity.this, OrderListActivity.class);
+//                        startActivity(intent);
+//                    } else {
+                    finish();
+//                    }
             }
         }
     };
@@ -270,7 +277,6 @@ public class OrderDetailActivity extends BaseActivity {
                 return "已退货";
             case 10:
                 return "已取消";
-
         }
         return null;
     }

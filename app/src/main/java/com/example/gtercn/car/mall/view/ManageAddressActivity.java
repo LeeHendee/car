@@ -15,13 +15,17 @@ import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.interfaces.ResponseStringListener;
 import com.example.gtercn.car.mall.IListenerTwo;
 import com.example.gtercn.car.mall.adapter.AddressAdapter;
 import com.example.gtercn.car.mall.entity.AddressEntity;
+import com.example.gtercn.car.mall.entity.PostAddressEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
+import com.example.gtercn.car.utils.MD5;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -58,6 +62,8 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
     private List<AddressEntity.ResultBean> addressList;
 
     private AddressAdapter mAdapter;
+    private CarApplication mApp;
+    private User mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,8 +75,10 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
 
     private void initData() {
         addressList = new ArrayList<>();
-        String sign = "sign";
-        String time = "time";
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
+        String sign = MD5.getSign(ApiManager.URL_MANAGE_ADDRESS, mUser);
+        String time = MD5.gettimes();
         ApiManager.getAddressList(sign, time, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
@@ -169,8 +177,8 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
     }
 
     private void doDel(int pos) {
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_DEL_ADDRESS , mUser);
+        String time = MD5.gettimes();
         String addressId = addressList.get(pos).getId();
         Map<String, String> params = new HashMap<>();
         params.put("address_id", addressId);
@@ -199,8 +207,8 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
     }
 
     private void setDefault(int pos) {
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_SET_DEFAULT_ADDRESS , mUser);
+        String time = MD5.gettimes();
         String addressId = addressList.get(pos).getId();
         Map<String, String> params = new HashMap<>();
         params.put("address_id", addressId);
@@ -212,15 +220,13 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
                 if (response != null) {
                     Log.e(TAG, "onSuccessResponse: " + response);
                     Gson g = new Gson();
-                    ResultEntity entity = g.fromJson(response, ResultEntity.class);
+                    PostAddressEntity entity = g.fromJson(response, PostAddressEntity.class);
                     if (entity != null & entity.getErr_code().equals("0")) {
                         Toast.makeText(ManageAddressActivity.this, entity.getMessage(), Toast.LENGTH_SHORT).show();
                         initData();
                     }
-
                 }
             }
-
             @Override
             public void onErrorResponse(VolleyError error, int type) {
                 mLoadingRl.setVisibility(View.GONE);

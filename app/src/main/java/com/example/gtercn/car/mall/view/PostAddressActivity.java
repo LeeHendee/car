@@ -18,10 +18,14 @@ import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.interfaces.ResponseJSONObjectListener;
 import com.example.gtercn.car.interfaces.ResponseStringListener;
 import com.example.gtercn.car.mall.entity.AddressEntity;
+import com.example.gtercn.car.mall.entity.PostAddressEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
+import com.example.gtercn.car.utils.MD5;
 import com.google.gson.Gson;
 import com.lljjcoder.citypickerview.widget.CityPicker;
 
@@ -82,6 +86,8 @@ public class PostAddressActivity extends BaseActivity {
     private AddressEntity.ResultBean addressBean;
 
     private boolean isEditor;
+    private CarApplication mApp;
+    private User mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +99,7 @@ public class PostAddressActivity extends BaseActivity {
     private void initData() {
         mLoadingRl.setVisibility(View.GONE);
         Intent intent = getIntent();
+        mApp = (CarApplication) getApplication();
         addressBean = (AddressEntity.ResultBean) intent.getSerializableExtra("address_entity");
         if (addressBean != null) {
             setUI();
@@ -123,8 +130,9 @@ public class PostAddressActivity extends BaseActivity {
         });
     }
 
-    private void updateInfo(String sign, String time, JSONObject params) {
+    private void updateInfo(String time, JSONObject params) {
         mLoadingRl.setVisibility(View.VISIBLE);
+        String sign = MD5.getSign(ApiManager.URL_EDIT_ADDRESS, mUser);
         ApiManager.editAddress(sign, time, params, new ResponseJSONObjectListener() {
             @Override
             public void onSuccessResponse(JSONObject response, int type) {
@@ -132,7 +140,7 @@ public class PostAddressActivity extends BaseActivity {
                 if (response != null) {
                     Log.e(TAG, "onSuccessResponse: " + response.toString());
                     Gson g = new Gson();
-                    ResultEntity entity = g.fromJson(response.toString(), ResultEntity.class);
+                    PostAddressEntity entity = g.fromJson(response.toString(), PostAddressEntity.class);
                     if (entity != null && entity.getErr_code().equals("0")) {
                         Toast.makeText(PostAddressActivity.this, entity.getMessage(), Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
@@ -148,8 +156,9 @@ public class PostAddressActivity extends BaseActivity {
         }, 2, TAG);
     }
 
-    private void submitNewAd(String sign, String time, JSONObject params) {
+    private void submitNewAd( String time, JSONObject params) {
         mLoadingRl.setVisibility(View.VISIBLE);
+        String sign = MD5.getSign(ApiManager.URL_SUBMIT_NEW_AD, mUser);
         ApiManager.submitNewAd(sign, time, params, new ResponseJSONObjectListener() {
             @Override
             public void onSuccessResponse(JSONObject response, int type) {
@@ -157,7 +166,7 @@ public class PostAddressActivity extends BaseActivity {
                 if (response != null) {
                     Log.e(TAG, "onSuccessResponse: " + response.toString());
                     Gson g = new Gson();
-                    ResultEntity entity = g.fromJson(response.toString(), ResultEntity.class);
+                    PostAddressEntity entity = g.fromJson(response.toString(), PostAddressEntity.class);
                     if (entity != null && entity.getErr_code().equals("0")) {
                         Toast.makeText(PostAddressActivity.this, entity.getMessage(), Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
@@ -175,8 +184,8 @@ public class PostAddressActivity extends BaseActivity {
     }
 
     private void checkInfo() {
-        String time = "1";
-        String sign = "sign";
+        mUser = mApp.getUser();
+        String time = MD5.gettimes();
         String name = mNameEt.getText().toString().trim();
         String tel = mTelEt.getText().toString().trim();
         String detailAd = mDetailAdEt.getText().toString().trim();
@@ -222,9 +231,9 @@ public class PostAddressActivity extends BaseActivity {
             e.printStackTrace();
         }
         if (!isEditor) {
-            submitNewAd(sign, time, params);
+            submitNewAd(time, params);
         } else {
-            updateInfo(sign, time, params);
+            updateInfo(time, params);
         }
 
     }

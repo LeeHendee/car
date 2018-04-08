@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.mall.entity.CommitOrderResultEntity;
 import com.example.gtercn.car.mall.entity.ConfirmOrderEntity;
 import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
@@ -23,6 +25,7 @@ import com.example.gtercn.car.mall.entity.DefaultEntity;
 import com.example.gtercn.car.mall.entity.PreOrderEntity;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
 import com.example.gtercn.car.utils.Constants;
+import com.example.gtercn.car.utils.MD5;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -109,6 +112,8 @@ public class OrderConfirmActivity extends BaseActivity {
     private List<ConfirmOrderEntity.ResultBean.GoodsListBean> list;
 
     private String mAddressId;
+    private CarApplication mApp;
+    private User mUser;
 
     private boolean isNeedInvoice = false;
 
@@ -123,9 +128,12 @@ public class OrderConfirmActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
+        Log.e(TAG, "initData: token is "+Constants.TOKEN );
         params = (CreatePreOrderEntity) intent.getSerializableExtra("params");
-        String sign = "sign";
-        String time = "time";
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
+        String sign = MD5.getSign(ApiManager.URL_CREATE_PRE_ORDER, mUser);
+        String time = MD5.gettimes();
         String url = ApiManager.URL_CREATE_PRE_ORDER + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
         OkHttpUtils
                 .postString()
@@ -144,9 +152,9 @@ public class OrderConfirmActivity extends BaseActivity {
                     public void onResponse(String response, int id) {
                         mLoadingRl.setVisibility(View.GONE);
                         if (response != null) {
-                            Log.e(TAG, "onResponse: response is " + response);
+                            Log.e(TAG, "initData: response is " + response);
                             mEntity = new Gson().fromJson(response, ConfirmOrderEntity.class);
-                            if (mEntity != null) {
+                            if (mEntity != null&&mEntity.getResult()!=null) {
                                 list = mEntity.getResult().getGoods_list();
                                 setUi();
                                 setAddressUi();
@@ -255,7 +263,6 @@ public class OrderConfirmActivity extends BaseActivity {
             bean.setSpec_item_ids(list.get(i).getSpec_item_ids());
             goodsList.add(bean);
         }
-
         entity.setGoods_attr_list(goodsList);
         //总价格：
         entity.setTotal_price(mEntity.getResult().getTotal_price() + "");
@@ -273,8 +280,9 @@ public class OrderConfirmActivity extends BaseActivity {
         entity.setExpert_id("1");
         entity.setInvoice_type(isPersonalInvoice ? "E" : "P");
         entity.setInvoice_content(mContentEt.getText().toString().trim());
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_PRE_ORDER, mUser);
+        String time = MD5.gettimes();
+
         Log.e(TAG, "initData: entity is " + entity.toString());
         String url = ApiManager.URL_PRE_ORDER + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
         OkHttpUtils

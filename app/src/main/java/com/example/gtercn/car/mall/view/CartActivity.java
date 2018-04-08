@@ -18,6 +18,8 @@ import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.interfaces.ResponseJSONObjectListener;
 import com.example.gtercn.car.interfaces.ResponseStringListener;
@@ -28,6 +30,7 @@ import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
+import com.example.gtercn.car.utils.MD5;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -80,6 +83,8 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
     private boolean isDel;
 
     private RelativeLayout mLoadingRl;
+    private CarApplication mApp;
+    private User mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,9 +95,12 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
     }
 
     private void initData() {
+        Log.e(TAG, "initData: token is "+Constants.TOKEN );
         cartList = new ArrayList<>();
-        String sign = "1";
-        String time = "time";
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
+        String sign = MD5.getSign(ApiManager.URL_CART_INFO, mUser);
+        String time = MD5.gettimes();
         ApiManager.getCartInfo(Constants.TOKEN, sign, time, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
@@ -173,8 +181,8 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
     };
 
     private void delCart() {
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_DEL_PRODUCT, mUser);
+        String time = MD5.gettimes();
         String delIds = getDelIds();
         Map<String, String> params = new HashMap<>();
         params.put("cart_ids", delIds);
@@ -346,8 +354,8 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
     }
 
     private void changeNumberToAPI(String cartId, String count) {
-        String sign = "1";
-        String time = "1";
+        String sign = MD5.getSign(ApiManager.URL_CHANGE_COUNT, mUser);
+        String time = MD5.gettimes();
         Map<String, String> params = new HashMap<>();
         params.put("cart_id", cartId);
         params.put("number", count);

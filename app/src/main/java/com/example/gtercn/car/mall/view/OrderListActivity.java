@@ -14,12 +14,15 @@ import android.widget.Toast;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.mall.IListenerTwo;
 import com.example.gtercn.car.mall.adapter.OrderListAdapter;
 import com.example.gtercn.car.mall.entity.OrderListEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
+import com.example.gtercn.car.utils.MD5;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -90,6 +93,8 @@ public class OrderListActivity extends BaseActivity {
     private List<OrderListEntity.ResultBean> orderList;
 
     private String mStatus = "0";
+    private CarApplication mApp;
+    private User mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,8 +115,10 @@ public class OrderListActivity extends BaseActivity {
     private void initData(String status) {
         mLoadingRl.setVisibility(View.VISIBLE);
         orderList = new ArrayList<>();
-        String sign = "sign";
-        String time = "time";
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
+        String sign = MD5.getSign(ApiManager.URL_ORDER_LIST, mUser);
+        String time = MD5.gettimes();
         String url = ApiManager.URL_ORDER_LIST;
         OkHttpUtils
                 .get()
@@ -168,8 +175,8 @@ public class OrderListActivity extends BaseActivity {
     }
 
     private void delOrder(OrderListEntity.ResultBean entity) {
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_ORDER_DEL, mUser);
+        String time = MD5.gettimes();
         String url = ApiManager.URL_ORDER_DEL + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
         Log.e(TAG, "delOrder: url is " + url);
         OkHttpUtils
@@ -278,8 +285,8 @@ public class OrderListActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String sign = "sign";
-        String time = "time";
+        String sign = MD5.getSign(ApiManager.URL_ORDER_CANCEL, mUser);
+        String time = MD5.gettimes();
         String url = ApiManager.URL_ORDER_CANCEL + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
         Log.e(TAG, "cancelOrder: url is " + url);
         OkHttpUtils

@@ -34,6 +34,7 @@ public class AutoLoginTask implements Runnable, ResponseJSONObjectListener {
     public void run() {
         try {
             String token = SharedPreferenceHelper.getValue("token");
+            Constants.TOKEN = token;
             if(TextUtils.isEmpty(token)){
                 return;
             }else {
@@ -50,11 +51,8 @@ public class AutoLoginTask implements Runnable, ResponseJSONObjectListener {
     private void  clearPersonalData(){
         mApplication.resetUser();
         boolean isFirst = SharedPreferenceHelper.getBoolean(Constants.APP_LAUNCH_FLAG);
-
         SharedPreferenceHelper.clearAll(mApplication.getApplicationContext());
-
         SharedPreferenceHelper.setBoolean(Constants.APP_LAUNCH_FLAG, isFirst);
-
     }
 
     @Override
@@ -78,6 +76,7 @@ public class AutoLoginTask implements Runnable, ResponseJSONObjectListener {
                                 if (mUser != null) {
                                     mApplication.setUser(mUser);
                                     saveToken();
+                                    Constants.TOKEN = mUser.getResult().getToken();
                                 }
                             } else {
                                 clearPersonalData();

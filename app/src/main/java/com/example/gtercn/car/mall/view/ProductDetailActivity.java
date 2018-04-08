@@ -27,10 +27,13 @@ import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
+import com.example.gtercn.car.base.CarApplication;
+import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.ProductDetailPagerAdapter;
 import com.example.gtercn.car.mall.adapter.ReviewsAdapter;
 import com.example.gtercn.car.mall.entity.CreatePreOrderEntity;
+import com.example.gtercn.car.mall.entity.PostAddressEntity;
 import com.example.gtercn.car.mall.entity.ProductDetailEntity;
 import com.example.gtercn.car.mall.entity.PropertyListEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
@@ -38,6 +41,7 @@ import com.example.gtercn.car.mall.entity.ReviewsEntity;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
 import com.example.gtercn.car.mall.view.custom_view.RecyItemSpace;
 import com.example.gtercn.car.utils.Constants;
+import com.example.gtercn.car.utils.MD5;
 import com.example.gtercn.car.utils.ShareUtil;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -152,6 +156,8 @@ public class ProductDetailActivity extends BaseActivity {
     private TextView picReviewTv;
     private TextView picNumberTv;
     private TextView picLineTv;
+    private CarApplication mApp;
+    private User mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -438,7 +444,9 @@ public class ProductDetailActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String url = ApiManager.URL_ADD_CART + "?token=" + Constants.TOKEN + "&sign=1&time=1";
+        String sign = MD5.getSign(ApiManager.URL_ADD_CART, mUser);
+        String time = MD5.gettimes();
+        String url = ApiManager.URL_ADD_CART + "?token=" + Constants.TOKEN + "&sign="+sign+"&time="+time;
         OkHttpUtils
                 .postString()
                 .url(url)
@@ -455,7 +463,7 @@ public class ProductDetailActivity extends BaseActivity {
                     public void onResponse(String response, int id) {
                         if (response != null) {
                             Log.e(TAG, "response: response is " + response);
-                            ResultEntity entity = new Gson().fromJson(response, ResultEntity.class);
+                            PostAddressEntity entity = new Gson().fromJson(response, PostAddressEntity.class);
                             if (entity != null && entity.getErr_code().equals("0")) {
                                 Toast.makeText(ProductDetailActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                             }
@@ -494,6 +502,9 @@ public class ProductDetailActivity extends BaseActivity {
     }
 
     private void initData() {
+        mApp = (CarApplication) getApplication();
+        mUser = mApp.getUser();
+        Log.e(TAG, "initData: token is "+Constants.TOKEN );
         Intent intent = getIntent();
         String cityCode = intent.getStringExtra("cityCode");
         String goodId = intent.getStringExtra("goodId");
@@ -503,7 +514,7 @@ public class ProductDetailActivity extends BaseActivity {
             @Override
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
-                Log.e(TAG, "onSuccessResponse: response is " + response);
+                Log.e(TAG, "initData: response is " + response);
                 if (response != null) {
                     Gson gson = new Gson();
                     ProductDetailEntity entity = gson.fromJson(response, ProductDetailEntity.class);

@@ -18,11 +18,13 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.android.volley.VolleyError;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bumptech.glide.Glide;
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
@@ -40,6 +42,7 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +87,8 @@ public class StoreFragment extends BaseFragment {
 
     private RelativeLayout mLoadingRl;
 
+    private List<Integer> piclist;
+
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -110,7 +115,12 @@ public class StoreFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_store_layout, container, false);
-        Log.e(TAG, "onCreateView: ------------->>");
+        piclist = new ArrayList<>();
+        piclist.add(R.drawable.banner1);
+        piclist.add(R.drawable.banner2);
+        piclist.add(R.drawable.banner3);
+        piclist.add(R.drawable.banner4);
+        Log.e(TAG, "onCreateView: token is " + Constants.TOKEN);
         return mView;
     }
 
@@ -118,13 +128,11 @@ public class StoreFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initListener();
-        Log.e(TAG, "onViewCreated: ------------->>");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.e(TAG, "onStart: ------------->>");
     }
 
     @Override
@@ -177,22 +185,21 @@ public class StoreFragment extends BaseFragment {
         @Override
         public View createView(Context context) {
             imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             return imageView;
         }
 
         @Override
         public void UpdateUI(Context context, int position, BannerEntity.ResultBean data) {
             String url = mBannerList.get(position).getPicture_path();
-            Picasso.with(context).load(url).into(imageView);
+//            Picasso.with(context).load(url).into(imageView);
+            Glide.with(context).load(url).into(imageView);
         }
     }
-
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.e(TAG, "onStop: ------------->>");
         isContinue = false;
         mThread = null;
     }
@@ -219,7 +226,7 @@ public class StoreFragment extends BaseFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.iv_home_cart:
-                    Intent intent = new Intent(getActivity(),CartActivity.class);
+                    Intent intent = new Intent(getActivity(), CartActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.iv_title_right:
@@ -248,7 +255,7 @@ public class StoreFragment extends BaseFragment {
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
                 if (response != null) {
-                    Log.e(TAG, "response is " + response);
+                    Log.e(TAG, "initSecKill is " + response);
                     Gson gson = new Gson();
                     SecKillEntity secEntity = gson.fromJson(response, SecKillEntity.class);
                     if (secEntity != null) {
@@ -284,7 +291,7 @@ public class StoreFragment extends BaseFragment {
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
                 if (response != null) {
-                    Log.e(TAG, "response is " + response);
+                    Log.e(TAG, "initBanner is " + response);
                     Gson gson = new Gson();
                     BannerEntity bannerEntity = gson.fromJson(response, BannerEntity.class);
                     if (bannerEntity != null) {
@@ -324,7 +331,7 @@ public class StoreFragment extends BaseFragment {
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
                 if (response != null) {
-                    Log.e(TAG, "response is " + response);
+                    Log.e(TAG, "initClassify is " + response);
                     Gson gson = new Gson();
                     ClassifyEntity classifyEntity = gson.fromJson(response, ClassifyEntity.class);
                     if (classifyEntity != null) {

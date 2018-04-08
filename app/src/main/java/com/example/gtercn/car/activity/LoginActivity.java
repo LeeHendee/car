@@ -24,6 +24,7 @@ import com.example.gtercn.car.base.CarApplication;
 import com.example.gtercn.car.bean.User;
 import com.example.gtercn.car.interfaces.ResponseJSONObjectListener;
 import com.example.gtercn.car.net.THttpsOpenHelper;
+import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.SharedPreferenceHelper;
 import com.example.gtercn.car.utils.TLog;
 import com.example.gtercn.car.utils.TRegularExpression;
@@ -85,7 +86,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         mForgetPWD = (TextView) findViewById(R.id.forget_pwd_tv);
         mRegisterTv = (TextView) findViewById(R.id.register_tv);
         mPhoneLayout = (TextInputLayout) findViewById(R.id.phone_input);
-
 
         mLoginBtn.setOnClickListener(this);
         mForgetPWD.setOnClickListener(this);
@@ -175,6 +175,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                             TLog.i(TAG,"----->gson"+mUser.getResult());
                             if (mUser != null) {
                                 TLog.i(TAG,"----->mUser"+mUser.getResult());
+                                Constants.TOKEN = mUser.getResult().getToken();
                                 TLog.i(TAG, "----->onSucceed token = " + mUser.getResult().getToken());
                                 mApplication.setUser(mUser);
                                 finish();
@@ -199,6 +200,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         String token = mUser.getResult().getToken();
         if (token != null) {
             SharedPreferenceHelper.setValue("token", token);
+            SharedPreferenceHelper.getValue("token");
         }
     }
 
