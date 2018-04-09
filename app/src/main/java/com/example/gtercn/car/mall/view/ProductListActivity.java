@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -389,6 +390,7 @@ public class ProductListActivity extends BaseActivity {
                     lp = "0";
                 }
                 String ids = getPropertyIds();
+
                 String brandIds = "";
                 Log.e(TAG, "onClick: lowp is "+lowPrice+" highP is "+highPrice+" brandIds is "+brandIds +" spec ids is "+ids);
 //                if (TextUtils.isEmpty(ids)) {

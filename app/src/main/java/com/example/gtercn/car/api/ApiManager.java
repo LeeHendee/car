@@ -500,6 +500,11 @@ public class ApiManager {
      */
     public static final String URL_GET_SHOP_LIST = BaseUrl + "open/shop/list";
 
+    /**
+     * 确认订单
+     */
+    public static final String URL_CONFIRM_ORDER = BaseUrl + "order/confirm";
+
 //    --------------------------------------以上是电商部分---------------------------------------
     /**
      * 自驾游列表

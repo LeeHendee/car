@@ -18,12 +18,15 @@ import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.mall.IListenerTwo;
 import com.example.gtercn.car.mall.entity.OrderListEntity;
+import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.view.ChoosePayActivity;
 import com.example.gtercn.car.mall.view.OrderDetailActivity;
 import com.example.gtercn.car.mall.view.ReviewPostActivity;
 import com.example.gtercn.car.utils.Constants;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -157,6 +160,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "确认", Toast.LENGTH_SHORT).show();
+                toConfirm(entity);
             }
         });
         holder.reviewBtn.setOnClickListener(new View.OnClickListener() {
@@ -244,6 +248,26 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 holder.reviewBtn.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    private void toConfirm(OrderListEntity.ResultBean entity) {
+         OkHttpUtils.post().url(ApiManager.URL_CONFIRM_ORDER).addParams("order_id",entity.getId()).build().execute(new StringCallback() {
+             @Override
+             public void onError(Call call, Exception e, int id) {
+                 Log.e(TAG, "onError: confirm is "+e.toString() );
+             }
+
+             @Override
+             public void onResponse(String response, int id) {
+                 Log.e(TAG, "response: confirm is "+response);
+                if (response!=null){
+                    ResultEntity entity = new Gson().fromJson(response,ResultEntity.class);
+                    if (entity!=null&&"0".equals(entity.getErr_code())){
+                        Toast.makeText(context, entity.getResult(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+             }
+         });
     }
 
 
