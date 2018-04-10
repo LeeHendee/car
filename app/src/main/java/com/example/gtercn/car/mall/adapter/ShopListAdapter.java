@@ -1,6 +1,7 @@
 package com.example.gtercn.car.mall.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.adapter.ExpertTopContentAdapter;
+import com.example.gtercn.car.mall.IListener;
 import com.example.gtercn.car.mall.entity.ShopListEntity;
 
 import java.util.List;
@@ -26,6 +29,12 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.MyView
 
     private List<ShopListEntity.ResultBean> list;
 
+    private IListener listener;
+
+    public void setListener(IListener listener) {
+        this.listener = listener;
+    }
+
     public ShopListAdapter(Context context, List<ShopListEntity.ResultBean> list) {
         this.context = context;
         this.list = list;
@@ -39,7 +48,7 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         ShopListEntity.ResultBean entity = list.get(position);
         holder.shopNameTv.setText(entity.getShop_name());
         holder.addressTv.setText(entity.getDetail_address());
@@ -48,6 +57,8 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.MyView
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "选择该门店", Toast.LENGTH_SHORT).show();
+                listener.itemClickListener(position);
+
             }
         });
         holder.telLayout.setOnClickListener(new View.OnClickListener() {

@@ -112,7 +112,7 @@ public class OrderListActivity extends BaseActivity {
         mOrderRv.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void initData(String status) {
+    public void initData(String status) {
         mLoadingRl.setVisibility(View.VISIBLE);
         orderList = new ArrayList<>();
         mApp = (CarApplication) getApplication();

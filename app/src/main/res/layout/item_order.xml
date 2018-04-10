@@ -114,7 +114,8 @@
             android:background="@drawable/order_button_bg"
             android:text="查看物流"
             android:textColor="@color/text_common_color"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btn_cancel_del"

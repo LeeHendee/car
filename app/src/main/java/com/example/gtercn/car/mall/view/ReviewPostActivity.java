@@ -78,9 +78,10 @@ public class ReviewPostActivity extends BaseActivity {
 
     private String path;
 
-    private String orderId = "6c51b7f7c1d1485db3f6c3ee14c58da2";
+    //"6c51b7f7c1d1485db3f6c3ee14c58da2"
+    private String orderId;
 
-    private String goodId = "1";
+    private String goodId ;
     private CarApplication mApp;
     private User mUser;
 
@@ -171,6 +172,8 @@ public class ReviewPostActivity extends BaseActivity {
 
     private void initData() {
         mTagsTv = new ArrayList<>();
+        goodId = getIntent().getStringExtra("goodId");
+        orderId = getIntent().getStringExtra("orderId");
         String[] tags = {"质量不错，很满意！", "物超所值", "质量过关", "值得推荐", "不是很满意"};
         for (int i = 0; i < tags.length; i++) {
             final TextView tv = new TextView(this);

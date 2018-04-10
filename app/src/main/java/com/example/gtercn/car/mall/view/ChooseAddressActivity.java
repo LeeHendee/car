@@ -138,7 +138,7 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseAddressActivity.this, ShopListActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,102);
             }
         });
     }
@@ -158,8 +158,21 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            mLoadingRl.setVisibility(View.VISIBLE);
-            initData();
+            if (requestCode == 101){
+                mLoadingRl.setVisibility(View.VISIBLE);
+                initData();
+            }else if (requestCode == 102){
+                Intent backIntent = new Intent();
+                String shopId = data.getStringExtra("shopId");
+                backIntent.putExtra("name", data.getStringExtra("name"));
+                backIntent.putExtra("tel", data.getStringExtra("tel"));
+                backIntent.putExtra("address", data.getStringExtra("address"));
+                backIntent.putExtra("addressId", "");
+                backIntent.putExtra("shopId",TextUtils.isEmpty(shopId)?"":shopId);
+                backIntent.putExtra("flag","1");
+                setResult(RESULT_OK, backIntent);
+                finish();
+            }
         }
     }
 
@@ -184,6 +197,8 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
                 backIntent.putExtra("tel", bean.getPhone());
                 backIntent.putExtra("address", bean.getProvince() + bean.getCity() + bean.getDistrict() + bean.getAddress());
                 backIntent.putExtra("addressId", bean.getId());
+                backIntent.putExtra("shopId","");
+                backIntent.putExtra("flag","0");
                 setResult(RESULT_OK, backIntent);
                 finish();
                 break;

@@ -1,6 +1,5 @@
 package com.example.gtercn.car.mall.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.mall.IListenerTwo;
@@ -21,23 +19,14 @@ import com.example.gtercn.car.mall.entity.OrderListEntity;
 import com.example.gtercn.car.mall.entity.ResultEntity;
 import com.example.gtercn.car.mall.view.ChoosePayActivity;
 import com.example.gtercn.car.mall.view.OrderDetailActivity;
+import com.example.gtercn.car.mall.view.OrderListActivity;
 import com.example.gtercn.car.mall.view.ReviewPostActivity;
-import com.example.gtercn.car.utils.Constants;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.builder.PostFormBuilder;
-import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
-
 import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.Response;
 
 /**
  * Author ：LeeHang
@@ -53,13 +42,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
     public static final int DEL = 102;
 
-    private Context context;
-
     private List<OrderListEntity.ResultBean> list;
 
     private IListenerTwo cancelListener;
 
     private IListenerTwo delListener;
+
+    private OrderListActivity activity;
 
     public void setCancelListener(IListenerTwo cancelListener) {
         this.cancelListener = cancelListener;
@@ -69,14 +58,14 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         this.delListener = delListener;
     }
 
-    public OrderListAdapter(Context context, List<OrderListEntity.ResultBean> list) {
-        this.context = context;
+    public OrderListAdapter(OrderListActivity activity, List<OrderListEntity.ResultBean> list) {
+        this.activity = activity;
         this.list = list;
     }
 
     @Override
     public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_order, parent, false);
+        View view = LayoutInflater.from(activity).inflate(R.layout.item_order, parent, false);
         OrderViewHolder holder = new OrderViewHolder(view);
         return holder;
     }
@@ -89,42 +78,40 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     public void onBindViewHolder(OrderViewHolder holder, final int position) {
         final OrderListEntity.ResultBean entity = list.get(position);
         holder.countTv.setText("共" + entity.getItem_count() + "件商品 实付款: ");
-        holder.totalTv.setText(context.getResources().getString(R.string.rmb) + entity.getTotal_amount());
+        holder.totalTv.setText(activity.getResources().getString(R.string.rmb) + entity.getTotal_amount());
         List<OrderListEntity.ResultBean.OrderDetailsBean> itemList = entity.getOrder_details();
 
         for (int i = 0; i < itemList.size(); i++) {
             holder.wrapperLayout.removeAllViews();
             OrderListEntity.ResultBean.OrderDetailsBean single = itemList.get(i);
-            View view = LayoutInflater.from(context).inflate(R.layout.item_single_product, null, false);
+            View view = LayoutInflater.from(activity).inflate(R.layout.item_single_product, null, false);
             TextView title = (TextView) view.findViewById(R.id.tv_title);
             TextView price = (TextView) view.findViewById(R.id.tv_price);
             TextView count = (TextView) view.findViewById(R.id.tv_count);
             ImageView itemIv = (ImageView) view.findViewById(R.id.iv_item);
-
 //            title.setText(single.getTitle());
 //            price.setText(single.getPrice());
             count.setText(single.getNumber() + "");
             if (single.getSmall_picture_list() != null)
-                Picasso.with(context).load(single.getSmall_picture_list().get(0)).into(itemIv);
-            TextView line = new TextView(context);
+                Picasso.with(activity).load(single.getSmall_picture_list().get(0)).into(itemIv);
+            TextView line = new TextView(activity);
             line.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 3));
             line.setBackgroundColor(Color.WHITE);
-
             holder.wrapperLayout.addView(view);
             holder.wrapperLayout.addView(line);
         }
         holder.orderNumberTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, entity.getOrder_no(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, entity.getOrder_no(), Toast.LENGTH_SHORT).show();
             }
         });
         holder.itemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, OrderDetailActivity.class);
+                Intent intent = new Intent(activity, OrderDetailActivity.class);
                 intent.putExtra("orderId", entity.getId());
-                context.startActivity(intent);
+                activity.startActivity(intent);
             }
         });
 
@@ -144,32 +131,33 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         holder.toPayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent payIntent = new Intent(context, ChoosePayActivity.class);
+                Intent payIntent = new Intent(activity, ChoosePayActivity.class);
                 payIntent.putExtra("orderId", entity.getId());
                 payIntent.putExtra("sum", entity.getTotal_amount());
-                context.startActivity(payIntent);
+                activity.startActivity(payIntent);
             }
         });
         holder.checkDeliveryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "查看物流", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "查看物流", Toast.LENGTH_SHORT).show();
             }
         });
         holder.confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "确认", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "确认", Toast.LENGTH_SHORT).show();
                 toConfirm(entity);
             }
         });
         holder.reviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "评价", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, ReviewPostActivity.class);
+                // TODO: 2018-04-10
+                Toast.makeText(activity, "评价", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(activity, ReviewPostActivity.class);
                 intent.putExtra("orderId",entity.getId());
-//                intent.putExtra("goodsId",entity.get)
+//                intent.putExtra("goodId",entity.get)
             }
         });
 
@@ -190,7 +178,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 //待收货；
                 holder.cancelBtn.setVisibility(View.GONE);
                 holder.toPayBtn.setVisibility(View.GONE);
-                holder.checkDeliveryBtn.setVisibility(View.VISIBLE);
+//                holder.checkDeliveryBtn.setVisibility(View.VISIBLE);
                 holder.confirmBtn.setVisibility(View.VISIBLE);
                 holder.reviewBtn.setVisibility(View.GONE);
                 break;
@@ -207,7 +195,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 //待评价；
                 holder.cancelBtn.setVisibility(View.GONE);
                 holder.toPayBtn.setVisibility(View.GONE);
-                holder.checkDeliveryBtn.setVisibility(View.VISIBLE);
+//                holder.checkDeliveryBtn.setVisibility(View.VISIBLE);
                 holder.confirmBtn.setVisibility(View.GONE);
                 holder.reviewBtn.setVisibility(View.VISIBLE);
                 break;
@@ -255,6 +243,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
              @Override
              public void onError(Call call, Exception e, int id) {
                  Log.e(TAG, "onError: confirm is "+e.toString() );
+                 Toast.makeText(activity, "网络异常，请稍后重试", Toast.LENGTH_SHORT).show();
              }
 
              @Override
@@ -263,13 +252,13 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
                 if (response!=null){
                     ResultEntity entity = new Gson().fromJson(response,ResultEntity.class);
                     if (entity!=null&&"0".equals(entity.getErr_code())){
-                        Toast.makeText(context, entity.getResult(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, entity.getResult(), Toast.LENGTH_SHORT).show();
+                        activity.initData("0");
                     }
                 }
              }
          });
     }
-
 
     @Override
     public int getItemCount() {

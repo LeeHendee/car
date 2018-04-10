@@ -1,7 +1,9 @@
 package com.example.gtercn.car.mall.view;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.gtercn.car.R;
 import com.example.gtercn.car.api.ApiManager;
+import com.example.gtercn.car.mall.IListener;
 import com.example.gtercn.car.mall.adapter.ShopListAdapter;
 import com.example.gtercn.car.mall.entity.ShopListEntity;
 import com.example.gtercn.car.utils.Constants;
@@ -65,13 +68,45 @@ public class ShopListActivity extends BaseActivity {
         initRightTvBar("服务站列表", null, null);
         mShopRv.setLayoutManager(new LinearLayoutManager(this));
         mShopRv.addItemDecoration(new RecyclerViewDivider(this, LinearLayoutManager.VERTICAL));
-
     }
 
     @Override
     protected void initData() {
         super.initData();
         getShopList();
+
+    }
+
+    private void itemListener() {
+        mAdapter.setListener(new IListener() {
+            @Override
+            public void itemClickListener(int pos) {
+                ShopListEntity.ResultBean bean = shopList.get(pos);
+                String tel = getTel(bean);
+                Intent intent = new Intent();
+                intent.putExtra("name", bean.getShop_name());
+                intent.putExtra("tel", tel);
+                intent.putExtra("address", bean.getDetail_address());
+                intent.putExtra("shopId", bean.getId());
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+    }
+
+    private String getTel(ShopListEntity.ResultBean bean) {
+        String telLong = bean.getTel_number_list();
+        String tel = null;
+        if (!TextUtils.isEmpty(telLong)) {
+            if (telLong.contains(",")){
+                int index = telLong.indexOf(",");
+                if (index > 0)
+                    tel = telLong.substring(0, index);
+            }else {
+                return telLong;
+            }
+        }
+        return tel;
     }
 
     private void getShopList() {
@@ -110,6 +145,7 @@ public class ShopListActivity extends BaseActivity {
                                 if (shopList != null && shopList.size() > 0) {
                                     mAdapter = new ShopListAdapter(ShopListActivity.this, shopList);
                                     mShopRv.setAdapter(mAdapter);
+                                    itemListener();
                                 } else {
                                     //空数据页面
                                 }

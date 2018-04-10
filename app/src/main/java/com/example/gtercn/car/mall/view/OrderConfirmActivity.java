@@ -3,6 +3,7 @@ package com.example.gtercn.car.mall.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,12 +113,18 @@ public class OrderConfirmActivity extends BaseActivity {
     private List<ConfirmOrderEntity.ResultBean.GoodsListBean> list;
 
     private String mAddressId;
+
     private CarApplication mApp;
+
     private User mUser;
 
     private boolean isNeedInvoice = false;
 
     private boolean isPersonalInvoice = true;
+
+    private String mShopId;
+
+    private String mFlag;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -247,6 +254,11 @@ public class OrderConfirmActivity extends BaseActivity {
                 mTelTv.setText(data.getStringExtra("tel"));
                 mAddressTv.setText(data.getStringExtra("address"));
                 mAddressId = data.getStringExtra("addressId");
+                mFlag = data.getStringExtra("flag");
+                mShopId = data.getStringExtra("shopId");
+                Log.e(TAG,"shopId is "+mShopId);
+                Log.e(TAG,"addressId is "+mAddressId);
+                Log.e(TAG,"flag is "+mFlag);
             }
         }
     }
@@ -267,6 +279,8 @@ public class OrderConfirmActivity extends BaseActivity {
         //总价格：
         entity.setTotal_price(mEntity.getResult().getTotal_price() + "");
         entity.setAddress_id(mAddressId);
+        entity.setFlag(TextUtils.isEmpty(mFlag)?"0":mFlag);
+        entity.setShop_id(TextUtils.isEmpty(mShopId)?"":mShopId);
         entity.setCustomer_mark("无备注信息");
         String invoiceTitle = null;
         if (isPersonalInvoice) {

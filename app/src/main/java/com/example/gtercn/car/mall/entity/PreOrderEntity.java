@@ -31,7 +31,18 @@ public class PreOrderEntity {
     private String invoice_type;
     private String invoice_title;
     private String invoice_content;
+
+    private String shop_id;
+    private String flag;
     private List<GoodsAttrListBean> goods_attr_list;
+
+    public void setShop_id(String shop_id) {
+        this.shop_id = shop_id;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
 
     @Override
     public String toString() {
@@ -45,6 +56,8 @@ public class PreOrderEntity {
                 ", invoice_type='" + invoice_type + '\'' +
                 ", invoice_title='" + invoice_title + '\'' +
                 ", invoice_content='" + invoice_content + '\'' +
+                ", shop_id='" + shop_id + '\'' +
+                ", flag='" + flag + '\'' +
                 ", goods_attr_list=" + goods_attr_list +
                 '}';
     }
