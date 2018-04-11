@@ -63,6 +63,7 @@ import okhttp3.MediaType;
  * Author ：LeeHang
  * CreateTime ：2017/12/29.
  * Used to : 产品展示页
+ *
  */
 public class ProductDetailActivity extends BaseActivity {
 
@@ -198,7 +199,6 @@ public class ProductDetailActivity extends BaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
@@ -506,7 +506,7 @@ public class ProductDetailActivity extends BaseActivity {
         mUser = mApp.getUser();
         Log.e(TAG, "initData: token is "+Constants.TOKEN );
         Intent intent = getIntent();
-        String cityCode = intent.getStringExtra("cityCode");
+        String cityCode = Constants.CITY_CODE;
         String goodId = intent.getStringExtra("goodId");
         Log.e(TAG, "initData: cityCode is " + cityCode);
         Log.e(TAG, "initData: goodId is " + goodId);
