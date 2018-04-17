@@ -145,9 +145,9 @@ public class ProductDetailEntity implements Serializable {
         private String brand_id;
         private int score;
         private String sku_code;
-        private int prime_price;
-        private int promotion_price;
-        private int cost_price;
+        private double prime_price;
+        private double promotion_price;
+        private double cost_price;
         private String product_area;
         private String goods_title;
         private String goods_synopsis;
@@ -165,7 +165,7 @@ public class ProductDetailEntity implements Serializable {
         private String city_id;
         private long update_time;
         private long create_time;
-        private int weight;
+        private double weight;
         private String category_id;
         private int comment_count;
         private int percentage;
@@ -288,15 +288,15 @@ public class ProductDetailEntity implements Serializable {
             this.sku_code = sku_code;
         }
 
-        public int getPrime_price() {
+        public double getPrime_price() {
             return prime_price;
         }
 
-        public void setPrime_price(int prime_price) {
+        public void setPrime_price(double prime_price) {
             this.prime_price = prime_price;
         }
 
-        public int getPromotion_price() {
+        public double getPromotion_price() {
             return promotion_price;
         }
 
@@ -304,11 +304,11 @@ public class ProductDetailEntity implements Serializable {
             this.promotion_price = promotion_price;
         }
 
-        public int getCost_price() {
+        public double getCost_price() {
             return cost_price;
         }
 
-        public void setCost_price(int cost_price) {
+        public void setCost_price(double cost_price) {
             this.cost_price = cost_price;
         }
 
@@ -448,11 +448,11 @@ public class ProductDetailEntity implements Serializable {
             this.create_time = create_time;
         }
 
-        public int getWeight() {
+        public double getWeight() {
             return weight;
         }
 
-        public void setWeight(int weight) {
+        public void setWeight(double weight) {
             this.weight = weight;
         }
 
