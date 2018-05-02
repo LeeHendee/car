@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.activity.LoginActivity;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.base.CarApplication;
@@ -232,19 +233,38 @@ public class ProductDetailActivity extends BaseActivity {
                     reviewsLl.setVisibility(View.VISIBLE);
                     break;
                 case R.id.tv_buy:
-                    toBuyNow();
+                    //先判断是否为登录用户，否则跳转到登录页面
+                    if (isLogin()){
+                        toBuyNow();
+                    }else {
+                        Toast.makeText(ProductDetailActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ProductDetailActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
                     break;
                 case R.id.ll_select_property:
 //                    setPropertyUi();
                     break;
                 case R.id.tv_add_cart:
-                    //将此商品加入购物车
-                    addToCart();
+                    if (isLogin()){
+                        //将此商品加入购物车
+                        addToCart();
+                    }else {
+                        Toast.makeText(ProductDetailActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ProductDetailActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
                     break;
                 case R.id.iv_cart:
-                    //跳转到购物车
-                    Intent goToCart = new Intent(ProductDetailActivity.this, CartActivity.class);
-                    startActivity(goToCart);
+                    if (isLogin()){
+                        //跳转到购物车
+                        Intent goToCart = new Intent(ProductDetailActivity.this, CartActivity.class);
+                        startActivity(goToCart);
+                    }else {
+                        Toast.makeText(ProductDetailActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ProductDetailActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
                     break;
                 case R.id.ll_all:
                     mLoadingRl.setVisibility(View.VISIBLE);
@@ -490,6 +510,7 @@ public class ProductDetailActivity extends BaseActivity {
             } else if (mTitleDetailTv.getId() == selectId) {
                 mTitleIndexTwoTv.setVisibility(View.VISIBLE);
                 mTitleIndexOneTv.setVisibility(View.GONE);
+
                 mTitleIndexThreeTv.setVisibility(View.GONE);
                 mTitleIndexTwoTv.setBackgroundColor(getResources().getColor(R.color.orange_txt));
             } else {
@@ -557,7 +578,12 @@ public class ProductDetailActivity extends BaseActivity {
         mSoldCountTv.setText("已售：" + mEntity.getSold_number() + "");
         mIndexCurTv.setText(curPosition + "");
         mIndexTotalTv.setText("5");
-        displayArrTv.setText(mEntity.getSpec_item_content());
+        String property = mEntity.getSpec_item_content();
+        if (TextUtils.isEmpty(property)){
+            mSelectPropertyLayout.setVisibility(View.GONE);
+        }else {
+            displayArrTv.setText(mEntity.getSpec_item_content());
+        }
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             list.add(mEntity.getBig_picture() + "");
@@ -571,7 +597,6 @@ public class ProductDetailActivity extends BaseActivity {
         mView = LayoutInflater.from(this).inflate(R.layout.activity_product_detail, null);
         setContentView(mView);
         mImagePager = (ViewPager) findViewById(R.id.vp_product_detail);
-        mDescriptionTv = (TextView) findViewById(R.id.tv_title);
         mSalePriceTv = (TextView) findViewById(R.id.tv_sale_price);
         mGoodReviewsRateTv = (TextView) findViewById(R.id.tv_good_reviews_rate);
         mSoldCountTv = (TextView) findViewById(R.id.tv_sold_count);

@@ -197,10 +197,14 @@ public class OrderConfirmActivity extends BaseActivity {
     }
 
     private void setAddressUi() {
+        mAddressId = mEntity.getResult().getAddres_id();
+        if (TextUtils.isEmpty(mAddressId)){
+            Toast.makeText(OrderConfirmActivity.this, "请先设置默认的收获地址", Toast.LENGTH_SHORT).show();
+            return;
+        }
         mNameTv.setText(mEntity.getResult().getName());
         mTelTv.setText(mEntity.getResult().getPhone());
         mAddressTv.setText(mEntity.getResult().getAddress());
-        mAddressId = mEntity.getResult().getAddres_id();
     }
 
     private void initView() {

@@ -262,7 +262,7 @@
                         android:layout_weight="5"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="请选择产品属性"
+                        android:text=""
                         android:textColor="@color/text_common_color"
                         android:textSize="13sp"/>
 

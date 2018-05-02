@@ -18,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -26,6 +27,7 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bumptech.glide.Glide;
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.activity.LoginActivity;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.interfaces.ResponseCallbackHandler;
 import com.example.gtercn.car.mall.adapter.MallBannerAdapter;
@@ -226,12 +228,24 @@ public class StoreFragment extends BaseFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.iv_home_cart:
-                    Intent intent = new Intent(getActivity(), CartActivity.class);
-                    startActivity(intent);
+                    if (isLogin()){
+                        Intent intent = new Intent(getActivity(), CartActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(intent);
+                    }
                     break;
                 case R.id.iv_title_right:
-                    Intent orderManageActivity = new Intent(getActivity(), OrderListActivity.class);
-                    startActivity(orderManageActivity);
+                    if (isLogin()){
+                        Intent orderManageActivity = new Intent(getActivity(), OrderListActivity.class);
+                        startActivity(orderManageActivity);
+                    }else {
+                        Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(intent);
+                    }
                     break;
                 case R.id.iv_home_search:
                     Intent searchIntent = new Intent(getActivity(), SearchActivity.class);
