@@ -56,7 +56,6 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.MyView
         holder.chooseTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "选择该门店", Toast.LENGTH_SHORT).show();
                 listener.itemClickListener(position);
 
             }

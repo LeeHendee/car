@@ -41,14 +41,14 @@ public class ShopListActivity extends BaseActivity {
 
     private static final String TAG = "ShopListActivity";
 
-    @BindView(R.id.tv_province)
-    TextView mProvinceTv;
-
-    @BindView(R.id.tv_city)
-    TextView mCityTv;
-
-    @BindView(R.id.tv_district)
-    TextView mDistrictTv;
+//    @BindView(R.id.tv_province)
+//    TextView mProvinceTv;
+//
+//    @BindView(R.id.tv_city)
+//    TextView mCityTv;
+//
+//    @BindView(R.id.tv_district)
+//    TextView mDistrictTv;
 
     @BindView(R.id.rv_shop)
     RecyclerView mShopRv;
@@ -155,18 +155,18 @@ public class ShopListActivity extends BaseActivity {
                 });
     }
 
-    @OnClick({R.id.tv_province, R.id.tv_city, R.id.tv_district})
-    void myClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_province:
-
-                break;
-            case R.id.tv_city:
-
-                break;
-            case R.id.tv_district:
-
-                break;
-        }
-    }
+//    @OnClick({R.id.tv_province, R.id.tv_city, R.id.tv_district})
+//    void myClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.tv_province:
+//
+//                break;
+//            case R.id.tv_city:
+//
+//                break;
+//            case R.id.tv_district:
+//
+//                break;
+//        }
+//    }
 }
