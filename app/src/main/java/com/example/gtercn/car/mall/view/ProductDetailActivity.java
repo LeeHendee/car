@@ -599,6 +599,7 @@ public class ProductDetailActivity extends BaseActivity {
         mImagePager = (ViewPager) findViewById(R.id.vp_product_detail);
         mSalePriceTv = (TextView) findViewById(R.id.tv_sale_price);
         mGoodReviewsRateTv = (TextView) findViewById(R.id.tv_good_reviews_rate);
+        mDescriptionTv = (TextView) findViewById(R.id.tv_title);
         mSoldCountTv = (TextView) findViewById(R.id.tv_sold_count);
         mTitleProductTv = (TextView) findViewById(R.id.tv_product);
         mTitleDetailTv = (TextView) findViewById(R.id.tv_detail);

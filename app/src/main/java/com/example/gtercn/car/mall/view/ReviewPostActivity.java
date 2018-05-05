@@ -16,15 +16,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.example.gtercn.car.R;
+import com.example.gtercn.car.activity.SelfDrivingIssueActivity;
 import com.example.gtercn.car.api.ApiManager;
 import com.example.gtercn.car.base.BaseActivity;
 import com.example.gtercn.car.base.CarApplication;
 import com.example.gtercn.car.bean.User;
+import com.example.gtercn.car.interfaces.ResponseStringListener;
 import com.example.gtercn.car.mall.view.custom_view.FlowLayout;
+import com.example.gtercn.car.net.THttpOpenHelper;
 import com.example.gtercn.car.utils.Constants;
 import com.example.gtercn.car.utils.GetPath;
 import com.example.gtercn.car.utils.MD5;
+import com.example.gtercn.car.utils.SharedPreferenceHelper;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -35,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * Author ：LeeHang
@@ -42,7 +48,7 @@ import okhttp3.Call;
  * Used to : 发布评论页
  */
 
-public class ReviewPostActivity extends BaseActivity {
+public class ReviewPostActivity extends BaseActivity implements ResponseStringListener {
 
     private static final String TAG = "ReviewPostActivity";
 
@@ -81,7 +87,7 @@ public class ReviewPostActivity extends BaseActivity {
     //"6c51b7f7c1d1485db3f6c3ee14c58da2"
     private String orderId;
 
-    private String goodId ;
+    private String goodId;
     private CarApplication mApp;
     private User mUser;
 
@@ -114,7 +120,6 @@ public class ReviewPostActivity extends BaseActivity {
                         mSwitchIv.setImageResource(R.drawable.switch_off);
                     }
                     break;
-
                 case R.id.iv_photo:
                     Toast.makeText(ReviewPostActivity.this, "选择图片逻辑待续。。。", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Intent.ACTION_PICK);
@@ -195,10 +200,14 @@ public class ReviewPostActivity extends BaseActivity {
                         tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.tag_bg_orange));
                         tv.setTextColor(getResources().getColor(R.color.white));
                         tv.setTag(false);
+                        mTagsTv.add(tv);
                     } else {
                         tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.tag_bg_gray));
                         tv.setTextColor(getResources().getColor(R.color.text_blue));
                         tv.setTag(true);
+                        if (mTagsTv.contains(tv)) {
+                            mTagsTv.remove(tv);
+                        }
                     }
                 }
             });
@@ -225,7 +234,6 @@ public class ReviewPostActivity extends BaseActivity {
         initRightTvBar("发表评论", "发布", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ReviewPostActivity.this, "发布", Toast.LENGTH_SHORT).show();
                 submitReview();
             }
         });
@@ -245,8 +253,9 @@ public class ReviewPostActivity extends BaseActivity {
      * 评价状态：G好评，M中评，B差评
      */
     private void submitReview() {
-        String content = null;
-        if (TextUtils.isEmpty(mReviewEt.getText())) {
+        String content = mReviewEt.getText().toString().trim() + getTagsContent();
+
+        if (TextUtils.isEmpty(content)) {
             Toast.makeText(this, "请填写评论内容！", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -260,29 +269,57 @@ public class ReviewPostActivity extends BaseActivity {
         params.put("service_logistics", mDeliveryRb.getRating() + "");
         params.put("anonymous", isOn ? "Y" : "N");//是否匿名：Y是，N否
         params.put("content", content);
-
+        params.put("pics1", "");
         String sign = MD5.getSign(ApiManager.URL_POST_REVIEW, mUser);
         String time = MD5.gettimes();
-        String url = ApiManager.URL_POST_REVIEW + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
-        OkHttpUtils
-                .post()
-                .addFile("pics1", "p1.png", new File(path))
-//                .addFile("pics2", "p2.png", new File("file2"))
-//                .addFile("pics3", "p3.png", new File("file3"))
-                .url(url)
-                .params(params)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Log.e(TAG, "onError: e is " + e.toString());
-                    }
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        Log.e(TAG, "onResponse: response is " + response);
-                    }
-                });
+        String url = ApiManager.URL_POST_REVIEW + "?token=" + Constants.TOKEN + "&t=" + time + "&sign=" + sign ;
+        Map fileMap = new HashMap();
+        fileMap.put("pics1", "");
+        fileMap.put("pics2","");
+        fileMap.put("pics3","");
+        THttpOpenHelper.newInstance().requestFormDataFilePost(url, params, fileMap, this, 1, TAG);
+
+
+//        OkHttpUtils
+//                .post()
+//                .url(url)
+////                .addFile("pics1", "p1.png", new File(""))
+////                .addFile("pics2", "p2.png", new File("file2"))
+////                .addFile("pics3", "p3.png", new File("file3"))
+//                .addHeader("content-type","multipart/form-data; charset=utf-8")
+//                .addParams("order_id", orderId)
+//                .addParams("goods_id", goodId)
+//                .addParams("status", getRate())
+//                .addParams("describe_status", mProductRb.getRating() + "")
+//                .addParams("service_attitude", mServiceRb.getRating() + "")
+//                .addParams("service_logistics", mDeliveryRb.getRating() + "")
+//                .addParams("anonymous", isOn ? "Y" : "N")
+//                .addParams("content", content)
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        Log.e(TAG, "onError: e is " + e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        Log.e(TAG, "onResponse: response is " + response);
+//                    }
+//                });
+    }
+
+    private String getTagsContent() {
+        StringBuffer sb = new StringBuffer();
+        if (mTagsTv != null && mTagsTv.size() > 0) {
+            for (int i = 0; i < mTagsTv.size(); i++) {
+                sb.append(mTagsTv.get(i).getText());
+            }
+            Log.e(TAG, "getTagsContent: tags is " + sb.toString());
+            return sb.toString();
+        }
+        return null;
     }
 
     private String getRate() {
@@ -307,5 +344,15 @@ public class ReviewPostActivity extends BaseActivity {
     @Override
     protected void onExecuteFailure(int type) {
 
+    }
+
+    @Override
+    public void onSuccessResponse(String response, int type) {
+        Log.e(TAG, "onResponse: response is " + response);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error, int type) {
+        Log.e(TAG, "onErrorResponse: error is " + error.toString());
     }
 }

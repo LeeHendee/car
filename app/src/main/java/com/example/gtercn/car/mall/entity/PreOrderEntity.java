@@ -34,7 +34,16 @@ public class PreOrderEntity {
 
     private String shop_id;
     private String flag;
+    private String city_code;
     private List<GoodsAttrListBean> goods_attr_list;
+
+    public String getCityCode() {
+        return city_code;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.city_code = cityCode;
+    }
 
     public void setShop_id(String shop_id) {
         this.shop_id = shop_id;
@@ -58,6 +67,7 @@ public class PreOrderEntity {
                 ", invoice_content='" + invoice_content + '\'' +
                 ", shop_id='" + shop_id + '\'' +
                 ", flag='" + flag + '\'' +
+                ", city_code='" + city_code + '\'' +
                 ", goods_attr_list=" + goods_attr_list +
                 '}';
     }

@@ -298,10 +298,11 @@ public class OrderConfirmActivity extends BaseActivity {
         entity.setExpert_id("1");
         entity.setInvoice_type(isPersonalInvoice ? "E" : "P");
         entity.setInvoice_content(mContentEt.getText().toString().trim());
+        entity.setCityCode(Constants.CITY_CODE);
         String sign = MD5.getSign(ApiManager.URL_PRE_ORDER, mUser);
         String time = MD5.gettimes();
 
-        Log.e(TAG, "initData: entity is " + entity.toString());
+        Log.e(TAG, "orderConfirm: entity is " + entity.toString());
         String url = ApiManager.URL_PRE_ORDER + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
         OkHttpUtils
                 .postString()

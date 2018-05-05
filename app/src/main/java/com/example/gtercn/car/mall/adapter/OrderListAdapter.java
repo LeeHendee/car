@@ -153,11 +153,11 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         holder.reviewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 2018-04-10
                 Toast.makeText(activity, "评价", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(activity, ReviewPostActivity.class);
                 intent.putExtra("orderId",entity.getId());
-//                intent.putExtra("goodId",entity.get)
+                intent.putExtra("goodId",entity.getOrder_details().get(0).getGoods_id());
+                activity.startActivity(intent);
             }
         });
 
