@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/home_window_backcoloe"
     android:orientation="vertical"
-    tools:context="com.example.gtercn.car.fragment.PromotionFragment">
+    tools:context="com.jixing.kd.fragment.PromotionFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout

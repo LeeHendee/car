@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gtercn.car">
+    package="com.jixing.kd">
 
     <!-- base -->
 
@@ -156,7 +156,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="bMtqd0TpRniu8omI7cv33GkDhUQW8LMk" />
+            android:value="yB0slWruUoejNRATCR3H17qbaZ4Ercds" />
 
         <activity android:name=".activity.SelfDrivingTravelDetailActivity" />
         <activity android:name=".activity.SelfDrivingIssueActivity" />
@@ -227,11 +227,11 @@
 
         <provider
             android:name=".db.FourServiceContentProvider"
-            android:authorities="com.example.gtercn.car.provider.four"
+            android:authorities=".provider.four"
             android:exported="false" />
         <provider
             android:name=".db.RescueServiceContentProvider"
-            android:authorities="com.example.gtercn.car.provider.rescue"
+            android:authorities=".provider.rescue"
             android:exported="false" />
 
         <activity android:name=".activity.PeopleRollActivity" />

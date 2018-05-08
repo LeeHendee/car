@@ -32,7 +32,7 @@
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/icon_car_distance" />
 
-                <com.example.gtercn.car.mall.view.custom_view.FlowLayout
+                <com.jixing.kd.mall.view.custom_view.FlowLayout
                     android:id="@+id/fl_reviews"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

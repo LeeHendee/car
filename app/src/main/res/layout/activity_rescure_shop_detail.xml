@@ -4,7 +4,7 @@
     android:id="@+id/activity_rescure_shop_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.gtercn.car.activity.RescureShopDetailActivity">
+    tools:context="com.jixing.kd.activity.RescureShopDetailActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"/>
-            <com.example.gtercn.car.widget.CustomTopViewPager
+            <com.jixing.kd.widget.CustomTopViewPager
                 android:id="@+id/rescue_shop_vp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

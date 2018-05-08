@@ -11,7 +11,7 @@
         style="@style/LetterIndexTextViewStyle"
         android:text="@string/hot_city" />
 
-    <com.example.gtercn.car.widget.WrapHeightGridView
+    <com.jixing.kd.widget.WrapHeightGridView
         android:id="@+id/gridview_hot_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

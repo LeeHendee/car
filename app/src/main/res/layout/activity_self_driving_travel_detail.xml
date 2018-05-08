@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.gtercn.car.activity.SelfDrivingTravelDetailActivity">
+    tools:context="com.jixing.kd.activity.SelfDrivingTravelDetailActivity">
 
 
     <RelativeLayout
@@ -345,7 +345,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/gray_sub" />
 
-            <com.example.gtercn.car.widget.MyListView
+            <com.jixing.kd.widget.MyListView
                 android:id="@+id/self_driving_detail_activity_expandlistview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

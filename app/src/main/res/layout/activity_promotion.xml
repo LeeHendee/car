@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/promotion_bacolor"
         android:orientation="vertical"
-        tools:context="com.example.gtercn.car.activity.PromotionActivity">
+        tools:context="com.jixing.kd.activity.PromotionActivity">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/activity_promotion_toolbar"

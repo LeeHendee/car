@@ -60,7 +60,7 @@
         android:textColor="@color/text_note_color"
         android:textSize="12sp" />
 
-    <com.example.gtercn.car.mall.view.custom_view.FlowLayout
+    <com.jixing.kd.mall.view.custom_view.FlowLayout
         android:id="@+id/fl_hot_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -104,7 +104,7 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <com.example.gtercn.car.mall.view.custom_view.FlowLayout
+    <com.jixing.kd.mall.view.custom_view.FlowLayout
         android:id="@+id/fl_history_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

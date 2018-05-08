@@ -4,7 +4,7 @@
     android:id="@+id/activity_message"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.gtercn.car.activity.MessageActivity">
+    tools:context="com.jixing.kd.activity.MessageActivity">
     <android.support.v7.widget.Toolbar
         android:id="@+id/activity_message_toolbar"
         android:layout_width="match_parent"

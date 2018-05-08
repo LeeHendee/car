@@ -17,13 +17,14 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/icon_about_us_logo"
+            android:src="@drawable/icon_cheyizhan"
             android:scaleType="fitXY" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="顺驾天下，您身边的汽车养护专家。为车主随时随地的提供救援，达人在线接货，定时更新汽车咨询，时刻为您保驾护航！"
+            android:text="开得车驿站，专业的汽车后市场服务APP。为车主随时随地提供疑难解答、达人资讯服务、紧急救援服务、汽车商品采购服务。为您的爱车保驾护航。"
+
             android:textColor="@color/gray6"
             android:layout_marginTop="20dp"
             />
@@ -135,7 +136,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="大连盖特尔信息科技有限公司"
+            android:text="辽宁嘉行四方汽配网络信息服务有限公司"
             android:textColor="@color/gray6"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"

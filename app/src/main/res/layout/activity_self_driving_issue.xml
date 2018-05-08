@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.gtercn.car.activity.SelfDrivingIssueActivity">
+    tools:context="com.jixing.kd.activity.SelfDrivingIssueActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/activity_self_driving_evalution_toolbar"

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.gtercn.car.widget.recyclerview.SwapRecyclerView
+        <com.jixing.kd.widget.recyclerview.SwapRecyclerView
             android:id="@+id/my_favourite_recy"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

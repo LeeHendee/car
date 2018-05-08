@@ -81,7 +81,7 @@
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
                  android:visibility="gone"/>
-            <com.example.gtercn.car.widget.CustomTopViewPager
+            <com.jixing.kd.widget.CustomTopViewPager
                 android:id="@+id/repairing_detail_activity_vp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
