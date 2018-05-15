@@ -5,19 +5,20 @@ android {
     signingConfigs {
         cheyizhan {
             keyAlias 'cheyizhan'
-            keyPassword 'cheyizhan'
-//            storeFile file('C:/Users/Yan/Desktop/car/cheyizhan.jks')
-            storePassword 'cheyizhan'
+            keyPassword '123456'
+            storeFile file('D:/workspace/car/cheyizhan')
+            storePassword '123456'
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.jixing.kd"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 8
         versionName "1.9"
+        signingConfig signingConfigs.cheyizhan
     }
     sourceSets {
         main {
@@ -96,6 +97,6 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile files('libs/alipaySdk-20170922.jar')
     compile 'com.github.bumptech.glide:glide:3.7.0'
-//    compile 'com.github.vondear:RxTools:v1.7.6.8'//请替换成上方 JitPack 最新的版本号
+    //    compile 'com.github.vondear:RxTools:v1.7.6.8'//请替换成上方 JitPack 最新的版本号
     compile 'com.bigkoo:convenientbanner:2.0.5'
 }

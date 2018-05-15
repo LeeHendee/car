@@ -17,14 +17,13 @@ public class Constants {
 
     public static final String APP_LAUNCH_FLAG = "isFirstLauncher";
 
-//    --------------  以下是电商部分  ---------------
+//  ----------------  以下是电商部分  ----------------
 
-    public static String CITY_CODE = "";
+    public static String CITY_CODE = "167";
 
     public static void setCityCode(String cityCode) {
         CITY_CODE = cityCode;
     }
-
 
     public static String TOKEN = "EEEBFDEE01192DACB057C31E9AD45121C6ADE182FB48834713FBCBBAF01F3D32E05328B6B03A882C6A78C15CD9690D48ACB039E0AC987703";
 
