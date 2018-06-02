@@ -314,6 +314,7 @@ public class ApiManager {
      */
     public static final String URL_RESCUE_LIST = HTTP + "/open/service/rescue/list";
 
+
     /**
      * 城市列表
      */

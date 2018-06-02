@@ -18,6 +18,7 @@ import com.jixing.kd.db.RescueServiceContentProvider;
 import com.jixing.kd.interfaces.ResponseJSONObjectListener;
 import com.jixing.kd.loader.RescueDynamicDataReceiver;
 import com.jixing.kd.net.THttpOpenHelper;
+import com.jixing.kd.utils.Constants;
 import com.jixing.kd.utils.SharedPreferenceHelper;
 import com.google.gson.Gson;
 
@@ -68,7 +69,7 @@ public class LoadRescueListTask implements Runnable, ResponseJSONObjectListener 
             JSONObject params = new JSONObject();
             params.put("begin_number", begin);
             params.put("over_number", end);
-            params.put("city_code", SharedPreferenceHelper.getValue(ApiManager.CITY_CODE));
+            params.put("city_code", Constants.CITY_CODE);
 
             if (mUser != null) {
                 url = ApiManager.URL_RESCUE_LIST + "?token=" + mUser.getResult().getToken();
@@ -171,7 +172,7 @@ public class LoadRescueListTask implements Runnable, ResponseJSONObjectListener 
 
     private void saveRescueData(List<RescueListBean.ResultBean> list) {
         RescueListBean.ResultBean newData = list.get(0);
-        deleteTable(newData);
+//        deleteTable(newData);
         ArrayList<ContentProviderOperation> ops = new ArrayList<>();
 
         for (RescueListBean.ResultBean bean : list) {

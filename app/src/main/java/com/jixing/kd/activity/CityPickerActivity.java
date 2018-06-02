@@ -174,6 +174,7 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         if (!TextUtils.isEmpty(cityCode)) {
             for (CityListBean.ResultBean bean : mCityList) {
                 if (TextUtils.equals(bean.getCity_code(), cityCode)) {
+//                    SharedPreferenceHelper.setValue(ApiManager.CITY_CODE, bean.getCity_code());
                     SharedPreferenceHelper.setValue(ApiManager.CITY_CODE, bean.getCity_code());
                     CityCodeChangeImpl.newInstance().notifyChange();
                     break;

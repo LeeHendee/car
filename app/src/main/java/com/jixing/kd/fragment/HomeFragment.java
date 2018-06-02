@@ -57,6 +57,7 @@ import com.jixing.kd.interfaces.ResponseStringListener;
 import com.jixing.kd.location.AppLocation;
 import com.jixing.kd.location.AppLocationImpl;
 import com.jixing.kd.location.CityCodeChangeImpl;
+import com.jixing.kd.location.LocationUtil;
 import com.jixing.kd.net.THttpOpenHelper;
 import com.jixing.kd.net.THttpsOpenHelper;
 import com.jixing.kd.update.UpdateUtils;
@@ -672,7 +673,8 @@ public class HomeFragment extends BaseFragment implements
             for (CityListBean.ResultBean bean : mCityList) {
                 if (bean.getCity_name().contains(name)) {
                     isFirst = false;
-                    SharedPreferenceHelper.setValue(ApiManager.CITY_CODE, bean.getCity_code());
+//                    SharedPreferenceHelper.setValue(ApiManager.CITY_CODE, bean.getCity_code());
+                    SharedPreferenceHelper.setValue(Constants.CITY_CODE, bean.getCity_code());
                     CityCodeChangeImpl.newInstance().notifyChange();
                     break;
                 }

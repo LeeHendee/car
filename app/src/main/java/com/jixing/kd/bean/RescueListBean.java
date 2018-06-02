@@ -1,6 +1,14 @@
 package com.jixing.kd.bean;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,23 +19,72 @@ import java.util.List;
  */
 public class RescueListBean implements Serializable {
 
+
+    /**
+     * result : [{"id":"572ba3feef56498d808d4bf09cc2c713","city_code":"167","type_value":"1","head_portrait_url":"http://114.215.71.170:81/carhome/shop/fba00084793c4e7d861a1b6f152acfcd/thumbnail/1521609792639.JPG","shop_name":"东艺汽车电器","shop_score":"5","longitude":"121.60886","latitude":"38.906368","category":"[{\"key\":\"1\",\"value\":\"现场抢修\"},{\"key\":\"2\",\"value\":\"拖车\"},{\"key\":\"3\",\"value\":\"紧急加水\"},{\"key\":\"4\",\"value\":\"紧急送油\"},{\"key\":\"5\",\"value\":\"配钥匙\"}]","distance_list":["附近","1","3","5","10"],"tel_number_list":"18341850000","tel_num_list":["18341850000"],"city":"","detail_address":"辽宁省大连市沙河口区胜利路159号"},{"id":"78f66ec30ced42fb995e09b8b54a4502","city_code":"167","type_value":"1,2,3,4","head_portrait_url":"http://114.215.71.170:81/carhome/shop/8f060c58b2514abeb6f67334ac60ee0f/thumbnail/1516327679471.jpg","shop_name":"顺添汽车修理厂","shop_score":"5","longitude":"121.653249","latitude":"41.998975","category":"[{\"key\":\"1\",\"value\":\"现场抢修\"},{\"key\":\"2\",\"value\":\"拖车\"},{\"key\":\"3\",\"value\":\"紧急加水\"},{\"key\":\"4\",\"value\":\"紧急送油\"},{\"key\":\"5\",\"value\":\"配钥匙\"}]","distance_list":["附近","1","3","5","10"],"tel_number_list":"0418-3871113,13384184066","tel_num_list":["0418-3871113","13384184066"],"city":"大连市","detail_address":"海州区振兴路路北环峰钢材市场斜对过"},{"id":"34c99a7ea5894d5ea283fd5a8191fd55","city_code":"167","type_value":"1,2,3,4","head_portrait_url":"http://114.215.71.170:81/carhome/shop/cd8daa2d541f4e67826bf4affe6bd465/thumbnail/1516243036315.jpg","shop_name":"鑫南洋汽车用品销售服务中心","shop_score":"5","longitude":"121.674641","latitude":"42.038501","category":"[{\"key\":\"1\",\"value\":\"现场抢修\"},{\"key\":\"2\",\"value\":\"拖车\"},{\"key\":\"3\",\"value\":\"紧急加水\"},{\"key\":\"4\",\"value\":\"紧急送油\"},{\"key\":\"5\",\"value\":\"配钥匙\"}]","distance_list":["附近","1","3","5","10"],"tel_number_list":"13644186532","tel_num_list":["13644186532"],"city":"大连市","detail_address":"阜新市细河区富丽国际东门"}]
+     * err_code : 0
+     * err_message : OK
+     * message : 查询救援服务公司成功
+     */
+
     private String err_code;
     private String err_message;
     private String message;
-    /**
-     * id : 274390062209451fa1954619e8e7b925
-     * city_code : 210900
-     * type_value : 2,3,4
-     * head_portrait_url : http://192.168.1.71
-     * shop_name : 河口科技园
-     * shop_score : 8
-     * longitude : 121.507122
-     * latitude : 38.855172
-     * category : [{"key":"1","value":"现场抢修"},{"key":"2","value":"拖车"},{"key":"3","value":"紧急加水"},{"key":"4","value":"紧急送油"},{"key":"5","value":"配钥匙"}]
-     * distance_list : ["附近","1","3","5","10"]
-     */
-
     private List<ResultBean> result;
+
+    @Override
+    public String toString() {
+        return "RescueListBean{" +
+                "err_code='" + err_code + '\'' +
+                ", err_message='" + err_message + '\'' +
+                ", message='" + message + '\'' +
+                ", result=" + result +
+                '}';
+    }
+
+    public static RescueListBean objectFromData(String str) {
+
+        return new Gson().fromJson(str, RescueListBean.class);
+    }
+
+    public static RescueListBean objectFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+
+            return new Gson().fromJson(jsonObject.getString(str), RescueListBean.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static List<RescueListBean> arrayRescueListBeanFromData(String str) {
+
+        Type listType = new TypeToken<ArrayList<RescueListBean>>() {
+        }.getType();
+
+        return new Gson().fromJson(str, listType);
+    }
+
+    public static List<RescueListBean> arrayRescueListBeanFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+            Type listType = new TypeToken<ArrayList<RescueListBean>>() {
+            }.getType();
+
+            return new Gson().fromJson(jsonObject.getString(str), listType);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList();
+
+
+    }
 
     public String getErr_code() {
         return err_code;
@@ -62,6 +119,23 @@ public class RescueListBean implements Serializable {
     }
 
     public static class ResultBean implements Serializable {
+        /**
+         * id : 572ba3feef56498d808d4bf09cc2c713
+         * city_code : 167
+         * type_value : 1
+         * head_portrait_url : http://114.215.71.170:81/carhome/shop/fba00084793c4e7d861a1b6f152acfcd/thumbnail/1521609792639.JPG
+         * shop_name : 东艺汽车电器
+         * shop_score : 5
+         * longitude : 121.60886
+         * latitude : 38.906368
+         * category : [{"key":"1","value":"现场抢修"},{"key":"2","value":"拖车"},{"key":"3","value":"紧急加水"},{"key":"4","value":"紧急送油"},{"key":"5","value":"配钥匙"}]
+         * distance_list : ["附近","1","3","5","10"]
+         * tel_number_list : 18341850000
+         * tel_num_list : ["18341850000"]
+         * city :
+         * detail_address : 辽宁省大连市沙河口区胜利路159号
+         */
+
         private String id;
         private String city_code;
         private String type_value;
@@ -71,31 +145,13 @@ public class RescueListBean implements Serializable {
         private String longitude;
         private String latitude;
         private String category;
-        private List<String> distance_list;
+        private String tel_number_list;
         private String city;
         private String detail_address;
-        private String tel_number_list;
+        private List<String> distance_list;
+        private List<String> tel_num_list;
 
-
-        private double distance = 0;
-
-
-        public ResultBean(String id, String city_code, String type_value, String head_portrait_url, String shop_name, String shop_score, String longitude, String latitude, String city, String detail_address, String tel_number_list) {
-            this.id = id;
-            this.city_code = city_code;
-            this.type_value = type_value;
-            this.head_portrait_url = head_portrait_url;
-            this.shop_name = shop_name;
-            this.shop_score = shop_score;
-            this.longitude = longitude;
-            this.latitude = latitude;
-            this.city = city;
-            this.detail_address = detail_address;
-            this.tel_number_list = tel_number_list;
-        }
-
-        public ResultBean() {
-        }
+        private double distance;
 
         public double getDistance() {
             return distance;
@@ -103,6 +159,70 @@ public class RescueListBean implements Serializable {
 
         public void setDistance(double distance) {
             this.distance = distance;
+        }
+
+        @Override
+        public String toString() {
+            return "ResultBean{" +
+                    "id='" + id + '\'' +
+                    ", city_code='" + city_code + '\'' +
+                    ", type_value='" + type_value + '\'' +
+                    ", head_portrait_url='" + head_portrait_url + '\'' +
+                    ", shop_name='" + shop_name + '\'' +
+                    ", shop_score='" + shop_score + '\'' +
+                    ", longitude='" + longitude + '\'' +
+                    ", latitude='" + latitude + '\'' +
+                    ", category='" + category + '\'' +
+                    ", tel_number_list='" + tel_number_list + '\'' +
+                    ", city='" + city + '\'' +
+                    ", detail_address='" + detail_address + '\'' +
+                    ", distance_list=" + distance_list +
+                    ", tel_num_list=" + tel_num_list +
+                    '}';
+        }
+
+        public static ResultBean objectFromData(String str) {
+
+            return new Gson().fromJson(str, ResultBean.class);
+        }
+
+        public static ResultBean objectFromData(String str, String key) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(str);
+
+                return new Gson().fromJson(jsonObject.getString(str), ResultBean.class);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        public static List<ResultBean> arrayResultBeanFromData(String str) {
+
+            Type listType = new TypeToken<ArrayList<ResultBean>>() {
+            }.getType();
+
+            return new Gson().fromJson(str, listType);
+        }
+
+        public static List<ResultBean> arrayResultBeanFromData(String str, String key) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(str);
+                Type listType = new TypeToken<ArrayList<ResultBean>>() {
+                }.getType();
+
+                return new Gson().fromJson(jsonObject.getString(str), listType);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return new ArrayList();
+
+
         }
 
         public String getId() {
@@ -177,12 +297,12 @@ public class RescueListBean implements Serializable {
             this.category = category;
         }
 
-        public List<String> getDistance_list() {
-            return distance_list;
+        public String getTel_number_list() {
+            return tel_number_list;
         }
 
-        public void setDistance_list(List<String> distance_list) {
-            this.distance_list = distance_list;
+        public void setTel_number_list(String tel_number_list) {
+            this.tel_number_list = tel_number_list;
         }
 
         public String getCity() {
@@ -201,28 +321,20 @@ public class RescueListBean implements Serializable {
             this.detail_address = detail_address;
         }
 
-        public String getTel_number_list() {
-            return tel_number_list;
+        public List<String> getDistance_list() {
+            return distance_list;
         }
 
-        public void setTel_number_list(String tel_number_list) {
-            this.tel_number_list = tel_number_list;
+        public void setDistance_list(List<String> distance_list) {
+            this.distance_list = distance_list;
         }
 
-        @Override
-        public String toString() {
-            return "ResultBean{" +
-                    "id='" + id + '\'' +
-                    ", city_code='" + city_code + '\'' +
-                    ", type_value='" + type_value + '\'' +
-                    ", head_portrait_url='" + head_portrait_url + '\'' +
-                    ", shop_name='" + shop_name + '\'' +
-                    ", shop_score='" + shop_score + '\'' +
-                    ", longitude='" + longitude + '\'' +
-                    ", latitude='" + latitude + '\'' +
-                    ", category='" + category + '\'' +
-                    ", distance_list=" + distance_list +
-                    '}';
+        public List<String> getTel_num_list() {
+            return tel_num_list;
+        }
+
+        public void setTel_num_list(List<String> tel_num_list) {
+            this.tel_num_list = tel_num_list;
         }
     }
 }

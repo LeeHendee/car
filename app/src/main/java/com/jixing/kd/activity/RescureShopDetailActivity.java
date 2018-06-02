@@ -38,6 +38,7 @@ import com.umeng.socialize.media.UMImage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -235,7 +236,7 @@ public class RescureShopDetailActivity extends BaseActivity implements View.OnCl
 //                bean.setDistance_list(beanDetail.getDistance);
                 bean.setType_value(beanDetail.getType_value());
 
-                bundle.putSerializable("rescue_bean", bean);
+                bundle.putSerializable("rescue_bean", (Serializable) bean);
                 intent.putExtra("bdl", bundle);
                 startActivity(intent);
                 break;

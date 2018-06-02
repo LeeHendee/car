@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.jixing.kd.R;
 import com.jixing.kd.bean.FourServiceBean;
+import com.jixing.kd.bean.FourServiceEntity;
+import com.jixing.kd.bean.RescueListBean;
 import com.jixing.kd.net.THttpOpenHelper;
 import com.jixing.kd.utils.TAppUtils;
 import com.jixing.kd.widget.MyDialog;
@@ -19,6 +21,7 @@ import com.jixing.kd.widget.MyDialog;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/17.
@@ -29,7 +32,8 @@ public class CarWashDistanceAdapter extends BaseAdapter {
     private static final String TAG = "CarWashDistanceAdapter";
     private Context context;
     private MyDialog myDialog;
-    private ArrayList<FourServiceBean> arrayList;
+    //    private ArrayList<FourServiceBean> arrayList;
+    private List<FourServiceEntity.ResultBean> arrayList;
     private boolean scrollState = false;
     private float density = 1.5f;
 
@@ -37,12 +41,12 @@ public class CarWashDistanceAdapter extends BaseAdapter {
         this.scrollState = scrollState;
     }
 
-    public CarWashDistanceAdapter(Context context, ArrayList<FourServiceBean> arrayList) {
+    public CarWashDistanceAdapter(Context context, List<FourServiceEntity.ResultBean> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
     }
 
-    public void refresh(ArrayList<FourServiceBean> arrayList) {
+    public void refresh(List<FourServiceEntity.ResultBean> arrayList) {
         this.arrayList = arrayList;
         notifyDataSetChanged();
     }
@@ -83,17 +87,17 @@ public class CarWashDistanceAdapter extends BaseAdapter {
         }
         hodler.mTitleTextView.setText(arrayList.get(position).getShop_name());
         hodler.mSubTextView.setText(arrayList.get(position).getDetail_address());
-        if (arrayList.get(position).getDistance() / 1000 <= 1) {
-            hodler.mDistanceTextView.setText((new DecimalFormat("0").format(arrayList.get(position).getDistance()) + "m"));
-        } else {
-            if (arrayList.get(position).getDistance() / 1000 >= 1000) {
-                hodler.mDistanceTextView.setText("999+km");
-            } else if (arrayList.get(position).getDistance() / 1000 >= 100) {
-                hodler.mDistanceTextView.setText((new DecimalFormat("0").format(arrayList.get(position).getDistance() / 1000) + "km"));
-            } else {
-                hodler.mDistanceTextView.setText((new DecimalFormat("0.00").format(arrayList.get(position).getDistance() / 1000) + "km"));
-            }
-        }
+//        if (arrayList.get(position).getDistance() / 1000 <= 1) {
+//            hodler.mDistanceTextView.setText((new DecimalFormat("0").format(arrayList.get(position).getDistance()) + "m"));
+//        } else {
+//            if (arrayList.get(position).getDistance() / 1000 >= 1000) {
+//                hodler.mDistanceTextView.setText("999+km");
+//            } else if (arrayList.get(position).getDistance() / 1000 >= 100) {
+//                hodler.mDistanceTextView.setText((new DecimalFormat("0").format(arrayList.get(position).getDistance() / 1000) + "km"));
+//            } else {
+//                hodler.mDistanceTextView.setText((new DecimalFormat("0.00").format(arrayList.get(position).getDistance() / 1000) + "km"));
+//            }
+//        }
         if (arrayList.get(position).getScore() != null) {
             /**
              * 当值为空时，会出错
@@ -105,25 +109,25 @@ public class CarWashDistanceAdapter extends BaseAdapter {
             }
         }
 
-        final String[] sourceStrArray = arrayList.get(position).getTel_num_list().split(",");
+//        final String[] sourceStrArray = arrayList.get(position).getTel_num_list().split(",");
 
-        hodler.mTelImageview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myDialog = new MyDialog(context, R.style.MyDialog, new MyDialog.LeaveMyDialogListener() {
-                    @Override
-                    public void onClick(View view) {
-                        switch (view.getId()) {
-                            case R.id.mydialog_clear:
-                                myDialog.dismiss();
-                                break;
-
-                        }
-                    }
-                }, Arrays.asList(sourceStrArray), myDialog);
-                myDialog.show();
-            }
-        });
+//        hodler.mTelImageview.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                myDialog = new MyDialog(context, R.style.MyDialog, new MyDialog.LeaveMyDialogListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        switch (view.getId()) {
+//                            case R.id.mydialog_clear:
+//                                myDialog.dismiss();
+//                                break;
+//
+//                        }
+//                    }
+//                }, Arrays.asList(sourceStrArray), myDialog);
+//                myDialog.show();
+//            }
+//        });
 
         String url = arrayList.get(position).getShop_pic_url();
         if (url != null) {

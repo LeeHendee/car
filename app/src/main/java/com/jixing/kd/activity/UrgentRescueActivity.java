@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
+import com.google.gson.JsonObject;
 import com.jixing.kd.R;
 import com.jixing.kd.adapter.RescueRecyclerViewAdapter;
+import com.jixing.kd.api.ApiManager;
 import com.jixing.kd.base.BaseActivity;
 import com.jixing.kd.base.CarApplication;
 import com.jixing.kd.bean.RescueCategoryBean;
@@ -27,15 +30,24 @@ import com.jixing.kd.bean.RescueListBean;
 import com.jixing.kd.bean.User;
 import com.jixing.kd.loader.RescueListCursorLoader;
 import com.jixing.kd.location.AppLocation;
+import com.jixing.kd.location.LocationUtil;
+import com.jixing.kd.utils.Constants;
 import com.jixing.kd.widget.DividerItemDecoration;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * 紧急救援List
@@ -88,13 +100,25 @@ public class UrgentRescueActivity extends BaseActivity implements
 
     private User mUser;
 
+    private int start = 0;
+
+    private int count = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_urgent_rescue);
         ButterKnife.bind(this);
         initView();
-        initData();
+        showLocation();
+//        initData();
+        getData();
+    }
+
+    private void showLocation() {
+        String desc = LocationUtil.getAddressDesc(this);
+        Log.e(TAG, "showLocation: desc is " + desc);
+        mCurrentCity.setText("当前位置 ：" + desc);
     }
 
     public void initView() {
@@ -201,7 +225,8 @@ public class UrgentRescueActivity extends BaseActivity implements
                 }
                 break;
             case R.id.urgent_list_locate_iv:
-                loadCurrentLocation();
+//                loadCurrentLocation();
+                showLocation();
                 break;
         }
     }
@@ -233,7 +258,6 @@ public class UrgentRescueActivity extends BaseActivity implements
                 list.add(bean);
             }
         }
-
         return list;
     }
 
@@ -340,10 +364,55 @@ public class UrgentRescueActivity extends BaseActivity implements
 
             }
         } else {
-            mEmptyViewText.setText("没有相关救援信息");
-            mEmptyView.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
+//            mEmptyViewText.setText("没有相关救援信息");
+//            mEmptyView.setVisibility(View.VISIBLE);
+//            mRecyclerView.setVisibility(View.GONE);
         }
+    }
+
+    private void getData() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("city_code", Constants.CITY_CODE);
+            params.put("begin_number", start + "");
+            params.put("over_number", count + "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpUtils.postString()
+                .url(ApiManager.URL_RESCUE_LIST)
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
+                .content(params.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                        showToastMsg("网络异常，请稍后重试!");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "response is " + response);
+                        if (response != null) {
+                            RescueListBean entity = new Gson().fromJson(response, RescueListBean.class);
+                            if (entity != null && "0".equals(entity.getErr_code())) {
+                                mRescueList = entity.getResult();
+                                mAdapter.addData(mRescueList);
+                                String category = mRescueList.get(0).getCategory();
+                                Gson gson = new Gson();
+                                mCategoryList.addAll((List<RescueCategoryBean>) gson.fromJson(category, new TypeToken<List<RescueCategoryBean>>() {
+                                }.getType()));
+                                List<String> distanceList = mRescueList.get(0).getDistance_list();
+                                mDistanceList.addAll(distanceList);
+                            } else {
+                                mEmptyViewText.setText("没有相关救援信息");
+                                mEmptyView.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                });
     }
 
     @Override

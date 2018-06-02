@@ -41,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
         //配置默认值 ： 阜新市
         String cityCode = SharedPreferenceHelper.getValue(ApiManager.CITY_CODE);
         if (TextUtils.isEmpty(cityCode)) {
-            SharedPreferenceHelper.setValue(ApiManager.CITY_CODE, "210900");
+            SharedPreferenceHelper.setValue(ApiManager.CITY_CODE, "59");
             SharedPreferenceHelper.setValue(ApiManager.LAT, "42.027365");
             SharedPreferenceHelper.setValue(ApiManager.LNG, "121.675898");
         }

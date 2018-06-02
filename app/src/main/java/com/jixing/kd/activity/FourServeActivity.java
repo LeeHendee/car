@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -14,17 +15,34 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jixing.kd.R;
 import com.jixing.kd.adapter.CarWashDistanceAdapter;
+import com.jixing.kd.api.ApiManager;
 import com.jixing.kd.base.BaseActivity;
 import com.jixing.kd.bean.FourServiceBean;
+import com.jixing.kd.bean.FourServiceEntity;
+import com.jixing.kd.bean.RescueCategoryBean;
+import com.jixing.kd.bean.RescueListBean;
+import com.jixing.kd.db.RescueService;
 import com.jixing.kd.loader.FourServiceListCursorLoader;
 import com.jixing.kd.net.THttpOpenHelper;
+import com.jixing.kd.utils.Constants;
 import com.jixing.kd.utils.SortUtil;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.MediaType;
 
 
 /**
@@ -50,6 +68,11 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
     private ImageView mGradeArrowImageView;
     private TextView mDistanceArrowTextView;
     private TextView mGradeArrowTextView;
+
+    private int start = 0;
+    private int count = 20;
+
+    private List<FourServiceEntity.ResultBean> fourServiceList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +101,8 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
         } else if (type.equals("5100")) {
             mToolText.setText("修车商家列表");
         }
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
+        getData();
     }
 
     @Override
@@ -115,13 +139,13 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.popupwindow_grade1_textview:
                 if (arrayListAll != null) {
-                    if (arrayListAll.size() == 0) {
+                    if (fourServiceList.size() == 0) {
                         popupWindow2.dismiss();
                         view.setVisibility(View.VISIBLE);
                     } else {
                         view.setVisibility(View.GONE);
-                        arrayListAll = SortUtil.HighToLow(arrayListAll);
-                        carWashDistanceAdapter.refresh(arrayListAll);
+                        fourServiceList = SortUtil.HighToLow(fourServiceList);
+                        carWashDistanceAdapter.refresh(fourServiceList);
                         popupWindow2.dismiss();
                     }
                 } else {
@@ -129,13 +153,13 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
                 }
                 break;
             case R.id.popupwindow_grade2_textview:
-                if (arrayListAll != null) {
-                    if (arrayListAll.size() == 0) {
+                if (fourServiceList != null) {
+                    if (fourServiceList.size() == 0) {
                         popupWindow2.dismiss();
                         view.setVisibility(View.VISIBLE);
                     } else {
-                        arrayListAll = SortUtil.LowToHigh(arrayListAll);
-                        carWashDistanceAdapter.refresh(arrayListAll);
+                        fourServiceList = SortUtil.LowToHigh(fourServiceList);
+                        carWashDistanceAdapter.refresh(fourServiceList);
                         popupWindow2.dismiss();
                         view.setVisibility(View.GONE);
                     }
@@ -145,20 +169,20 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.popupwindow_distance_nearby_textview:
                 popupWindow3.dismiss();
-                if (arrayListAll != null) {
-                    if (arrayList3.size() == 0) {
-                        arrayListAll.clear();
+                if (fourServiceList != null) {
+                    if (fourServiceList.size() == 0) {
+                        fourServiceList.clear();
                         view.setVisibility(View.VISIBLE);
                     } else {
-                        arrayListAll = (ArrayList<FourServiceBean>) arrayList3.clone();
-                        if (arrayListAll.size() == 0) {
-                            view.setVisibility(View.VISIBLE);
-                            showToastMsg("没有店家");
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                        } else {
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                            view.setVisibility(View.GONE);
-                        }
+//                        fourServiceList = (List<FourServiceEntity.ResultBean>) fourServiceList.clone();
+//                        if (fourServiceList.size() == 0) {
+//                            view.setVisibility(View.VISIBLE);
+//                            showToastMsg("没有店家");
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                        } else {
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                            view.setVisibility(View.GONE);
+//                        }
                     }
 
                 } else {
@@ -167,25 +191,25 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.popupwindow_distance1_textview:
                 popupWindow3.dismiss();
-                if (arrayListAll != null) {
-                    if (arrayList3.size() == 0) {
-                        arrayListAll.clear();
+                if (fourServiceList != null) {
+                    if (fourServiceList.size() == 0) {
+                        fourServiceList.clear();
                         view.setVisibility(View.VISIBLE);
                     } else {
-                        arrayListAll = (ArrayList<FourServiceBean>) arrayList3.clone();
-                        for (int i = arrayListAll.size() - 1; i >= 0; i--) {
-                            if (arrayListAll.get(i).getDistance() > 1 * 1000) {
-                                arrayListAll.remove(i);
-                            }
-                        }
-                        if (arrayListAll.size() == 0) {
-                            view.setVisibility(View.VISIBLE);
-                            showToastMsg("1Km之内没有店家");
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                        } else {
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                            view.setVisibility(View.GONE);
-                        }
+//                        fourServiceList = (List<FourServiceEntity.ResultBean>) fourServiceList.clone();
+//                        for (int i = fourServiceList.size() - 1; i >= 0; i--) {
+//                            if (fourServiceList.get(i).getDistance() > 1 * 1000) {
+//                                fourServiceList.remove(i);
+//                            }
+//                        }
+//                        if (fourServiceList.size() == 0) {
+//                            view.setVisibility(View.VISIBLE);
+//                            showToastMsg("1Km之内没有店家");
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                        } else {
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                            view.setVisibility(View.GONE);
+//                        }
                     }
 
                 } else {
@@ -194,26 +218,26 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.popupwindow_distance3_textview:
                 popupWindow3.dismiss();
-                if (arrayListAll != null) {
-                    if (arrayList3.size() == 0) {
-                        arrayListAll.clear();
+                if (fourServiceList != null) {
+                    if (fourServiceList.size() == 0) {
+                        fourServiceList.clear();
                         view.setVisibility(View.VISIBLE);
                     } else {
-                        arrayListAll = (ArrayList<FourServiceBean>) arrayList3.clone();
-                        for (int i = arrayListAll.size() - 1; i >= 0; i--) {
-
-                            if (arrayListAll.get(i).getDistance() > 3 * 1000) {
-                                arrayListAll.remove(i);
-                            }
-                        }
-                        if (arrayListAll.size() == 0) {
-                            showToastMsg("3Km之内没有店家");
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                            view.setVisibility(View.VISIBLE);
-                        } else {
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                            view.setVisibility(View.GONE);
-                        }
+//                        fourServiceList = (List<FourServiceEntity.ResultBean>) fourServiceList.clone();
+//                        for (int i = fourServiceList.size() - 1; i >= 0; i--) {
+//
+//                            if (fourServiceList.get(i).getDistance() > 3 * 1000) {
+//                                fourServiceList.remove(i);
+//                            }
+//                        }
+//                        if (fourServiceList.size() == 0) {
+//                            showToastMsg("3Km之内没有店家");
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                            view.setVisibility(View.VISIBLE);
+//                        } else {
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                            view.setVisibility(View.GONE);
+//                        }
                     }
 
                 } else {
@@ -223,28 +247,28 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.popupwindow_distance5_textview:
                 popupWindow3.dismiss();
-                if (arrayListAll != null) {
-                    if (arrayList3.size() == 0) {
-                        arrayListAll.clear();
+                if (fourServiceList != null) {
+                    if (fourServiceList.size() == 0) {
+                        fourServiceList.clear();
                         view.setVisibility(View.VISIBLE);
                     } else {
-                        arrayListAll = (ArrayList<FourServiceBean>) arrayList3.clone();
-                        for (int i = arrayListAll.size() - 1; i >= 0; i--) {
-
-                            if (arrayListAll.get(i).getDistance() > 5 * 1000) {
-                                arrayListAll.remove(i);
-                            }
-                        }
-                        if (arrayListAll.size() == 0) {
-                            showToastMsg("5Km之内没有店家");
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                            view.setVisibility(View.VISIBLE);
-
-                        } else {
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                            view.setVisibility(View.GONE);
-
-                        }
+//                        fourServiceList = fourServiceList.clone();
+//                        for (int i = fourServiceList.size() - 1; i >= 0; i--) {
+//
+//                            if (arrayListAll.get(i).getDistance() > 5 * 1000) {
+//                                arrayListAll.remove(i);
+//                            }
+//                        }
+//                        if (arrayListAll.size() == 0) {
+//                            showToastMsg("5Km之内没有店家");
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                            view.setVisibility(View.VISIBLE);
+//
+//                        } else {
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                            view.setVisibility(View.GONE);
+//
+//                        }
                     }
 
 
@@ -254,28 +278,28 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.popupwindow_distance10_textview:
                 popupWindow3.dismiss();
-                if (arrayListAll != null) {
-                    if (arrayList3.size() == 0) {
-                        arrayListAll.clear();
+                if (fourServiceList != null) {
+                    if (fourServiceList.size() == 0) {
+                        fourServiceList.clear();
                         view.setVisibility(View.VISIBLE);
                     } else {
-                        arrayListAll = (ArrayList<FourServiceBean>) arrayList3.clone();
-                        for (int i = arrayListAll.size() - 1; i >= 0; i--) {
+//                        arrayListAll = (ArrayList<FourServiceBean>) fourServiceList.clone();
+//                        for (int i = fourServiceList.size() - 1; i >= 0; i--) {
+//
+//                            if (fourServiceList.get(i).getDistance() > 10 * 1000) {
+//                                arrayListAll.remove(i);
+//                            }
+//                        }
 
-                            if (arrayListAll.get(i).getDistance() > 10 * 1000) {
-                                arrayListAll.remove(i);
-                            }
-                        }
-
-                        if (arrayListAll.size() == 0) {
-                            showToastMsg("10Km之内没有店家");
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                            view.setVisibility(View.VISIBLE);
-
-                        } else {
-                            carWashDistanceAdapter.refresh(arrayListAll);
-                            view.setVisibility(View.GONE);
-                        }
+//                        if (fourServiceList.size() == 0) {
+//                            showToastMsg("10Km之内没有店家");
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                            view.setVisibility(View.VISIBLE);
+//
+//                        } else {
+//                            carWashDistanceAdapter.refresh(fourServiceList);
+//                            view.setVisibility(View.GONE);
+//                        }
                     }
 
 
@@ -300,7 +324,7 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
                 arrayListAll.clear();
                 arrayListAll.addAll(data);
                 arrayList3 = (ArrayList<FourServiceBean>) arrayListAll.clone();
-                carWashDistanceAdapter = new CarWashDistanceAdapter(FourServeActivity.this, arrayListAll);
+//                carWashDistanceAdapter = new CarWashDistanceAdapter(FourServeActivity.this, arrayListAll);
                 carWashDistanceAdapter.setScrollState(false);
                 mListView.setAdapter(carWashDistanceAdapter);
                 mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -436,6 +460,118 @@ public class FourServeActivity extends BaseActivity implements View.OnClickListe
             mDistanceArrowImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.icon_shop_list_xia_arrow));
             mDistanceArrowTextView.setTextColor(ContextCompat.getColor(mContext, R.color.text_title_color));
         }
+    }
+
+    private void setUI() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(FourServeActivity.this, FourServeDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("shop_id", fourServiceList.get(position).getId());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE: {
+
+                        carWashDistanceAdapter.setScrollState(false);
+
+                        int count = view.getChildCount();
+                        for (int i = 0; i < count; i++) {
+
+                            ImageView iv_show = (ImageView) view.getChildAt(i).findViewById(R.id.car_wash_item_imageview);
+                            if (!iv_show.getTag().equals("1")) {
+
+                                if (!iv_show.getTag().equals("2")) {
+
+                                    String image_url = iv_show.getTag().toString();
+                                    if (image_url != null) {
+                                        THttpOpenHelper.newInstance().setImageBitmap(iv_show, image_url, (int) (100 * density), (int) (75 * density),
+                                                R.drawable.icon_default,
+                                                R.drawable.icon_default);
+
+                                        iv_show.setTag("1");
+                                    } else {
+                                        iv_show.setBackgroundResource(R.drawable.icon_default);
+                                        iv_show.setTag("1");
+                                    }
+                                } else {
+                                    iv_show.setBackgroundResource(R.drawable.icon_default);
+                                    iv_show.setTag("1");
+                                }
+                            }
+                        }
+                        break;
+                    }
+
+                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING: {
+                        carWashDistanceAdapter.setScrollState(true);
+                        break;
+                    }
+
+                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL: {
+
+                        carWashDistanceAdapter.setScrollState(true);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
+    }
+
+    private void getData() {
+        JSONObject params = new JSONObject();
+        try {
+            params.put("city_code", Constants.CITY_CODE);
+            params.put("begin_number", start + "");
+            params.put("over_number", count + "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpUtils.postString()
+                .url(ApiManager.URL_FOUR_SERVE)
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
+                .content(params.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                        showToastMsg("网络异常，请稍后重试!");
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "response is " + response);
+                        if (response != null) {
+                            FourServiceEntity entity = new Gson().fromJson(response, FourServiceEntity.class);
+                            Log.e(TAG, "onResponse: entity" + entity);
+                            if (entity != null && "0".equals(entity.getErr_code())) {
+                                fourServiceList = entity.getResult();
+                                if (fourServiceList != null && fourServiceList.size() > 0) {
+                                    carWashDistanceAdapter = new CarWashDistanceAdapter(FourServeActivity.this, fourServiceList);
+                                    mListView.setAdapter(carWashDistanceAdapter);
+                                    setUI();
+                                } else {
+                                    view.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                Toast.makeText(FourServeActivity.this, "网络异常，稍后重试", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 
 
