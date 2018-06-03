@@ -18,8 +18,10 @@ import com.jixing.kd.api.ApiManager;
 import com.jixing.kd.base.CarApplication;
 import com.jixing.kd.bean.User;
 import com.jixing.kd.interfaces.ResponseCallbackHandler;
+import com.jixing.kd.mall.adapter.ShopListAdapter;
 import com.jixing.kd.mall.entity.AddressEntity;
 import com.jixing.kd.mall.entity.OrderDetailEntity;
+import com.jixing.kd.mall.entity.ShopListEntity;
 import com.jixing.kd.utils.Constants;
 import com.jixing.kd.utils.GetTimeData;
 import com.jixing.kd.utils.MD5;
@@ -28,6 +30,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * Author ：LeeHang
@@ -146,7 +150,11 @@ public class OrderDetailActivity extends BaseActivity {
                             Gson gson = new Gson();
                             mEntity = gson.fromJson(response, OrderDetailEntity.class);
                             if (mEntity != null && mEntity.getErr_code().equals("0")) {
-                                getAddress();
+                                if (TextUtils.isEmpty(mEntity.getResult().getAddress_id())) {
+                                    getShopList(mEntity.getResult().getShop_id());
+                                } else {
+                                    getAddress();
+                                }
                                 setUi(mEntity.getResult());
                             }
                         }
@@ -154,6 +162,57 @@ public class OrderDetailActivity extends BaseActivity {
 
                 });
     }
+
+    private void getShopList(final String shopId) {
+        String categoryId = "1";
+        JSONObject object = new JSONObject();
+        try {
+            object.put("category_id", categoryId);
+            object.put("city_code", Constants.CITY_CODE);
+            object.put("province", "");
+            object.put("city", "");
+            object.put("district", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpUtils
+                .postString()
+                .url(ApiManager.URL_GET_SHOP_LIST)
+                .mediaType(MediaType.parse("application/json;charset=utf8"))
+                .content(object.toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.e(TAG, "onError: e is " + e.toString());
+                        Toast.makeText(OrderDetailActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "onResponse: response is " + response);
+                        if (response != null) {
+                            Gson gson = new Gson();
+                            ShopListEntity entity = gson.fromJson(response, ShopListEntity.class);
+                            if (entity != null && "0".equals(entity.getErr_code())) {
+                                List<ShopListEntity.ResultBean> shopList = entity.getResult();
+                                if (shopList != null && shopList.size() > 0) {
+                                    for (int i = 0; i < shopList.size(); i++) {
+                                        if (TextUtils.equals(shopId, shopList.get(i).getId())) {
+                                            mNameTv.setText(shopList.get(i).getShop_name());
+                                            mTelTv.setText(shopList.get(i).getTel_number_list());
+                                            mAddressTv.setText(shopList.get(i).getDetail_address());
+                                        }
+                                    }
+                                } else {
+                                    //空数据页面
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
 
     private void setUi(OrderDetailEntity.ResultBean bean) {
         if (bean == null)

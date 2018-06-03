@@ -19,7 +19,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/icon_about_us_logo"
+            android:src="@drawable/icon_cheyizhan"
             android:scaleType="fitXY" />
 
         <TextView
@@ -103,7 +103,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="公司官网 : www.shunjiatianxia.com"
+            android:text="公司官网 : www.kaidecheyizhan.com"
             android:textColor="@color/black2"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
@@ -126,7 +126,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="公司地址 : 辽宁省阜新市海州区工业街71-1号101-2"
+            android:text="公司地址 : 辽宁省阜新市细河区工业街27-11"
             android:textColor="@color/black2"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
@@ -134,14 +134,12 @@
             android:layout_centerVertical="true"/>
     </RelativeLayout>
 
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/listview_line"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        />
+        android:layout_marginRight="20dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -150,11 +148,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="大连盖特尔信息科技有限公司"
+            android:text="辽宁嘉行四方汽配网络信息服务有限公司"
             android:textColor="@color/gray6"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            />
+            android:layout_alignParentBottom="true"/>
+
     </RelativeLayout>
 
 </LinearLayout>

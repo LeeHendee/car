@@ -156,7 +156,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="yB0slWruUoejNRATCR3H17qbaZ4Ercds" />
+            android:value="0GpHuHkkekzLipwEfLPWDHqpiqzAWoQM"/>
 
         <activity android:name=".activity.SelfDrivingTravelDetailActivity" />
         <activity android:name=".activity.SelfDrivingIssueActivity" />
