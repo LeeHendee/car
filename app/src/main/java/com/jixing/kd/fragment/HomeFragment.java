@@ -757,7 +757,6 @@ public class HomeFragment extends BaseFragment implements
 
             @Override
             public void onPageSelected(int position) {
-
                 for (int i = 0; i < mDotViews.size(); i++) {
                     if (i == position) {
                         mDotViews.get(i).setImageResource(R.drawable.circular_point_shape_selected);

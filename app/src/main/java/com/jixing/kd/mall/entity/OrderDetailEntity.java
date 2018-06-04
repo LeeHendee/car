@@ -99,6 +99,7 @@ public class OrderDetailEntity {
         private String realname;
         private String telphone;
         private String address;
+        private String shop_id;
         private List<OrderDetailsBean> order_details;
         private List<LogisticsDetailBean> logistics_detail;
 
@@ -127,7 +128,16 @@ public class OrderDetailEntity {
                     ", address='" + address + '\'' +
                     ", order_details=" + order_details +
                     ", logistics_detail=" + logistics_detail +
+                    ", shop_id =" + shop_id +
                     '}';
+        }
+
+        public String getShop_id() {
+            return shop_id;
+        }
+
+        public void setShop_id(String shop_id) {
+            this.shop_id = shop_id;
         }
 
         public String getId() {
