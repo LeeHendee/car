@@ -791,9 +791,9 @@ public class ApiManager {
     /**
      * 电商产品列表
      */
-    public static void sortProduct(String brandId, String cityCode, String priceFlag, String sortType, ResponseCallbackHandler handler, int type, String tag) {
+    public static void sortProduct(String brandId, String cityCode, String priceFlag, String sortType, String searchContent, ResponseCallbackHandler handler, int type, String tag) {
         Log.e(TAG, "sortProduct: city_code is " + cityCode + " priceFlag is " + priceFlag + " sortType is " + sortType);
-        String url = ApiManager.URL_SORT_PRODUCT + "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" + sortType + "&brand_id=" + brandId;
+        String url = ApiManager.URL_SORT_PRODUCT + "?city_code=" + cityCode + "&sort=" + priceFlag + "&status=" + sortType + "&brand_id=" + brandId + "&search_tag=" + searchContent;
         ApiHttp.getProductList(url, handler, type, tag);
     }
 

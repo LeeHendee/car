@@ -93,7 +93,7 @@ public class ProductListActivity extends BaseActivity {
 
     private String mBrandId = null;
 
-    private String mSearchContent = null;
+    private String mSearchContent = "";
 
     private View mView;
 
@@ -200,7 +200,11 @@ public class ProductListActivity extends BaseActivity {
 
     private void sortProduct(int priceFlag, int sortType) {
         mLoadingRl.setVisibility(View.VISIBLE);
-        ApiManager.sortProduct(mBrandId, Constants.CITY_CODE, priceFlag + "", sortType + "", new ResponseCallbackHandler() {
+        Log.e(TAG, "sortProduct: search_tag = " + mSearchContent);
+        if (!TextUtils.isEmpty(mSearchContent)) {
+            mBrandId = "";
+        }
+        ApiManager.sortProduct(mBrandId, Constants.CITY_CODE, priceFlag + "", sortType + "", mSearchContent, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
@@ -208,7 +212,7 @@ public class ProductListActivity extends BaseActivity {
                     mRefresh.setRefreshing(false);
                 }
                 if (response != null) {
-                    Log.e(TAG, "onSuccessResponse: response is " + response);
+                    Log.e(TAG, "sortProduct: response is " + response);
                     Gson gson = new Gson();
                     ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
                     if (entity != null && TextUtils.equals(entity.getErr_code(), "0")) {
@@ -500,6 +504,7 @@ public class ProductListActivity extends BaseActivity {
             params.put("to_price", toPrice);
             params.put("brand_ids", brandIds);
             params.put("spec_ids", propertyIds);
+            params.put("search_tag", mSearchContent);
             params.put("city_code", Constants.CITY_CODE);
         } catch (JSONException e) {
             e.printStackTrace();
