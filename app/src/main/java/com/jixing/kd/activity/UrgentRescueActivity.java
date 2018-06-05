@@ -102,7 +102,7 @@ public class UrgentRescueActivity extends BaseActivity implements
 
     private int start = 0;
 
-    private int count = 2;
+    private int count = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

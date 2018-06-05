@@ -142,6 +142,7 @@ public class ShopListActivity extends BaseActivity {
                                     itemListener();
                                 } else {
                                     //空数据页面
+                                    showToast("暂无数据");
                                 }
                             }
                         }
