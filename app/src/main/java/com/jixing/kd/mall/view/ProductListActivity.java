@@ -392,7 +392,7 @@ public class ProductListActivity extends BaseActivity {
                 }
                 String ids = getPropertyIds();
 
-                String brandIds = "";
+                String brandIds = mBrandId;
                 Log.e(TAG, "onClick: lowp is " + lowPrice + " highP is " + highPrice + " brandIds is " + brandIds + " spec ids is " + ids);
 //                if (TextUtils.isEmpty(ids)) {
 //                    Toast.makeText(ProductListActivity.this, "请先选择产品属性", Toast.LENGTH_SHORT).show();
@@ -506,10 +506,13 @@ public class ProductListActivity extends BaseActivity {
             params.put("spec_ids", propertyIds);
             params.put("search_tag", mSearchContent);
             params.put("city_code", Constants.CITY_CODE);
+            params.put("page", "1");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String p = params.toString();
+        Log.e(TAG, "filterProperty: p is " + p);
         OkHttpUtils
                 .postString()
                 .url(ApiManager.URL_FILTER_PROPERTY)
@@ -527,6 +530,25 @@ public class ProductListActivity extends BaseActivity {
                     public void onResponse(String response, int id) {
                         Log.e(TAG, "filterProperty : response is " + response);
                         mLoadingRl.setVisibility(View.GONE);
+                        if (response != null) {
+                            Log.e(TAG, "search: response is " + response);
+                            Gson gson = new Gson();
+                            ProductListEntity entity = gson.fromJson(response, ProductListEntity.class);
+                            if (entity != null && TextUtils.equals(entity.getErr_code(), "0")) {
+                                if (entity.getResult() != null && entity.getResult().size() > 0) {
+                                    mEmptyView.setVisibility(View.GONE);
+                                    mProductList = entity.getResult();
+                                    categoryId = mProductList.get(0).getCategory_id();
+                                    getProperty(categoryId, "0");
+                                    mBrandId = entity.getResult().get(0).getBrand_id();
+                                    setData();
+                                } else {
+                                    mEmptyView.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                Toast.makeText(ProductListActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
                 });
     }
