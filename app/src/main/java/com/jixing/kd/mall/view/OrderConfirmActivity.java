@@ -159,10 +159,16 @@ public class OrderConfirmActivity extends BaseActivity {
                         if (response != null) {
                             Log.e(TAG, "initData: response is " + response);
                             mEntity = new Gson().fromJson(response, ConfirmOrderEntity.class);
-                            if (mEntity != null && mEntity.getResult() != null) {
+                            if (mEntity != null && "0".equals(mEntity.getErr_code())) {
                                 list = mEntity.getResult().getGoods_list();
                                 setUi();
                                 setAddressUi();
+                            } else if ("4004".equals(mEntity.getErr_code())) {
+                                Log.e(TAG, "response is : --------->>4004 ");
+                                Toast.makeText(OrderConfirmActivity.this, "请先设置默认的收获地址", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(OrderConfirmActivity.this, ManageAddressActivity.class);
+                                intent.putExtra("needInit", true);
+                                startActivityForResult(intent, 101);
                             }
                         }
                     }
@@ -196,10 +202,7 @@ public class OrderConfirmActivity extends BaseActivity {
 
     private void setAddressUi() {
         mAddressId = mEntity.getResult().getAddres_id();
-        if (TextUtils.isEmpty(mAddressId)) {
-            Toast.makeText(OrderConfirmActivity.this, "请先设置默认的收获地址", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         mNameTv.setText(mEntity.getResult().getName());
         mTelTv.setText(mEntity.getResult().getPhone());
         mAddressTv.setText(mEntity.getResult().getAddress());
@@ -261,6 +264,9 @@ public class OrderConfirmActivity extends BaseActivity {
                 Log.e(TAG, "shopId is " + mShopId);
                 Log.e(TAG, "addressId is " + mAddressId);
                 Log.e(TAG, "flag is " + mFlag);
+            } else if (requestCode == 101) {
+                Log.e(TAG, "onActivityResult: ----->>requestCode is 101");
+                initData();
             }
         }
     }

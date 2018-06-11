@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -82,6 +83,7 @@ public class PostAddressActivity extends BaseActivity {
     private boolean isEditor;
     private CarApplication mApp;
     private User mUser;
+    private View mView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,7 +116,8 @@ public class PostAddressActivity extends BaseActivity {
     }
 
     private void initView() {
-        setContentView(R.layout.activity_post_ad);
+        mView = LayoutInflater.from(this).inflate(R.layout.activity_post_ad, null);
+        setContentView(mView);
         ButterKnife.bind(this);
         initRightTvBar("新增地址", "保存", new View.OnClickListener() {
             @Override
@@ -240,6 +243,7 @@ public class PostAddressActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.rl_pick_address:
                 setCityPicker();
+                hideKeyboard(mView);
                 break;
             case R.id.iv_set_default:
                 if (isDefault) {

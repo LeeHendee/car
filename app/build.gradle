@@ -6,7 +6,7 @@ android {
         cheyizhan {
             keyAlias 'cheyizhan'
             keyPassword '123456'
-            storeFile file('../cheyizhan')
+            storeFile file('D:/workspace/car/app/cheyizhan')
             storePassword '123456'
         }
     }

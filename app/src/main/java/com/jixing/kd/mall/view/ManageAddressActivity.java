@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -59,11 +62,16 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
     @BindView(R.id.rl_loading)
     RelativeLayout mLoadingRl;
 
+    @BindView(R.id.iv_title_left)
+    ImageView backIv;
+
     private List<AddressEntity.ResultBean> addressList;
 
     private AddressAdapter mAdapter;
     private CarApplication mApp;
     private User mUser;
+
+    private boolean needInit = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +87,7 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
         mUser = mApp.getUser();
         String sign = MD5.getSign(ApiManager.URL_MANAGE_ADDRESS, mUser);
         String time = MD5.gettimes();
+        needInit = getIntent().getBooleanExtra("needInit", false);
         ApiManager.getAddressList(sign, time, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
@@ -133,6 +142,12 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
             case R.id.btn_add_ad:
                 Intent intent = new Intent(this, PostAddressActivity.class);
                 startActivityForResult(intent, 100);
+                break;
+            case R.id.iv_title_left:
+                if (needInit) {
+                    setResult(101);
+                }
+                finish();
                 break;
         }
     }
@@ -233,5 +248,15 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
                 mLoadingRl.setVisibility(View.GONE);
             }
         }, 2, TAG);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (needInit) {
+                setResult(101);
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
