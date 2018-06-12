@@ -37,6 +37,7 @@ import com.jixing.kd.mall.entity.CreatePreOrderEntity;
 import com.jixing.kd.mall.entity.PostAddressEntity;
 import com.jixing.kd.mall.entity.ProductDetailEntity;
 import com.jixing.kd.mall.entity.PropertyListEntity;
+import com.jixing.kd.mall.entity.ResultEntity;
 import com.jixing.kd.mall.entity.ReviewsEntity;
 import com.jixing.kd.mall.view.custom_view.FlowLayout;
 import com.jixing.kd.mall.view.custom_view.RecyItemSpace;
@@ -53,6 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -93,6 +95,8 @@ public class ProductDetailActivity extends BaseActivity {
     private ImageView mTitleLeftIv;
 
     private ImageView mTitleRightIv;
+
+    private ImageView mFavorIv;
 
     private ProductDetailEntity.ResultBean mEntity;
 
@@ -156,8 +160,13 @@ public class ProductDetailActivity extends BaseActivity {
     private TextView picReviewTv;
     private TextView picNumberTv;
     private TextView picLineTv;
+    private TextView introduceTv;
+    private TextView descTv;
     private CarApplication mApp;
     private User mUser;
+    private List<String> mBigPicList;
+
+    private String goodsId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -182,12 +191,14 @@ public class ProductDetailActivity extends BaseActivity {
         badLl.setOnClickListener(mListener);
         addLl.setOnClickListener(mListener);
         picLl.setOnClickListener(mListener);
+        mFavorIv.setOnClickListener(mListener);
         mSelectPropertyLayout.setOnClickListener(mListener);
         mImagePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 curPosition = position + 1;
                 mIndexCurTv.setText(curPosition + "");
+
                 Log.e(TAG, "onPageScrolled: pos is " + position);
             }
 
@@ -206,6 +217,9 @@ public class ProductDetailActivity extends BaseActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                case R.id.iv_favor:
+                    favorGoods();
+                    break;
                 case R.id.iv_title_left:
                     finish();
                     break;
@@ -436,6 +450,38 @@ public class ProductDetailActivity extends BaseActivity {
         }
     };
 
+    private void favorGoods() {
+        String sign = MD5.getSign(ApiManager.URL_GET_ALIPAY_SIGN, mUser);
+        String time = MD5.gettimes();
+        String url = ApiManager.URL_FAVORADD + "?token=" + Constants.TOKEN + "&sign=" + sign + "&t=" + time;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("favor_id", goodsId);
+            params.put("favor_type", "8");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        OkHttpUtils.postString().url(url).mediaType(MediaType.parse("application/json;charset=utf-8")).content(params.toString())
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e(TAG, "favorGoods: error is " + e.toString());
+                showToastMsg("网络异常，稍后重试");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.e(TAG, "favorGoods: response is " + response);
+                if (response != null) {
+                    ResultEntity entity = new Gson().fromJson(response, ResultEntity.class);
+                    if (entity != null && "0".equals(entity.getErr_code())) {
+                        showToastMsg(entity.getErr_message());
+                    }
+                }
+            }
+        });
+    }
+
     private void toBuyNow() {
         params = new CreatePreOrderEntity();
         Intent toBuy = new Intent(ProductDetailActivity.this, OrderConfirmActivity.class);
@@ -526,10 +572,10 @@ public class ProductDetailActivity extends BaseActivity {
         Log.e(TAG, "initData: token is " + Constants.TOKEN);
         Intent intent = getIntent();
         String cityCode = Constants.CITY_CODE;
-        String goodId = intent.getStringExtra("goodId");
+        goodsId = intent.getStringExtra("goodId");
         Log.e(TAG, "initData: cityCode is " + cityCode);
-        Log.e(TAG, "initData: goodId is " + goodId);
-        ApiManager.getProductDetail(goodId, cityCode, new ResponseCallbackHandler() {
+        Log.e(TAG, "initData: goodId is " + goodsId);
+        ApiManager.getProductDetail(goodsId, cityCode, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {
                 mLoadingRl.setVisibility(View.GONE);
@@ -575,19 +621,21 @@ public class ProductDetailActivity extends BaseActivity {
 //        mGoodReviewsRateTv.setText(mEntity.);
         mSoldCountTv.setText("已售：" + mEntity.getSold_number() + "");
         mIndexCurTv.setText(curPosition + "");
-        mIndexTotalTv.setText("5");
+        descTv.setText(mEntity.getGoods_description());
+        introduceTv.setText(mEntity.getGoods_synopsis());
         String property = mEntity.getSpec_item_content();
         if (TextUtils.isEmpty(property)) {
             mSelectPropertyLayout.setVisibility(View.GONE);
         } else {
             displayArrTv.setText(mEntity.getSpec_item_content());
         }
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(mEntity.getBig_picture() + "");
-        }
-        mAdapter = new ProductDetailPagerAdapter(list, this);
+        mBigPicList = new ArrayList<>();
+        getBigPicList(mEntity.getBig_picture());
+
+        Log.e(TAG, "setUI: list is " + mBigPicList);
+        mAdapter = new ProductDetailPagerAdapter(mBigPicList, this);
         mImagePager.setAdapter(mAdapter);
+        mIndexTotalTv.setText(mBigPicList != null ? mBigPicList.size() + "" : 0 + "");
     }
 
     private void initView() {
@@ -615,7 +663,10 @@ public class ProductDetailActivity extends BaseActivity {
         mSelectPropertyLayout = (LinearLayout) findViewById(R.id.ll_select_property);
         mBuyTv = (TextView) findViewById(R.id.tv_buy);
         mAddCartTv = (TextView) findViewById(R.id.tv_add_cart);
+        descTv = (TextView) findViewById(R.id.tv_desc);
+        introduceTv = (TextView) findViewById(R.id.tv_introduce);
         mCartIv = (ImageView) findViewById(R.id.iv_cart);
+        mFavorIv = (ImageView) findViewById(R.id.iv_favor);
         productLl = (LinearLayout) findViewById(R.id.ll_product);
         reviewsLl = (LinearLayout) findViewById(R.id.ll_reviews);
         detailLl = (LinearLayout) findViewById(R.id.ll_detail);
@@ -681,7 +732,7 @@ public class ProductDetailActivity extends BaseActivity {
                     public void onResponse(String response, int id) {
                         mLoadingRl.setVisibility(View.GONE);
                         if (response != null) {
-                            Log.e(TAG, "onResponse: response is " + response);
+                            Log.e(TAG, "getReviews: response is " + response);
                             ReviewsEntity entity = new Gson().fromJson(response, ReviewsEntity.class);
                             if (entity != null && entity.getErr_code().equals("0")) {
                                 reviewsAdapter = new ReviewsAdapter(ProductDetailActivity.this, entity.getResult().getComment_list());
@@ -721,7 +772,7 @@ public class ProductDetailActivity extends BaseActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         if (response != null) {
-                            Log.e(TAG, "onResponse: response is " + response);
+                            Log.e(TAG, "getProperty: response is " + response);
                             Gson gson = new Gson();
                             PropertyListEntity entity = gson.fromJson(response, PropertyListEntity.class);
                             if (entity != null && entity.getErr_code().equals("0")) {
@@ -916,6 +967,12 @@ public class ProductDetailActivity extends BaseActivity {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return super.dispatchTouchEvent(ev);
+    }
+
+    private void getBigPicList(String pics) {
+        if (TextUtils.isEmpty(pics))
+            return;
+        mBigPicList = Arrays.asList(pics.split(","));
     }
 
 }

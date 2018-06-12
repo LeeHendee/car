@@ -118,6 +118,17 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
                 mLoadingRl.setVisibility(View.GONE);
             }
         }, 1, TAG);
+        backIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "myClick: -----iv title left is clicked");
+                if (needInit) {
+                    setResult(RESULT_OK);
+                    Log.e(TAG, "myClick: ------->>needInit is " + needInit);
+                }
+                finish();
+            }
+        });
     }
 
     private void setUI() {
@@ -143,12 +154,7 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
                 Intent intent = new Intent(this, PostAddressActivity.class);
                 startActivityForResult(intent, 100);
                 break;
-            case R.id.iv_title_left:
-                if (needInit) {
-                    setResult(101);
-                }
-                finish();
-                break;
+
         }
     }
 
@@ -254,7 +260,8 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (needInit) {
-                setResult(101);
+                Log.e(TAG, "myClick: ------->>needInit is " + needInit);
+                setResult(RESULT_OK);
             }
         }
         return super.onKeyDown(keyCode, event);

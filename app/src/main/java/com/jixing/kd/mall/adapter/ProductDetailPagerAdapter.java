@@ -3,6 +3,7 @@ package com.jixing.kd.mall.adapter;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +35,13 @@ public class ProductDetailPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.item_pager_view, null);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_pager);
+        Log.e(TAG, "instantiateItem: urls is " + urls);
         if (urls != null && urls.size() > 0) {
-            if (!TextUtils.isEmpty(urls.get(position)))
-                Picasso.with(context).load(urls.get(position)).into(imageView);
+            Log.e(TAG, "instantiateItem: url is " + urls.get(position));
+            if (!TextUtils.isEmpty(urls.get(position))) {
+                String url = urls.get(position).trim();
+                Picasso.with(context).load(url).into(imageView);
+            }
         }
         container.addView(itemView);
         return itemView;

@@ -98,6 +98,9 @@ public class OrderConfirmActivity extends BaseActivity {
     @BindView(R.id.et_invoice_content)
     EditText mContentEt;
 
+    @BindView(R.id.et_hint)
+    EditText mHint;
+
     @BindView(R.id.ll_invoice)
     LinearLayout mShowInvoiceLl;
 
@@ -212,6 +215,7 @@ public class OrderConfirmActivity extends BaseActivity {
         setContentView(R.layout.activity_order_confirm);
         ButterKnife.bind(this);
         initRightTvBar("确认订单", null, null);
+        mHint.setError("点此可选择服务商");
     }
 
     @OnClick({R.id.rl_address, R.id.tv_submit_order, R.id.iv_invoice, R.id.iv_personal, R.id.iv_company})
