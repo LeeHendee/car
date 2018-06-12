@@ -441,8 +441,13 @@ public class ProductListActivity extends BaseActivity {
                             TextView t = tvList.get(k);
                             PropertyListEntity.ResultBean.SpecListBean.ItemsBean b = (PropertyListEntity.ResultBean.SpecListBean.ItemsBean) t.getTag();
                             if (k == v.getId()) {
-                                b.setSelected(true);
-                                t.setTextColor(getResources().getColor(R.color.orange_txt));
+                                if (b.isSelected()) {
+                                    b.setSelected(false);
+                                    t.setTextColor(Color.BLACK);
+                                } else {
+                                    b.setSelected(true);
+                                    t.setTextColor(getResources().getColor(R.color.orange_txt));
+                                }
                             } else {
                                 b.setSelected(false);
                                 t.setTextColor(Color.BLACK);

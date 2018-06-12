@@ -146,6 +146,9 @@ public class OrderListActivity extends BaseActivity {
                                 orderList = entity.getResult();
                                 if (orderList != null && orderList.size() > 0) {
                                     mEmptyRl.setVisibility(View.GONE);
+
+                                    Log.e(TAG, "onResponse: status is " + mStatus);
+                                    Log.e(TAG, "onResponse: list size is " + orderList.size());
                                     setUi();
                                 } else {
                                     mEmptyRl.setVisibility(View.VISIBLE);

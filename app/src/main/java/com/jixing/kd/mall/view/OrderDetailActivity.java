@@ -213,7 +213,6 @@ public class OrderDetailActivity extends BaseActivity {
                 });
     }
 
-
     private void setUi(OrderDetailEntity.ResultBean bean) {
         if (bean == null)
             return;
@@ -263,7 +262,7 @@ public class OrderDetailActivity extends BaseActivity {
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
-//                .setVisibility(View.GONE);
+
             }
         }, 1, TAG);
     }

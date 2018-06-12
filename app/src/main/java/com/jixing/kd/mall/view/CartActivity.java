@@ -83,6 +83,8 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
     private CarApplication mApp;
     private User mUser;
 
+    private boolean isClickable = true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -337,20 +339,32 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
 
     @Override
     public void changeCount(boolean isAdd, int pos) {
+        if (cartList == null || cartList.size() == 0) {
+            return;
+        }
         CartEntity.ResultBean b = cartList.get(pos);
         int count = b.getNumber();
         if (isAdd) {
-            changeNumberToAPI(b.getId(), String.valueOf(count + 1));
+            if (isClickable) {
+                changeNumberToAPI(b.getId(), String.valueOf(count + 1));
+            } else {
+                showToastMsg("点击过于频繁，稍后重试");
+            }
         } else {
             if (count == 1) {
                 Toast.makeText(this, "数量不能小于1", Toast.LENGTH_SHORT).show();
                 return;
             }
-            changeNumberToAPI(b.getId(), String.valueOf(count - 1));
+            if (isClickable) {
+                changeNumberToAPI(b.getId(), String.valueOf(count - 1));
+            } else {
+                showToastMsg("点击过于频繁，稍后重试");
+            }
         }
     }
 
     private void changeNumberToAPI(String cartId, String count) {
+        isClickable = false;
         String sign = MD5.getSign(ApiManager.URL_CHANGE_COUNT, mUser);
         String time = MD5.gettimes();
         Map<String, String> params = new HashMap<>();
@@ -369,11 +383,13 @@ public class CartActivity extends BaseActivity implements IListener, CartAdapter
                         initData();
                     }
                 }
+                isClickable = true;
             }
 
             @Override
             public void onErrorResponse(VolleyError error, int type) {
                 mLoadingRl.setVisibility(View.GONE);
+                isClickable = true;
             }
         }, 2, TAG);
     }

@@ -26,6 +26,7 @@ import com.jixing.kd.mall.entity.AddressEntity;
 import com.jixing.kd.mall.entity.PostAddressEntity;
 import com.jixing.kd.utils.MD5;
 import com.google.gson.Gson;
+import com.jixing.kd.utils.TRegularExpression;
 import com.lljjcoder.citypickerview.widget.CityPicker;
 
 import org.json.JSONException;
@@ -190,8 +191,8 @@ public class PostAddressActivity extends BaseActivity {
             Toast.makeText(this, "请填收货人姓名", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (TextUtils.isEmpty(tel)) {
-            Toast.makeText(this, "请填写联系电话", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(tel) && !TRegularExpression.isMobileNO(tel)) {
+            Toast.makeText(this, "请填写手机号码", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(detailAd)) {
