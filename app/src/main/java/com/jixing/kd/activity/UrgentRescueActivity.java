@@ -113,12 +113,14 @@ public class UrgentRescueActivity extends BaseActivity implements
         showLocation();
 //        initData();
         getData();
+
     }
 
     private void showLocation() {
         String desc = LocationUtil.getAddressDesc(this);
         Log.e(TAG, "showLocation: desc is " + desc);
         mCurrentCity.setText("当前位置 ：" + desc);
+
     }
 
     public void initView() {
