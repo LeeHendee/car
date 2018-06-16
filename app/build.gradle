@@ -6,7 +6,7 @@ android {
         cheyizhan {
             keyAlias 'cheyizhan'
             keyPassword '123456'
-            storeFile file('D:/workspace/car/app/cheyizhan')
+            storeFile file('D:/workspace/car/cheyizhan.keystore')
             storePassword '123456'
         }
     }
@@ -99,4 +99,5 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     //    compile 'com.github.vondear:RxTools:v1.7.6.8'//请替换成上方 JitPack 最新的版本号
     compile 'com.bigkoo:convenientbanner:2.0.5'
+
 }

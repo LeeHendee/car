@@ -128,6 +128,12 @@ public class ProductDetailActivity extends BaseActivity {
 
     private View mView;
 
+    private TextView minusTv;
+
+    private TextView plusTv;
+
+    private TextView countTv;
+
     private List<PropertyListEntity.ResultBean.SpecListBean> propertyList;
     private CreatePreOrderEntity params;
     private LinearLayout productLl;
@@ -192,6 +198,8 @@ public class ProductDetailActivity extends BaseActivity {
         addLl.setOnClickListener(mListener);
         picLl.setOnClickListener(mListener);
         mFavorIv.setOnClickListener(mListener);
+        plusTv.setOnClickListener(mListener);
+        minusTv.setOnClickListener(mListener);
         mSelectPropertyLayout.setOnClickListener(mListener);
         mImagePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -446,6 +454,19 @@ public class ProductDetailActivity extends BaseActivity {
                     picReviewTv.setTextSize(14);
                     picLineTv.setVisibility(View.VISIBLE);
                     break;
+                case R.id.tv_plus:
+                    ++mCount;
+                    countTv.setText(mCount + "");
+
+                    break;
+                case R.id.tv_minus:
+                    if (mCount > 1) {
+                        --mCount;
+                        countTv.setText(mCount + "");
+                    } else {
+                        Toast.makeText(ProductDetailActivity.this, "数量不能小于1", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
             }
         }
     };
@@ -670,6 +691,10 @@ public class ProductDetailActivity extends BaseActivity {
         productLl = (LinearLayout) findViewById(R.id.ll_product);
         reviewsLl = (LinearLayout) findViewById(R.id.ll_reviews);
         detailLl = (LinearLayout) findViewById(R.id.ll_detail);
+        minusTv = (TextView) findViewById(R.id.tv_minus);
+        plusTv = (TextView) findViewById(R.id.tv_plus);
+        countTv = (TextView) findViewById(R.id.tv_count);
+
         titleTvList.add(mTitleProductTv);
         titleTvList.add(mTitleDetailTv);
         titleTvList.add(mTitleReviewsTv);
@@ -798,12 +823,12 @@ public class ProductDetailActivity extends BaseActivity {
         RelativeLayout closeRl = (RelativeLayout) popView.findViewById(R.id.rl_close);
         TextView priceTv = (TextView) popView.findViewById(R.id.tv_price);
         final TextView property1Tv = (TextView) popView.findViewById(R.id.tv_property1);
-        TextView minusTv = (TextView) popView.findViewById(R.id.tv_minus);
-        final TextView countTv = (TextView) popView.findViewById(R.id.tv_count);
-        TextView plusTv = (TextView) popView.findViewById(R.id.tv_plus);
+//        TextView minusTv = (TextView) popView.findViewById(R.id.tv_minus);
+//        final TextView countTv = (TextView) popView.findViewById(R.id.tv_count);
+//        TextView plusTv = (TextView) popView.findViewById(R.id.tv_plus);
         final LinearLayout ll = (LinearLayout) popView.findViewById(R.id.ll_white);
 
-        countTv.setText(mCount + "");
+//        countTv.setText(mCount + "");
         ImageView propertyIv = (ImageView) popView.findViewById(R.id.iv_property);
         LinearLayout propertiesLayout = (LinearLayout) popView.findViewById(R.id.ll_properties);
         TextView addToCartTv = (TextView) popView.findViewById(R.id.tv_pop_add_cart);
@@ -903,26 +928,6 @@ public class ProductDetailActivity extends BaseActivity {
         pw.showAtLocation(mView, Gravity.BOTTOM, 0, 0);
         clearAllSelected();
 
-        minusTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCount > 1) {
-                    --mCount;
-                    countTv.setText(mCount + "");
-                    changeUi(property1Tv);
-                } else {
-                    Toast.makeText(ProductDetailActivity.this, "数量不能小于1", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        plusTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ++mCount;
-                countTv.setText(mCount + "");
-                changeUi(property1Tv);
-            }
-        });
 
     }
 

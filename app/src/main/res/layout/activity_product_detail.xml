@@ -131,11 +131,11 @@
                 </RelativeLayout>
 
                 <!--<TextView-->
-                    <!--android:id="@+id/tv_product_description"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:maxLines="3"-->
-                    <!--android:padding="10dp" />-->
+                <!--android:id="@+id/tv_product_description"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:maxLines="3"-->
+                <!--android:padding="10dp" />-->
 
                 <RelativeLayout
                     android:id="@+id/rl_price"
@@ -176,14 +176,71 @@
 
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_sold_count"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:background="@color/white"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:text="已售：300" />
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_sold_count"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="10dp"
+                        android:text="已售：300" />
+
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/cart_button_bg"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_minus"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="-"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="2px"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/gray2" />
+
+                        <TextView
+                            android:id="@+id/tv_count"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:gravity="center"
+                            android:text="1"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="2px"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/gray2" />
+
+                        <TextView
+                            android:id="@+id/tv_plus"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="+"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -285,35 +342,35 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:text="产品简介"
-                    android:textColor="@color/text_note_color"
-                    android:padding="10dp" />
+                    android:textColor="@color/text_note_color" />
 
                 <TextView
                     android:id="@+id/tv_introduce"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/text_note_color"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp" />
+                    android:paddingRight="10dp"
+                    android:text=""
+                    android:textColor="@color/text_note_color" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="产品描述"
-                    android:textColor="@color/text_note_color"
                     android:layout_marginTop="10dp"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:text="产品描述"
+                    android:textColor="@color/text_note_color" />
 
                 <TextView
                     android:id="@+id/tv_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/text_note_color"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp" />
+                    android:paddingRight="10dp"
+                    android:text=""
+                    android:textColor="@color/text_note_color" />
 
             </LinearLayout>
 
@@ -582,12 +639,12 @@
         </LinearLayout>
     </ScrollView>
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_above="@+id/ll_bottom_view"-->
-    <!--android:layout_below="@+id/rl_title"-->
-    <!--android:orientation="vertical"/>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_bottom_view"
+        android:layout_below="@+id/rl_title"
+        android:orientation="vertical" />
 
     <include
         layout="@layout/layout_loading"

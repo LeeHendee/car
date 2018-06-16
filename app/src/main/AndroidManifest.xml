@@ -251,8 +251,6 @@
             android:exported="false"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
-
-
     </application>
 
 </manifest>
