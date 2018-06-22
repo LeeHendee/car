@@ -399,6 +399,7 @@ public class ProductListActivity extends BaseActivity {
 //                    return;
 //                }
                 filterProperty(lowPrice, highPrice, brandIds, ids);
+                clearPropertyIds();
                 pw.dismiss();
             }
         });
@@ -566,7 +567,7 @@ public class ProductListActivity extends BaseActivity {
             List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> list = propertyList.get(i).getItems();
             for (int j = 0; j < list.size(); j++) {
                 if (list.get(j).isSelected()) {
-                    sb2.append(list.get(j).getSpec_id() + ",");
+                    sb2.append(list.get(j).getId() + ",");
                 }
             }
         }
@@ -576,6 +577,17 @@ public class ProductListActivity extends BaseActivity {
         }
         propertyIds = ids.substring(0, ids.length() - 1);
         return propertyIds;
+    }
+
+    private void clearPropertyIds() {
+        for (int i = 0; i < propertyList.size(); i++) {
+            List<PropertyListEntity.ResultBean.SpecListBean.ItemsBean> list = propertyList.get(i).getItems();
+            for (int j = 0; j < list.size(); j++) {
+                if (list.get(j).isSelected()) {
+                    list.get(j).setSelected(false);
+                }
+            }
+        }
     }
 
 

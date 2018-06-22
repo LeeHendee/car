@@ -37,6 +37,7 @@ import com.jixing.kd.mall.entity.BannerEntity;
 import com.jixing.kd.mall.entity.ClassifyEntity;
 import com.jixing.kd.mall.adapter.ClassifyAdapter;
 import com.jixing.kd.mall.entity.SecKillEntity;
+import com.jixing.kd.utils.AppInfoUtils;
 import com.jixing.kd.utils.Constants;
 import com.jixing.kd.widget.DividerItemDecoration;
 import com.google.gson.Gson;
@@ -46,6 +47,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 
 public class StoreFragment extends BaseFragment {
@@ -122,6 +125,12 @@ public class StoreFragment extends BaseFragment {
         piclist.add(R.drawable.banner3);
         piclist.add(R.drawable.banner4);
         Log.e(TAG, "onCreateView: token is " + Constants.TOKEN);
+        String sha1 = AppInfoUtils.getSingInfo(getActivity(), getPackageName(), AppInfoUtils.SHA1);
+        String md5 = AppInfoUtils.getSingInfo(getActivity(), getPackageName(), AppInfoUtils.MD5);
+
+        Log.e(TAG, "onCreateView: ---------》》sha1 = " + sha1);
+        Log.e(TAG, "onCreateView: ---------》》md5 = " + md5);
+
         return mView;
     }
 

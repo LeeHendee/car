@@ -35,15 +35,6 @@ public class ShopListActivity extends BaseActivity {
 
     private static final String TAG = "ShopListActivity";
 
-//    @BindView(R.id.tv_province)
-//    TextView mProvinceTv;
-//
-//    @BindView(R.id.tv_city)
-//    TextView mCityTv;
-//
-//    @BindView(R.id.tv_district)
-//    TextView mDistrictTv;
-
     @BindView(R.id.rv_shop)
     RecyclerView mShopRv;
 
