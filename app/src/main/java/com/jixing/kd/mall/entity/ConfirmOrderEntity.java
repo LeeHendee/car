@@ -1,5 +1,13 @@
 package com.jixing.kd.mall.entity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,10 +18,11 @@ import java.util.List;
 
 public class ConfirmOrderEntity {
 
+
     /**
      * err_code : 0
      * err_message : OK
-     * result : {"addres_id":"d7d6b2fe95ec499bb2c7248670d7ac29","name":"哈哈","phone":"18642690085","address":"辽宁省大连市123","goods_list":[{"goods_id":"10","goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 旅悦 PRIMACY SUV 适配沃尔沃XC60/XC90/新胜达/哈佛H5等","prime_price":455,"promotion_price":399,"number":"1","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","spec_item_ids":"1","spec_item_name":"花纹性能:经济耐用型"}],"total_price":399}
+     * result : {"addres_id":"daeb092371484747b0c8ea1c16abcd48","flag":"0","name":"李四","phone":"123456","address":"辽宁省大连市123","category_id":"8","goods_list":[{"goods_id":"12f6a8bdf1b04369a2108b64a72c8eb8","goods_title":"洗车","prime_price":18,"promotion_price":10,"number":"1","picture":"http://114.215.71.170:81/shopping/goods/small/1521635780256.jpg","spec_item_ids":"220,224,226,229","spec_item_name":"服务类别:保养维修,服务方式:到店服务,服务种类:套餐,其他分类:普通漆"}],"total_price":10}
      * message : 结算中
      */
 
@@ -30,6 +39,50 @@ public class ConfirmOrderEntity {
                 ", result=" + result +
                 ", message='" + message + '\'' +
                 '}';
+    }
+
+    public static ConfirmOrderEntity objectFromData(String str) {
+
+        return new Gson().fromJson(str, ConfirmOrderEntity.class);
+    }
+
+    public static ConfirmOrderEntity objectFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+
+            return new Gson().fromJson(jsonObject.getString(str), ConfirmOrderEntity.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static List<ConfirmOrderEntity> arrayConfirmOrderEntityFromData(String str) {
+
+        Type listType = new TypeToken<ArrayList<ConfirmOrderEntity>>() {
+        }.getType();
+
+        return new Gson().fromJson(str, listType);
+    }
+
+    public static List<ConfirmOrderEntity> arrayConfirmOrderEntityFromData(String str, String key) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(str);
+            Type listType = new TypeToken<ArrayList<ConfirmOrderEntity>>() {
+            }.getType();
+
+            return new Gson().fromJson(jsonObject.getString(str), listType);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList();
+
+
     }
 
     public String getErr_code() {
@@ -66,31 +119,81 @@ public class ConfirmOrderEntity {
 
     public static class ResultBean {
         /**
-         * addres_id : d7d6b2fe95ec499bb2c7248670d7ac29
-         * name : 哈哈
-         * phone : 18642690085
+         * addres_id : daeb092371484747b0c8ea1c16abcd48
+         * flag : 0
+         * name : 李四
+         * phone : 123456
          * address : 辽宁省大连市123
-         * goods_list : [{"goods_id":"10","goods_title":"米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 旅悦 PRIMACY SUV 适配沃尔沃XC60/XC90/新胜达/哈佛H5等","prime_price":455,"promotion_price":399,"number":"1","picture":"http://114.215.71.170:81/inn/advertisement/b121b.jpg","spec_item_ids":"1","spec_item_name":"花纹性能:经济耐用型"}]
-         * total_price : 399.0
+         * category_id : 8
+         * goods_list : [{"goods_id":"12f6a8bdf1b04369a2108b64a72c8eb8","goods_title":"洗车","prime_price":18,"promotion_price":10,"number":"1","picture":"http://114.215.71.170:81/shopping/goods/small/1521635780256.jpg","spec_item_ids":"220,224,226,229","spec_item_name":"服务类别:保养维修,服务方式:到店服务,服务种类:套餐,其他分类:普通漆"}]
+         * total_price : 10
          */
 
         private String addres_id;
+        private String flag;
         private String name;
         private String phone;
         private String address;
-        private double total_price;
+        private String category_id;
+        private int total_price;
         private List<GoodsListBean> goods_list;
 
         @Override
         public String toString() {
             return "ResultBean{" +
                     "addres_id='" + addres_id + '\'' +
+                    ", flag='" + flag + '\'' +
                     ", name='" + name + '\'' +
                     ", phone='" + phone + '\'' +
                     ", address='" + address + '\'' +
+                    ", category_id='" + category_id + '\'' +
                     ", total_price=" + total_price +
                     ", goods_list=" + goods_list +
                     '}';
+        }
+
+        public static ResultBean objectFromData(String str) {
+
+            return new Gson().fromJson(str, ResultBean.class);
+        }
+
+        public static ResultBean objectFromData(String str, String key) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(str);
+
+                return new Gson().fromJson(jsonObject.getString(str), ResultBean.class);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        public static List<ResultBean> arrayResultBeanFromData(String str) {
+
+            Type listType = new TypeToken<ArrayList<ResultBean>>() {
+            }.getType();
+
+            return new Gson().fromJson(str, listType);
+        }
+
+        public static List<ResultBean> arrayResultBeanFromData(String str, String key) {
+
+            try {
+                JSONObject jsonObject = new JSONObject(str);
+                Type listType = new TypeToken<ArrayList<ResultBean>>() {
+                }.getType();
+
+                return new Gson().fromJson(jsonObject.getString(str), listType);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return new ArrayList();
+
+
         }
 
         public String getAddres_id() {
@@ -99,6 +202,14 @@ public class ConfirmOrderEntity {
 
         public void setAddres_id(String addres_id) {
             this.addres_id = addres_id;
+        }
+
+        public String getFlag() {
+            return flag;
+        }
+
+        public void setFlag(String flag) {
+            this.flag = flag;
         }
 
         public String getName() {
@@ -125,11 +236,19 @@ public class ConfirmOrderEntity {
             this.address = address;
         }
 
-        public double getTotal_price() {
+        public String getCategory_id() {
+            return category_id;
+        }
+
+        public void setCategory_id(String category_id) {
+            this.category_id = category_id;
+        }
+
+        public int getTotal_price() {
             return total_price;
         }
 
-        public void setTotal_price(double total_price) {
+        public void setTotal_price(int total_price) {
             this.total_price = total_price;
         }
 
@@ -143,20 +262,20 @@ public class ConfirmOrderEntity {
 
         public static class GoodsListBean {
             /**
-             * goods_id : 10
-             * goods_title : 米其林(Michelin)轮胎/汽车轮胎 235/65R17 108V 旅悦 PRIMACY SUV 适配沃尔沃XC60/XC90/新胜达/哈佛H5等
-             * prime_price : 455.0
-             * promotion_price : 399.0
+             * goods_id : 12f6a8bdf1b04369a2108b64a72c8eb8
+             * goods_title : 洗车
+             * prime_price : 18
+             * promotion_price : 10
              * number : 1
-             * picture : http://114.215.71.170:81/inn/advertisement/b121b.jpg
-             * spec_item_ids : 1
-             * spec_item_name : 花纹性能:经济耐用型
+             * picture : http://114.215.71.170:81/shopping/goods/small/1521635780256.jpg
+             * spec_item_ids : 220,224,226,229
+             * spec_item_name : 服务类别:保养维修,服务方式:到店服务,服务种类:套餐,其他分类:普通漆
              */
 
             private String goods_id;
             private String goods_title;
-            private double prime_price;
-            private double promotion_price;
+            private int prime_price;
+            private int promotion_price;
             private String number;
             private String picture;
             private String spec_item_ids;
@@ -176,6 +295,50 @@ public class ConfirmOrderEntity {
                         '}';
             }
 
+            public static GoodsListBean objectFromData(String str) {
+
+                return new Gson().fromJson(str, GoodsListBean.class);
+            }
+
+            public static GoodsListBean objectFromData(String str, String key) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(str);
+
+                    return new Gson().fromJson(jsonObject.getString(str), GoodsListBean.class);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+
+            public static List<GoodsListBean> arrayGoodsListBeanFromData(String str) {
+
+                Type listType = new TypeToken<ArrayList<GoodsListBean>>() {
+                }.getType();
+
+                return new Gson().fromJson(str, listType);
+            }
+
+            public static List<GoodsListBean> arrayGoodsListBeanFromData(String str, String key) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(str);
+                    Type listType = new TypeToken<ArrayList<GoodsListBean>>() {
+                    }.getType();
+
+                    return new Gson().fromJson(jsonObject.getString(str), listType);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                return new ArrayList();
+
+
+            }
+
             public String getGoods_id() {
                 return goods_id;
             }
@@ -192,19 +355,19 @@ public class ConfirmOrderEntity {
                 this.goods_title = goods_title;
             }
 
-            public double getPrime_price() {
+            public int getPrime_price() {
                 return prime_price;
             }
 
-            public void setPrime_price(double prime_price) {
+            public void setPrime_price(int prime_price) {
                 this.prime_price = prime_price;
             }
 
-            public double getPromotion_price() {
+            public int getPromotion_price() {
                 return promotion_price;
             }
 
-            public void setPromotion_price(double promotion_price) {
+            public void setPromotion_price(int promotion_price) {
                 this.promotion_price = promotion_price;
             }
 

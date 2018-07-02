@@ -73,6 +73,8 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
 
     private boolean needInit = false;
 
+    private String categoryId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +90,8 @@ public class ManageAddressActivity extends BaseActivity implements IListenerTwo 
         String sign = MD5.getSign(ApiManager.URL_MANAGE_ADDRESS, mUser);
         String time = MD5.gettimes();
         needInit = getIntent().getBooleanExtra("needInit", false);
+        categoryId = getIntent().getStringExtra("category_id");
+        Log.e(TAG, "initData: categoryID is " + categoryId);
         ApiManager.getAddressList(sign, time, new ResponseCallbackHandler() {
             @Override
             public void onSuccessResponse(String response, int type) {

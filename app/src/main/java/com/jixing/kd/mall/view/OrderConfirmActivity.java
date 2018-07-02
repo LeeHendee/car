@@ -226,6 +226,7 @@ public class OrderConfirmActivity extends BaseActivity {
                 break;
             case R.id.rl_address:
                 Intent intent = new Intent(OrderConfirmActivity.this, ChooseAddressActivity.class);
+                intent.putExtra("category_id", mEntity.getResult().getCategory_id());
                 startActivityForResult(intent, 100);
                 break;
             case R.id.iv_invoice:

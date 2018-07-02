@@ -42,6 +42,8 @@ public class ShopListActivity extends BaseActivity {
 
     private ShopListAdapter mAdapter;
 
+    private String categoryId;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_shop;
@@ -51,6 +53,7 @@ public class ShopListActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         initRightTvBar("服务站列表", null, null);
+        categoryId = getIntent().getStringExtra("category_id");
         mShopRv.setLayoutManager(new LinearLayoutManager(this));
         mShopRv.addItemDecoration(new RecyclerViewDivider(this, LinearLayoutManager.VERTICAL));
     }
@@ -95,7 +98,7 @@ public class ShopListActivity extends BaseActivity {
     }
 
     private void getShopList() {
-        String categoryId = "1";
+        Log.e(TAG, "getShopList: categoryId is " + categoryId);
         JSONObject object = new JSONObject();
         try {
             object.put("category_id", categoryId);

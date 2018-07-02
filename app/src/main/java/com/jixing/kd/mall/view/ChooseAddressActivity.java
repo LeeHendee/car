@@ -61,7 +61,7 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
 
     private ChooseAddressAdapter mAdapter;
 
-    private String orderId;
+    private String categoryId;
 
     private CarApplication mApp;
 
@@ -78,6 +78,8 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
         mAddressList = new ArrayList<>();
         mApp = (CarApplication) getApplication();
         mUser = mApp.getUser();
+        categoryId = getIntent().getStringExtra("category_id");
+        Log.e(TAG, "initData: categoryId is " + categoryId);
         String sign = MD5.getSign(ApiManager.URL_MANAGE_ADDRESS, mUser);
         String time = MD5.gettimes();
         ApiManager.getAddressList(sign, time, new ResponseCallbackHandler() {
@@ -135,6 +137,7 @@ public class ChooseAddressActivity extends BaseActivity implements IListenerTwo 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ChooseAddressActivity.this, ShopListActivity.class);
+                intent.putExtra("category_id", categoryId);
                 startActivityForResult(intent, 102);
             }
         });
